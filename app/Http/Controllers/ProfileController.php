@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
+class ProfileController extends Controller
+{
+    public function show(Request $request)
+    {
+        $orders = $request->user()->orders()->with('items', 'payment')->latest('purchased_at')->paginate(8);
+
+        return view('profile.show', compact('orders'));
+    }
+
+    public function update(Request $request)
+    {
+        $user = $request->user();
+        $data = $request->validate([
+            'name' => ['required', 'string', 'min:3', 'max:120'],
+            'email' => ['required', 'email:rfc', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'phone' => ['nullable', 'string', 'regex:/^[0-9+()\-\s]{8,30}$/'],
+            'address' => ['nullable', 'string', 'max:500'],
+        ]);
+        $user->update($data);
+
+        return back()->with('success', 'Perfil actualizado correctamente.');
+    }
+}

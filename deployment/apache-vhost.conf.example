@@ -1,0 +1,16 @@
+# Agregar este bloque en C:\xampp\apache\conf\extra\httpd-vhosts.conf
+# Sustituir PROJECT_PATH por la ruta absoluta real usando barras normales.
+
+<VirtualHost *:80>
+    ServerName origentico.test
+    DocumentRoot "PROJECT_PATH/public"
+
+    <Directory "PROJECT_PATH/public">
+        AllowOverride All
+        Options -Indexes +FollowSymLinks
+        Require all granted
+    </Directory>
+
+    ErrorLog "logs/origentico-error.log"
+    CustomLog "logs/origentico-access.log" combined
+</VirtualHost>

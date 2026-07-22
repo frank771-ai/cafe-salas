@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Order;
+use App\Models\User;
+use App\Services\PdfService;
+use Carbon\CarbonImmutable;
+use Illuminate\Http\Request;
+
+class ReportController extends Controller
+{
+    public function index()
+    {
+        return view('admin.reports', [
+            'customers' => User::where('is_admin', false)->whereHas('orders')->orderBy('name')->get(),
+            'defaultMonth' => now()->format('Y-m'),
+        ]);
+    }
+
+    public function monthly(Request $request, PdfService $pdf)
+    {
+        $data = $request->validate(['month' => ['required', 'date_format:Y-m']]);
+        $start = CarbonImmutable::createFromFormat('!Y-m', $data['month'])->startOfMonth();
+        $end = $start->endOfMonth();
+        $orders = Order::with('user', 'items', 'payment')
+            ->whereBetween('purchased_at', [$start, $end])
+            ->where('status', '!=', 'cancelled')
+            ->orderBy('purchased_at')
+            ->get();
+
+        return $pdf->download('pdf.sales-report', [
+            'title' => 'Reporte mensual de ventas - '.$start->translatedFormat('F Y'),
+            'subtitle' => 'Periodo: '.$start->format('d/m/Y').' al '.$end->format('d/m/Y'),
+            'orders' => $orders,
+        ], 'ventas-'.$data['month'].'.pdf', 'landscape');
+    }
+
+    public function customer(Request $request, PdfService $pdf)
+    {
+        $data = $request->validate(['user_id' => ['required', 'integer', 'exists:users,id']]);
+        $customer = User::findOrFail($data['user_id']);
+        $orders = $customer->orders()->with('items', 'payment')
+            ->where('status', '!=', 'cancelled')
+            ->orderBy('purchased_at')
+            ->get();
+
+        return $pdf->download('pdf.sales-report', [
+            'title' => 'Reporte de ventas por cliente',
+            'subtitle' => $customer->name.' - '.$customer->email,
+            'orders' => $orders,
+        ], 'ventas-cliente-'.$customer->id.'.pdf', 'landscape');
+    }
+}
