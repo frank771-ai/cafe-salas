@@ -57,8 +57,8 @@ composer validate --strict
 4. Crear credenciales MariaDB de mínimo privilegio; nunca usar `root` fuera de XAMPP local.
 5. Configurar correo, alertas, registros centralizados, disponibilidad y respuesta a incidentes.
 6. Ejecutar una prueba de carga y una revisión de seguridad autorizada sobre el dominio final.
-7. Publicar en GitHub sin `.env`, revisar GitHub Actions y activar protección de rama.
+7. Revisar GitHub Actions, agregar a la docente como colaboradora y activar protección de rama.
 
 ## Relación con la rúbrica
 
-Los criterios técnicos 3 al 23 y 25 al 28 cuentan con código y evidencia. GitHub dispone de repositorio local, workflow y Dependabot, pero el remoto requiere una cuenta autenticada. Los criterios 1, 24 y 29 al 31 dependen de entrega, exposición y respuestas humanas. El criterio 16 menciona SQLite; por instrucción del equipo, MariaDB/phpMyAdmin es la base principal y SQLite se conserva como motor de pruebas compatible.
+Los criterios técnicos 3 al 23, 25 al 28 y 32 cuentan con código y evidencia. El repositorio privado está publicado en `Byroncha1323/origen-tico` con workflow y Dependabot. Los criterios 1, 24 y 29 al 31 dependen de entrega, exposición y respuestas humanas. El criterio 16 menciona SQLite; por instrucción del equipo, MariaDB/phpMyAdmin es la base principal y SQLite se conserva como motor de pruebas compatible.

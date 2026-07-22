@@ -33,7 +33,7 @@
 | 29 | Pregunta docente 1 | Banco de preguntas y respuestas en guía de exposición. |
 | 30 | Pregunta docente 2 | Banco de preguntas y respuestas en guía de exposición. |
 | 31 | Pregunta docente 3 | Banco de preguntas y respuestas en guía de exposición. |
-| 32 | GitHub | Git, `.gitignore`, CI, `composer.lock`, Dependabot y política de seguridad. Falta autenticar la cuenta y asociar el remoto. |
+| 32 | GitHub | Repositorio privado publicado en `Byroncha1323/origen-tico`, con Git, `.gitignore`, CI, `composer.lock`, Dependabot y política de seguridad. |
 
 ## Observaciones honestas
 

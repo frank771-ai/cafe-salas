@@ -55,14 +55,9 @@ PHPUnit utiliza SQLite en memoria, por lo que no altera `origen_tico`. La audito
 
 ## Publicación en GitHub
 
-La entrega contiene historial Git, workflow de Actions, Dependabot, `.gitignore` y política de seguridad. En el equipo que publicará el proyecto:
+Repositorio privado: [github.com/Byroncha1323/origen-tico](https://github.com/Byroncha1323/origen-tico).
 
-```powershell
-gh auth login
-gh repo create origen-tico --private --source . --remote origin --push
-```
-
-Cambie `--private` por `--public` únicamente si el grupo y la docente acuerdan que el código puede ser público. Si conserva el repositorio privado, agregue a la docente como colaboradora. Nunca confirme `.env`, contraseñas, `APP_KEY` ni tarjetas reales.
+La entrega contiene historial Git, workflow de Actions, Dependabot, `.gitignore` y política de seguridad. Para que la docente pueda revisarlo mientras sea privado, agréguela como colaboradora desde **Settings → Collaborators**. Nunca confirme `.env`, contraseñas, `APP_KEY` ni tarjetas reales.
 
 ## Documentación
 
