@@ -20,7 +20,14 @@ class ProductController extends Controller
             'q' => ['nullable', 'string', 'max:80'],
             'category' => ['nullable', 'string', 'max:100'],
             'min_price' => ['nullable', 'integer', 'min:0', 'max:10000000'],
-            'max_price' => ['nullable', 'integer', 'min:0', 'max:10000000', 'gte:min_price'],
+            'max_price' => [
+                'nullable',
+                'integer',
+                'min:0',
+                'max:10000000',
+                // Solo compare ambos precios cuando el usuario realmente indicó un mínimo.
+                ...($request->filled('min_price') ? ['gte:min_price'] : []),
+            ],
             'sort' => ['nullable', 'in:newest,price_asc,price_desc,name'],
         ]);
 

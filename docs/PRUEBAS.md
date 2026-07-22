@@ -12,7 +12,7 @@ php artisan test --filter=CheckoutTest
 php vendor/bin/pint --test
 ```
 
-Resultado de referencia: **43 pruebas aprobadas y 197 aserciones** tanto en SQLite como en MariaDB temporal de XAMPP.
+Resultado de referencia: **47 pruebas aprobadas y 226 aserciones** tanto en SQLite como en MariaDB temporal de XAMPP.
 
 ## Casos automatizados
 
@@ -28,6 +28,7 @@ Resultado de referencia: **43 pruebas aprobadas y 197 aserciones** tanto en SQLi
 | `PaymentGatewaySafetyTest` | Bloqueo de la pasarela simulada en producción. |
 | `ProfileAndReportsTest` | Perfil, correo único, historial, permisos y PDF mensual/cliente. |
 | `SecurityHardeningTest` | CSP, HSTS, cabeceras, caché privada, login y rol administrador. |
+| `UsabilityTest` | Continuidad carrito-login-pago, filtros opcionales, mensajes en español y contexto accesible. |
 | `RecentProductsServiceTest` | Saneamiento, deduplicación y límite de IDs en la cookie. |
 
 ## Pruebas manuales para la exposición

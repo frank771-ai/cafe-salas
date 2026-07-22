@@ -12,6 +12,7 @@
     @stack('styles')
 </head>
 <body>
+    @php($cartCount = app(\App\Services\CartService::class)->count())
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <div class="announcement">Envío gratis en compras superiores a ₡30.000 · Pago de demostración protegido</div>
 
@@ -27,18 +28,18 @@
             </button>
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">Catálogo</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}" @if(request()->routeIs('home')) aria-current="page" @endif>Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}" @if(request()->routeIs('products.*')) aria-current="page" @endif>Catálogo</a></li>
                     @auth
-                        <li class="nav-item"><a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.show') }}">Mi perfil</a></li>
+                        <li class="nav-item"><a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.show') }}" @if(request()->routeIs('profile.*')) aria-current="page" @endif>Mi perfil</a></li>
                         @if(auth()->user()->is_admin)
-                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">Administración</a></li>
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}" @if(request()->routeIs('admin.*')) aria-current="page" @endif>Administración</a></li>
                         @endif
                     @endauth
                 </ul>
                 <div class="d-flex align-items-center gap-2 flex-wrap">
-                    <a class="btn btn-cart" href="{{ route('cart.index') }}" aria-label="Carrito con {{ app(\App\Services\CartService::class)->count() }} artículos">
-                        Carrito <span class="badge rounded-pill">{{ app(\App\Services\CartService::class)->count() }}</span>
+                    <a class="btn btn-cart" href="{{ route('cart.index') }}" aria-label="Carrito con {{ $cartCount }} {{ $cartCount === 1 ? 'artículo' : 'artículos' }}">
+                        Carrito <span class="badge rounded-pill">{{ $cartCount }}</span>
                     </a>
                     @guest
                         <a class="btn btn-outline-light" href="{{ route('login') }}">Ingresar</a>
@@ -58,7 +59,7 @@
         {{-- Mensajes flash y errores de validación de la solicitud anterior. --}}
         @if (session('success'))
             <div class="container mt-4">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show" role="status" aria-live="polite">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
                 </div>

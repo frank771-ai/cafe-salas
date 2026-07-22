@@ -67,7 +67,8 @@
 
                         @guest
                             <p class="small text-secondary">Debe iniciar sesión para finalizar la compra.</p>
-                            <a class="btn btn-primary btn-lg w-100" href="{{ route('login', ['redirect' => route('checkout.create')]) }}">Ingresar y comprar</a>
+                            {{-- El middleware auth guardará /comprar como URL prevista y volverá allí después del login. --}}
+                            <a class="btn btn-primary btn-lg w-100" href="{{ route('checkout.create') }}">Ingresar y comprar</a>
                         @else
                             <a class="btn btn-primary btn-lg w-100" href="{{ route('checkout.create') }}">Continuar al pago</a>
                         @endguest

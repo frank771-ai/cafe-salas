@@ -17,7 +17,12 @@
             <form method="POST" action="{{ route('cart.store', $product) }}">
                 @csrf
                 <input type="hidden" name="quantity" value="1">
-                <button class="btn btn-primary" type="submit" @disabled($product->stock < 1)>{{ $product->stock ? 'Agregar' : 'Agotado' }}</button>
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                    aria-label="{{ $product->stock ? 'Agregar '.$product->name.' al carrito' : $product->name.' está agotado' }}"
+                    @disabled($product->stock < 1)
+                >{{ $product->stock ? 'Agregar' : 'Agotado' }}</button>
             </form>
         </div>
     </div>

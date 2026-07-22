@@ -23,7 +23,7 @@
                 <h1 class="display-5">{{ $product->name }}</h1>
                 <p class="lead text-secondary">{{ $product->description }}</p>
                 <div class="price price-large">₡{{ number_format($product->price, 0, ',', '.') }}</div>
-                <p class="stock {{ $product->stock < 6 ? 'low' : '' }}">
+                <p id="product-stock" class="stock {{ $product->stock < 6 ? 'low' : '' }}">
                     {{ $product->stock > 0 ? $product->stock.' unidades disponibles' : 'Producto agotado' }}
                 </p>
 
@@ -31,7 +31,7 @@
                     @csrf
                     <div>
                         <label class="form-label" for="quantity">Cantidad</label>
-                        <input class="form-control quantity-input" type="number" id="quantity" name="quantity" min="1" max="{{ $product->stock }}" value="1" required>
+                        <input class="form-control quantity-input" type="number" id="quantity" name="quantity" min="1" max="{{ $product->stock }}" value="1" aria-describedby="product-stock" required>
                     </div>
                     <button class="btn btn-primary btn-lg" type="submit" @disabled($product->stock < 1)>Agregar al carrito</button>
                 </form>

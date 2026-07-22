@@ -55,7 +55,7 @@
 
             <section class="col-lg-9" aria-live="polite">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="h5 mb-0">{{ $products->total() }} resultados</h2>
+                    <h2 class="h5 mb-0">{{ $products->total() }} {{ $products->total() === 1 ? 'resultado' : 'resultados' }}</h2>
                     <span class="text-secondary small">Página {{ $products->currentPage() }} de {{ $products->lastPage() }}</span>
                 </div>
                 <div class="row g-4">

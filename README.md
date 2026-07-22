@@ -11,7 +11,7 @@ Proyecto final de **Tecnologías y Sistemas Web II (ITI-523)**. Es una tienda de
 - Cookie cifrada con los seis productos vistos recientemente.
 - Administración de pedidos, inventario bajo y reportes PDF por mes o cliente.
 - Protecciones de Laravel contra CSRF, XSS e inyección SQL; contraseñas con hash y sesiones cifradas.
-- 43 pruebas automatizadas con 197 verificaciones en SQLite y MariaDB, incluida validación Luhn y protección CSRF.
+- 47 pruebas automatizadas con 226 verificaciones en SQLite y MariaDB, incluidas validación Luhn, protección CSRF y regresiones de usabilidad.
 
 ## Instalación recomendada: XAMPP y phpMyAdmin
 
@@ -73,6 +73,7 @@ Cambie `--private` por `--public` únicamente si el grupo y la docente acuerdan 
 - `docs/CODIGO_EXPLICADO.md`: explicación archivo por archivo, flujos y decisiones.
 - `docs/REVISION_Y_ATRIBUCION.md`: adaptación, atribución y lista de estudio.
 - `docs/AUDITORIA_LANZAMIENTO.md`: pruebas de lanzamiento, riesgos y lista previa a producción.
+- `docs/PRUEBAS_USABILIDAD.md`: recorridos de capa 8, hallazgos, correcciones y evidencia de navegador.
 - `docs/Documentacion_Origen_Tico.docx`: manual formal para entregar.
 
 ## Nota sobre pagos y HTTPS

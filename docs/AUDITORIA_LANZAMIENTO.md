@@ -4,7 +4,7 @@ Fecha de revisión: 22 de julio de 2026.
 
 ## Dictamen
 
-El proyecto está **apto para entrega y demostración académica**. La lógica se verificó con SQLite en memoria y con MariaDB real de XAMPP: **43 pruebas y 197 aserciones aprobadas en ambos motores**.
+El proyecto está **apto para entrega y demostración académica**. La lógica se verificó con SQLite en memoria y con MariaDB real de XAMPP: **47 pruebas y 226 aserciones aprobadas en ambos motores**.
 
 No debe anunciarse todavía como comercio productivo con cobros reales. Para salir al mercado faltan credenciales de una pasarela certificada, dominio/hosting, certificado público, correo transaccional, monitoreo y responsables de operación. Esos puntos dependen de cuentas externas y no pueden simularse honestamente.
 
@@ -23,6 +23,7 @@ No debe anunciarse todavía como comercio productivo con cobros reales. Para sal
 | Administración | Rol, panel, devolución de inventario, reembolso simulado y reportes PDF. |
 | Transporte | CSP, HSTS bajo HTTPS, `nosniff`, anti-frame, Referrer Policy y páginas privadas sin caché. |
 | Recorrido completo | Registro hasta compra, confirmación, factura PDF e historial dentro de una misma sesión. |
+| Capa 8 y usabilidad | Navegación real, continuidad carrito-login-pago, lenguaje de errores, nombres accesibles y filtros opcionales. |
 
 ## Comandos ejecutados
 
@@ -46,6 +47,7 @@ composer validate --strict
 - Flujo de estados sin saltos; cancelación devuelve stock una sola vez.
 - Pagos simulados bloqueados por defecto en producción.
 - Configuración de Apache SSL, ambiente productivo, Dependabot y política de seguridad.
+- Mensajes de validación completos en español y correcciones de continuidad, singular/plural y contexto accesible.
 
 ## Lista obligatoria antes de producción real
 
