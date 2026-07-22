@@ -38,6 +38,30 @@ class CartTest extends TestCase
             ->assertSessionHasErrors('quantity');
     }
 
+    public function test_cart_rejects_inactive_products_and_invalid_quantities(): void
+    {
+        $product = $this->product(stock: 5);
+        $product->update(['is_active' => false]);
+
+        $this->post(route('cart.store', $product), ['quantity' => 1])
+            ->assertSessionHasErrors('product');
+
+        $product->update(['is_active' => true]);
+        $this->post(route('cart.store', $product), ['quantity' => 0])
+            ->assertSessionHasErrors('quantity');
+        $this->post(route('cart.store', $product), ['quantity' => 100])
+            ->assertSessionHasErrors('quantity');
+    }
+
+    public function test_updating_quantity_to_zero_removes_the_line(): void
+    {
+        $product = $this->product();
+
+        $this->withSession(['cart' => [$product->id => 2]])
+            ->patch(route('cart.update', $product), ['quantity' => 0])
+            ->assertSessionHas('cart', []);
+    }
+
     private function product(int $stock = 10): Product
     {
         $category = Category::create(['name' => 'Café', 'slug' => 'cafe']);

@@ -84,6 +84,97 @@ class CheckoutTest extends TestCase
         $this->actingAs($other)->get(route('orders.invoice', $owner->orders()->first()))->assertForbidden();
     }
 
+    public function test_invalid_card_data_is_never_flashed_back_to_the_session(): void
+    {
+        $user = User::factory()->create();
+        $product = $this->product();
+
+        $this->actingAs($user)->withSession(['cart' => [$product->id => 1]])
+            ->from(route('checkout.create'))
+            ->post(route('checkout.store'), [
+                'customer_name' => 'Laura Jiménez',
+                'customer_phone' => '8888-1212',
+                'shipping_address' => 'San Pedro, Montes de Oca, casa número 10',
+                'payment_method' => 'card',
+                'card_holder' => 'Laura Jiménez',
+                'card_number' => '4111 1111 1111 1112',
+                'card_expiry' => '01/20',
+                'card_cvv' => '123',
+            ])->assertRedirect(route('checkout.create'))
+            ->assertSessionMissing('_old_input.card_holder')
+            ->assertSessionMissing('_old_input.card_number')
+            ->assertSessionMissing('_old_input.card_expiry')
+            ->assertSessionMissing('_old_input.card_cvv');
+    }
+
+    public function test_expired_card_is_rejected_without_creating_an_order(): void
+    {
+        $user = User::factory()->create();
+        $product = $this->product();
+
+        $this->actingAs($user)->withSession(['cart' => [$product->id => 1]])
+            ->post(route('checkout.store'), [
+                'customer_name' => 'Laura Jiménez',
+                'customer_phone' => '8888-1212',
+                'shipping_address' => 'San Pedro, Montes de Oca, casa número 10',
+                'payment_method' => 'card',
+                'card_holder' => 'Laura Jiménez',
+                'card_number' => '4111 1111 1111 1111',
+                'card_expiry' => now()->subYear()->format('m/y'),
+                'card_cvv' => '123',
+            ])->assertSessionHasErrors('card_expiry');
+
+        $this->assertDatabaseCount('orders', 0);
+        $this->assertSame(5, $product->fresh()->stock);
+    }
+
+    public function test_inventory_change_rolls_back_the_entire_checkout(): void
+    {
+        $user = User::factory()->create();
+        $product = $this->product();
+
+        $this->actingAs($user)->withSession(['cart' => [$product->id => 5]]);
+        $product->update(['stock' => 4]);
+
+        $this->post(route('checkout.store'), [
+            'customer_name' => 'Laura Jiménez',
+            'customer_phone' => '8888-1212',
+            'shipping_address' => 'San Pedro, Montes de Oca, casa número 10',
+            'payment_method' => 'paypal',
+            'paypal_email' => ' LAURA@EXAMPLE.TEST ',
+        ])->assertSessionHasErrors('cart');
+
+        $this->assertDatabaseCount('orders', 0);
+        $this->assertDatabaseCount('payments', 0);
+        $this->assertSame(4, $product->fresh()->stock);
+    }
+
+    public function test_paypal_checkout_succeeds_without_storing_card_data(): void
+    {
+        $user = User::factory()->create();
+        $product = $this->product();
+
+        $this->actingAs($user)->withSession(['cart' => [$product->id => 1]])
+            ->post(route('checkout.store'), [
+                'customer_name' => ' Laura Jiménez ',
+                'customer_phone' => ' 8888-1212 ',
+                'shipping_address' => ' San Pedro, Montes de Oca, casa número 10 ',
+                'payment_method' => 'paypal',
+                'paypal_email' => ' LAURA@EXAMPLE.TEST ',
+            ])->assertRedirect();
+
+        $payment = $user->orders()->firstOrFail()->payment;
+        $this->assertSame('paypal', $payment->method);
+        $this->assertNull($payment->last_four);
+        $this->assertSame('Laura Jiménez', $user->orders()->first()->customer_name);
+    }
+
+    public function test_guest_cannot_open_or_submit_checkout(): void
+    {
+        $this->get(route('checkout.create'))->assertRedirect(route('login'));
+        $this->post(route('checkout.store'))->assertRedirect(route('login'));
+    }
+
     private function product(): Product
     {
         $category = Category::create(['name' => 'Café', 'slug' => 'cafe']);

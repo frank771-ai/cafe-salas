@@ -58,12 +58,12 @@
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label" for="card_number">Número</label>
-                                    <input class="form-control" id="card_number" name="card_number" value="{{ old('card_number') }}" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="4111 1111 1111 1111">
+                                    <input class="form-control" id="card_number" name="card_number" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="4111 1111 1111 1111">
                                     <div class="form-text">Use 4111 1111 1111 1111 para la demostración.</div>
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="card_expiry">Vence</label>
-                                    <input class="form-control" id="card_expiry" name="card_expiry" value="{{ old('card_expiry') }}" inputmode="numeric" autocomplete="cc-exp" maxlength="5" placeholder="MM/AA">
+                                    <input class="form-control" id="card_expiry" name="card_expiry" inputmode="numeric" autocomplete="cc-exp" maxlength="5" placeholder="MM/AA">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="card_cvv">CVV</label>

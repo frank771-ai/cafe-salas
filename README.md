@@ -11,7 +11,7 @@ Proyecto final de **Tecnologías y Sistemas Web II (ITI-523)**. Es una tienda de
 - Cookie cifrada con los seis productos vistos recientemente.
 - Administración de pedidos, inventario bajo y reportes PDF por mes o cliente.
 - Protecciones de Laravel contra CSRF, XSS e inyección SQL; contraseñas con hash y sesiones cifradas.
-- 17 pruebas automatizadas con 67 verificaciones, incluida validación Luhn de tarjeta.
+- 43 pruebas automatizadas con 197 verificaciones en SQLite y MariaDB, incluida validación Luhn y protección CSRF.
 
 ## Instalación recomendada: XAMPP y phpMyAdmin
 
@@ -51,7 +51,18 @@ php artisan test
 php vendor/bin/pint --test
 ```
 
-PHPUnit utiliza SQLite en memoria, por lo que no altera `origen_tico`. GitHub Actions ejecuta la misma batería en cada `push` o `pull request`.
+PHPUnit utiliza SQLite en memoria, por lo que no altera `origen_tico`. La auditoría también ejecutó la batería completa contra una base MariaDB temporal de XAMPP. GitHub Actions repite pruebas, formato, caché de rutas/vistas y auditoría de dependencias en cada `push` o `pull request`.
+
+## Publicación en GitHub
+
+La entrega contiene historial Git, workflow de Actions, Dependabot, `.gitignore` y política de seguridad. En el equipo que publicará el proyecto:
+
+```powershell
+gh auth login
+gh repo create origen-tico --private --source . --remote origin --push
+```
+
+Cambie `--private` por `--public` únicamente si el grupo y la docente acuerdan que el código puede ser público. Si conserva el repositorio privado, agregue a la docente como colaboradora. Nunca confirme `.env`, contraseñas, `APP_KEY` ni tarjetas reales.
 
 ## Documentación
 
@@ -61,8 +72,9 @@ PHPUnit utiliza SQLite en memoria, por lo que no altera `origen_tico`. GitHub Ac
 - `docs/GUIA_EXPOSICION.md`: recorrido de demostración y preguntas probables.
 - `docs/CODIGO_EXPLICADO.md`: explicación archivo por archivo, flujos y decisiones.
 - `docs/REVISION_Y_ATRIBUCION.md`: adaptación, atribución y lista de estudio.
+- `docs/AUDITORIA_LANZAMIENTO.md`: pruebas de lanzamiento, riesgos y lista previa a producción.
 - `docs/Documentacion_Origen_Tico.docx`: manual formal para entregar.
 
 ## Nota sobre pagos y HTTPS
 
-La pasarela es una simulación académica: valida los datos, aprueba la operación y **nunca almacena** el número completo ni el CVV. Un cobro real requiere credenciales del comercio y un proveedor como PayPal/Stripe. En producción, Laravel fuerza HTTPS; `docs/MANUAL_TECNICO.md` explica certificados gratuitos Let's Encrypt.
+La pasarela es una simulación académica: valida los datos, aprueba la operación y **nunca almacena** el número completo ni el CVV. Además, los campos de tarjeta no se conservan en la sesión cuando falla una validación. Un cobro real requiere credenciales del comercio y un proveedor como PayPal/Stripe. En producción, la simulación queda bloqueada por defecto, Laravel fuerza HTTPS y `deployment/apache-ssl-vhost.conf.example` muestra la configuración con certificado.

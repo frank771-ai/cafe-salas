@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Carbon\CarbonInterface;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 /**
  * Representa la pasarela académica de pagos del proyecto.
@@ -22,6 +23,11 @@ class SimulatedPaymentGateway
      */
     public function authorize(array $checkoutData, int $amount, CarbonInterface $processedAt): array
     {
+        // Un despliegue real no debe aceptar pagos ficticios por una omisión de configuración.
+        if (app()->environment('production') && ! config('services.payments.allow_simulation_in_production')) {
+            throw new RuntimeException('Debe configurar una pasarela de pago real antes de operar en producción.');
+        }
+
         $method = (string) $checkoutData['payment_method'];
 
         return [

@@ -84,7 +84,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <select class="form-select form-select-sm" name="status" aria-label="Estado de {{ $order->order_number }}">
-                                            @foreach (\App\Models\Order::STATUSES as $status)
+                                            @foreach (array_unique([$order->status, ...$order->allowedStatusTransitions()]) as $status)
                                                 <option value="{{ $status }}" @selected($order->status === $status)>
                                                     {{ match ($status) {
                                                         'paid' => 'Pagado',
@@ -96,7 +96,7 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <button class="btn btn-sm btn-outline-primary" type="submit">Guardar</button>
+                                        <button class="btn btn-sm btn-outline-primary" type="submit" @disabled($order->allowedStatusTransitions() === [])>Guardar</button>
                                     </form>
                                 </td>
                                 <td><a href="{{ route('orders.invoice', $order) }}">Ver</a></td>

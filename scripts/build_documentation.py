@@ -422,7 +422,7 @@ def build_document() -> None:
         "de productos recientes, administración y reportes PDF. La implementación se inspira directamente "
         "en los temas de Laravel explicados en las sesiones 9 y 10 del curso."
     )
-    add_callout(document, "Resultado verificable", "La batería automatizada contiene 17 pruebas con 67 aserciones. La aplicación también fue ejecutada contra MariaDB de XAMPP y revisada visualmente en escritorio y móvil.")
+    add_callout(document, "Resultado verificable", "La batería automatizada contiene 43 pruebas con 197 aserciones aprobadas tanto en SQLite como en MariaDB temporal de XAMPP. También se verificaron formato y cachés de producción.")
 
     document.add_heading("2. Tecnologías", level=1)
     add_table(document, ["Capa", "Tecnología y propósito"], [
@@ -454,7 +454,7 @@ def build_document() -> None:
         ("Vistas", "Blade presenta HTML escapado y reutiliza el componente product-card."),
         ("Controladores", "Validan solicitudes, coordinan modelos y retornan vistas, redirecciones o PDF."),
         ("Rutas", "Usan nombres, verbos HTTP y grupos guest, auth y admin."),
-        ("Servicios", "CartService concentra cálculos y PdfService genera documentos."),
+        ("Servicios", "Carrito, PDF, pagos simulados, productos recientes y estados de pedido."),
         ("Middleware", "AdminMiddleware autoriza el panel y SecurityHeaders agrega defensas HTTP."),
     ]:
         paragraph = document.add_paragraph()
@@ -486,6 +486,7 @@ def build_document() -> None:
         "Tarjeta y PayPal simulados; confirmación, factura y seguimiento único.",
         "Cookie cifrada con hasta seis productos vistos durante 30 días.",
         "Panel administrativo, inventario bajo y estados de pedido.",
+        "Cancelación idempotente con reembolso simulado y devolución de inventario.",
         "Reportes PDF de ventas por mes y por cliente.",
     ]:
         add_bullet(document, item)
@@ -497,9 +498,10 @@ def build_document() -> None:
         ["CSRF", "Token @csrf en formularios POST, PATCH y DELETE."],
         ["Robo de sesión", "Regeneración en login, invalidación en logout, cifrado, HttpOnly y SameSite."],
         ["Acceso indebido", "Middleware admin y comprobación de propietario en facturas."],
-        ["Datos de tarjeta", "No se almacenan número completo ni CVV; solo referencia y cuatro dígitos."],
+        ["Datos de tarjeta", "No se almacenan ni se conservan en sesión; solo referencia y cuatro dígitos."],
         ["Carrera de inventario", "Transacción de base y validación final antes del descuento."],
-        ["Transporte", "HTTPS forzado en producción y HSTS cuando la solicitud es segura."],
+        ["Navegador", "CSP, anti-frame, nosniff, Referrer Policy y páginas privadas sin caché."],
+        ["Transporte", "HTTPS forzado en producción, HSTS y cookie Secure en el perfil productivo."],
     ], [2600, 6760])
     add_callout(document, "Pasarela académica", "No se realizan cargos reales. Una pasarela productiva exige credenciales del comercio, webhooks y cumplimiento del proveedor.")
 
@@ -510,6 +512,9 @@ def build_document() -> None:
         ["CatalogAndCookieTest", "Filtros, cookie y XSS."],
         ["CartTest", "Altas, cambios, bajas, total e inventario."],
         ["CheckoutTest", "Pago, seguimiento, inventario, privacidad y autorización."],
+        ["EndToEndPurchaseTest", "Registro hasta factura e historial en una sesión."],
+        ["OrderManagementTest", "Estados, cancelación, pago e inventario."],
+        ["SecurityHardeningTest", "CSP, HSTS, permisos y caché privada."],
         ["ProfileAndReportsTest", "Perfil, historial, rol admin y ambos PDF."],
     ], [2700, 6660])
     document.add_paragraph("Comandos: php artisan test y php vendor/bin/pint --test. PHPUnit usa SQLite en memoria y no modifica origen_tico.")
@@ -517,7 +522,7 @@ def build_document() -> None:
     document.add_heading("10. Matriz de cumplimiento", level=1)
     rubric = [
         (1, "Entrega a tiempo", "Paquete preparado; carga a cargo del equipo."),
-        (2, "Carpeta ProyectoFinal-NombreEstudiantes", "ZIP generado con nombre solicitado."),
+        (2, "Carpeta ProyectoFinalNombreEstudiantes", "ZIP generado con el formato solicitado."),
         (3, "Autenticación y usuarios", "AuthController, sesiones y middleware."),
         (4, "Registro", "Formulario, validación y prueba."),
         (5, "Login y logout", "Sesión segura y limitación de intentos."),
@@ -538,7 +543,7 @@ def build_document() -> None:
         (20, "Mostrar recientes", "Sección visible en inicio."),
         (21, "Código completo", "Fuente, SQL, pruebas y docs."),
         (22, "Documentación", "README, MD y este DOCX."),
-        (23, "Pruebas unitarias", "17 pruebas, 67 aserciones."),
+        (23, "Pruebas unitarias", "43 pruebas, 197 aserciones; SQLite y MariaDB."),
         (24, "Exposición", "Guion preparado; asistencia humana."),
         (25, "Funciones especificadas", "Trazadas en esta matriz."),
         (26, "Responsive y UX", "Validado en escritorio y móvil."),

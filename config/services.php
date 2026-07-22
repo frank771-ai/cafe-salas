@@ -2,6 +2,11 @@
 
 return [
 
+    'payments' => [
+        // Requiere una decisión explícita para permitir una demo simulada bajo APP_ENV=production.
+        'allow_simulation_in_production' => env('ALLOW_SIMULATED_PAYMENTS_IN_PRODUCTION', false),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Third Party Services

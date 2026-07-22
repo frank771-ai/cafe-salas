@@ -67,10 +67,11 @@ Los nombres de rutas, por ejemplo `products.index`, evitan escribir URLs manuale
 - Limita la cookie a seis IDs por treinta días.
 - Configura HttpOnly, SameSite Lax y Secure cuando la conexión es HTTPS.
 - Consulta otros tres productos de la misma categoría.
+- Delega el saneamiento y límite de la cookie a `RecentProductsService`.
 
 ### `AuthController`
 
-`register()` valida nombre, correo único, teléfono y contraseña confirmada. La contraseña exige ocho caracteres, letras, mayúsculas, minúsculas y números. El cast `hashed` de `User` aplica el hash antes de guardar.
+`register()` recorta los campos, convierte el correo a minúsculas y valida nombre, correo único, teléfono y contraseña confirmada. La contraseña exige ocho caracteres, letras, mayúsculas, minúsculas y números. El cast `hashed` de `User` aplica el hash antes de guardar.
 
 `login()` utiliza `Auth::attempt()` y regenera el ID de sesión para evitar fijación de sesión. La ruta limita los intentos a cinco por minuto.
 
@@ -125,7 +126,8 @@ Si cualquier paso falla, Laravel revierte toda la transacción.
 - Cuenta clientes no administradores.
 - alerta sobre productos con cinco unidades o menos.
 - Pagina pedidos recientes.
-- Valida estados contra `Order::STATUSES` antes de actualizarlos.
+- Solo permite las transiciones declaradas en `Order::STATUS_TRANSITIONS`.
+- Al cancelar, `OrderStatusService` marca el pago como reembolsado y devuelve el inventario una sola vez.
 
 ### `ReportController`
 
@@ -138,13 +140,13 @@ Si cualquier paso falla, Laravel revierte toda la transacción.
 ### `CheckoutRequest`
 
 - Exige autenticación.
-- Normaliza el número de tarjeta eliminando caracteres no numéricos.
+- Normaliza identidad, teléfono, dirección, PayPal y número de tarjeta.
 - Valida datos de entrega.
 - Aplica campos condicionales para tarjeta o PayPal.
 - Comprueba el formato y vigencia de `MM/AA`.
 - aplica el algoritmo de Luhn al número de tarjeta.
 - valida CVV de tres o cuatro dígitos.
-- nunca guarda tarjeta completa ni CVV.
+- nunca guarda tarjeta completa ni CVV y `bootstrap/app.php` impide conservarlos como entrada anterior.
 
 ### `AdminMiddleware`
 
@@ -158,6 +160,8 @@ Añade:
 - `X-Frame-Options: SAMEORIGIN`.
 - política estricta de referencia.
 - bloqueo de cámara, micrófono y geolocalización.
+- Content Security Policy para scripts, estilos, imágenes, formularios y marcos.
+- `Cache-Control: no-store` en páginas autenticadas.
 - HSTS únicamente cuando la solicitud ya usa HTTPS.
 
 ## 6. Servicios
@@ -176,7 +180,15 @@ El carrito se guarda como un mapa `producto_id => cantidad` en la sesión. Sus c
 
 Representa la respuesta de un procesador académico. Devuelve método, estado aprobado, referencia aleatoria, monto, fecha y últimos cuatro dígitos. El controlador no conoce cómo se produce esa autorización, por lo que en el futuro la clase puede sustituirse por un SDK real.
 
-No se realizan cargos reales porque faltan las credenciales comerciales, webhooks y acuerdos de un proveedor de pagos.
+No se realizan cargos reales porque faltan las credenciales comerciales, webhooks y acuerdos de un proveedor de pagos. En `APP_ENV=production` la simulación se rechaza por defecto para evitar una venta ficticia.
+
+### `RecentProductsService`
+
+Decodifica la cookie sin confiar en ella, acepta únicamente IDs positivos, elimina duplicados y conserva como máximo seis. Así una cookie corrupta o manipulada no provoca errores ni consultas ilimitadas.
+
+### `OrderStatusService`
+
+Bloquea el pedido en una transacción, aplica el flujo pagado → preparación → enviado → entregado y permite cancelar únicamente antes del envío. La cancelación es idempotente: repone stock y cambia el pago a `refunded` una sola vez.
 
 ### `PdfService`
 
@@ -305,12 +317,17 @@ JavaScript mejora la experiencia, pero la seguridad depende siempre de la valida
 
 ## 12. Pruebas
 
-- `CartTotalsTest`: IVA y envío.
-- `AuthenticationTest`: registro, hash, login y logout.
-- `CartTest`: agregar, cambiar, eliminar y limitar por inventario.
-- `CatalogAndCookieTest`: búsqueda, filtros, cookie y XSS.
-- `CheckoutTest`: tarjeta, Luhn, PayPal, inventario, seguimiento y privacidad.
-- `ProfileAndReportsTest`: perfil, historial, rol y PDF.
+- `CartTotalsTest`: IVA, envío y límites monetarios.
+- `RecentProductsServiceTest`: saneamiento, orden, deduplicación y límite de cookie.
+- `AuthenticationTest`: registro, normalización, hash, login, logout y rate limiting.
+- `CartTest`: agregar, cambiar, eliminar, cantidades inválidas e inventario.
+- `CatalogAndCookieTest`: búsqueda, filtros, cookie corrupta, inactivos y XSS.
+- `CheckoutTest`: tarjeta, Luhn, vigencia, PayPal, inventario, seguimiento y privacidad.
+- `EndToEndPurchaseTest`: recorrido completo de compra dentro de una misma sesión.
+- `OrderManagementTest`: estados, cancelación idempotente, pago e inventario.
+- `PaymentGatewaySafetyTest`: bloqueo de simulación en producción.
+- `ProfileAndReportsTest`: perfil, historial, rol, validación y PDF.
+- `SecurityHardeningTest`: cabeceras, HTTPS, caché y permisos.
 
 `RefreshDatabase` reconstruye SQLite en memoria para cada prueba de integración. El resultado verificable se obtiene con:
 
@@ -324,7 +341,11 @@ php vendor/bin/pint --test
 - `.env.example`: XAMPP/MariaDB principal.
 - `.env.sqlite.example`: compatibilidad SQLite.
 - `deployment/apache-vhost.conf.example`: DocumentRoot seguro hacia `public`.
+- `deployment/apache-ssl-vhost.conf.example`: redirección HTTPS y certificado.
+- `deployment/env.production.example`: variables seguras sin secretos reales.
 - `.github/workflows/tests.yml`: pruebas automáticas para GitHub Actions.
+- `.github/dependabot.yml`: propuestas mensuales de actualización.
+- `SECURITY.md`: política y condiciones antes de aceptar clientes reales.
 - `.gitignore`: excluye `.env`, dependencias, archivos temporales y paquetes de entrega.
 
 ## 14. Cómo explicar seguridad en la exposición
@@ -337,8 +358,10 @@ php vendor/bin/pint --test
 6. Middleware separa cliente y administrador.
 7. Facturas comprueban propietario.
 8. Checkout bloquea inventario dentro de una transacción.
-9. Tarjeta completa y CVV nunca se persisten.
-10. Producción fuerza HTTPS y añade HSTS.
+9. Tarjeta completa, vigencia y CVV no se persisten ni quedan en `old input`.
+10. CSP limita recursos y las páginas privadas prohíben caché.
+11. Los estados no saltan etapas y cancelar repone stock una sola vez.
+12. Producción fuerza HTTPS, añade HSTS y bloquea pagos simulados por defecto.
 
 ## 15. Comentarios y código limpio
 

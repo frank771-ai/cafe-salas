@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\RecentProductsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
 /** Controla el catálogo público, sus filtros y la cookie de productos recientes. */
 class ProductController extends Controller
 {
+    public function __construct(private readonly RecentProductsService $recentProducts) {}
+
     /** Valida los filtros y construye una consulta Eloquent paginada. */
     public function index(Request $request)
     {
@@ -47,10 +50,9 @@ class ProductController extends Controller
     public function show(Request $request, Product $product)
     {
         abort_unless($product->is_active, 404);
-        $recent = json_decode((string) $request->cookie('recent_products', '[]'), true) ?: [];
-        $recent = array_values(array_unique([$product->id, ...array_map('intval', $recent)]));
+        $recent = $this->recentProducts->record($request->cookie('recent_products'), $product->id);
         // HttpOnly y SameSite=Lax reducen exposición de la cookie a scripts y solicitudes cruzadas.
-        Cookie::queue(cookie('recent_products', json_encode(array_slice($recent, 0, 6)), 43200, '/', null, $request->isSecure(), true, false, 'lax'));
+        Cookie::queue(cookie('recent_products', json_encode($recent), 43200, '/', null, $request->isSecure(), true, false, 'lax'));
 
         return view('products.show', [
             'product' => $product->load('category'),

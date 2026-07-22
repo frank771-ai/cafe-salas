@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 /**
  * Centraliza la autorización, normalización y validación del formulario de compra.
@@ -19,10 +20,17 @@ class CheckoutRequest extends FormRequest
         return $this->user() !== null;
     }
 
-    /** Elimina espacios y guiones antes de validar el número de tarjeta. */
+    /** Normaliza identidad, contacto y pago antes de ejecutar las reglas. */
     protected function prepareForValidation(): void
     {
         $this->merge([
+            'customer_name' => trim((string) $this->input('customer_name')),
+            'customer_phone' => trim((string) $this->input('customer_phone')),
+            'shipping_address' => trim((string) $this->input('shipping_address')),
+            'card_holder' => $this->filled('card_holder') ? trim((string) $this->input('card_holder')) : null,
+            'paypal_email' => $this->filled('paypal_email')
+                ? Str::lower(trim((string) $this->input('paypal_email')))
+                : null,
             'card_number' => preg_replace('/\D+/', '', (string) $this->input('card_number')),
         ]);
     }
@@ -35,7 +43,7 @@ class CheckoutRequest extends FormRequest
             'customer_phone' => ['required', 'string', 'regex:/^[0-9+()\-\s]{8,30}$/'],
             'shipping_address' => ['required', 'string', 'min:10', 'max:500'],
             'payment_method' => ['required', 'in:card,paypal'],
-            'card_holder' => ['nullable', 'required_if:payment_method,card', 'string', 'max:120'],
+            'card_holder' => ['nullable', 'required_if:payment_method,card', 'string', 'min:3', 'max:120'],
             'card_number' => [
                 'nullable',
                 'required_if:payment_method,card',

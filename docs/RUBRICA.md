@@ -3,7 +3,7 @@
 | N.º | Aspecto | Evidencia / estado |
 |---:|---|---|
 | 1 | Entrega a tiempo | El paquete final queda preparado; la carga puntual corresponde al equipo. |
-| 2 | Nombre `ProyectoFinal-NombreEstudiantes` | Se genera `ProyectoFinal-NombreEstudiantes.zip`; reemplace el marcador por los apellidos. |
+| 2 | Nombre `ProyectoFinalNombreEstudiantes` | Se genera `ProyectoFinalNombreEstudiantes.zip`; reemplace el marcador por los nombres o apellidos reales. |
 | 3 | Autenticación y usuarios | `AuthController`, middleware `auth`, sesiones cifradas. |
 | 4 | Registro | Rutas `/registro`, validación y prueba automatizada. |
 | 5 | Login/logout | Rutas, regeneración/invalidez de sesión y rate limit. |
@@ -24,16 +24,16 @@
 | 20 | Mostrar recientes | Sección en inicio, preserva orden de visita. |
 | 21 | Código completo | Aplicación, dependencias declaradas, SQL, pruebas y documentación. |
 | 22 | Instrucciones de uso | README, manual MD y DOCX. |
-| 23 | Documento de pruebas | `docs/PRUEBAS.md` y capítulo en DOCX. |
+| 23 | Documento de pruebas | `docs/PRUEBAS.md`, auditoría y 43 pruebas/197 aserciones en dos motores. |
 | 24 | Exposición | Guion preparado; la asistencia corresponde al equipo. |
 | 25 | Funcionalidades | Matriz completa y pruebas verdes. |
 | 26 | Responsive/UX | Bootstrap, breakpoints, accesibilidad y validación visual móvil. |
-| 27 | Seguridad | Hash, ORM, CSRF, escape, sesiones, autorización y HTTPS. |
+| 27 | Seguridad | Hash, ORM, CSRF, CSP, HSTS, rate limiting, privacidad de pagos, sesiones y autorización. |
 | 28 | Calidad | MVC, servicios, relaciones tipadas, Pint y pruebas. |
 | 29 | Pregunta docente 1 | Banco de preguntas y respuestas en guía de exposición. |
 | 30 | Pregunta docente 2 | Banco de preguntas y respuestas en guía de exposición. |
 | 31 | Pregunta docente 3 | Banco de preguntas y respuestas en guía de exposición. |
-| 32 | GitHub | Repositorio Git, `.gitignore`, `composer.lock` y workflow `.github/workflows/tests.yml`. Falta asociar el remoto de la cuenta del equipo. |
+| 32 | GitHub | Git, `.gitignore`, CI, `composer.lock`, Dependabot y política de seguridad. Falta autenticar la cuenta y asociar el remoto. |
 
 ## Observaciones honestas
 

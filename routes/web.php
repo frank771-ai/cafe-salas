@@ -19,7 +19,7 @@ Route::get('/productos/{product}', [ProductController::class, 'show'])->name('pr
 // Autenticación: el middleware guest evita mostrar estos formularios a usuarios conectados.
 Route::middleware('guest')->group(function () {
     Route::get('/registro', [AuthController::class, 'registerForm'])->name('register');
-    Route::post('/registro', [AuthController::class, 'register'])->name('register.store');
+    Route::post('/registro', [AuthController::class, 'register'])->middleware('throttle:3,1')->name('register.store');
     Route::get('/iniciar-sesion', [AuthController::class, 'loginForm'])->name('login');
     Route::post('/iniciar-sesion', [AuthController::class, 'login'])->middleware('throttle:5,1')->name('login.store');
 });
@@ -29,15 +29,15 @@ Route::post('/cerrar-sesion', [AuthController::class, 'logout'])->middleware('au
 // Carrito en sesión: puede prepararse antes de iniciar sesión.
 Route::prefix('carrito')->name('cart.')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('index');
-    Route::post('/{product}', [CartController::class, 'store'])->name('store');
-    Route::patch('/{product}', [CartController::class, 'update'])->name('update');
-    Route::delete('/{product}', [CartController::class, 'destroy'])->name('destroy');
+    Route::post('/{product}', [CartController::class, 'store'])->middleware('throttle:60,1')->name('store');
+    Route::patch('/{product}', [CartController::class, 'update'])->middleware('throttle:60,1')->name('update');
+    Route::delete('/{product}', [CartController::class, 'destroy'])->middleware('throttle:60,1')->name('destroy');
 });
 
 // Perfil, checkout y facturas requieren una identidad autenticada.
 Route::middleware('auth')->group(function () {
     Route::get('/perfil', [ProfileController::class, 'show'])->name('profile.show');
-    Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/perfil', [ProfileController::class, 'update'])->middleware('throttle:10,1')->name('profile.update');
 
     Route::get('/comprar', [CheckoutController::class, 'create'])->name('checkout.create');
     Route::post('/comprar', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
@@ -49,8 +49,8 @@ Route::middleware('auth')->group(function () {
 // Panel interno: exige autenticación y rol administrador en toda la agrupación.
 Route::prefix('administracion')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
-    Route::patch('/pedidos/{order}/estado', [AdminController::class, 'updateStatus'])->name('orders.status');
+    Route::patch('/pedidos/{order}/estado', [AdminController::class, 'updateStatus'])->middleware('throttle:30,1')->name('orders.status');
     Route::get('/reportes', [ReportController::class, 'index'])->name('reports.index');
-    Route::get('/reportes/mensual.pdf', [ReportController::class, 'monthly'])->name('reports.monthly');
-    Route::get('/reportes/cliente.pdf', [ReportController::class, 'customer'])->name('reports.customer');
+    Route::get('/reportes/mensual.pdf', [ReportController::class, 'monthly'])->middleware('throttle:10,1')->name('reports.monthly');
+    Route::get('/reportes/cliente.pdf', [ReportController::class, 'customer'])->middleware('throttle:10,1')->name('reports.customer');
 });

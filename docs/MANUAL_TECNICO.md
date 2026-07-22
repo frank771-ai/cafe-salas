@@ -43,7 +43,7 @@ El `DocumentRoot` debe terminar en `/public`. Esto evita que `.env`, `vendor` y 
 - **Controladores (`app/Http/Controllers`)**: reciben solicitudes, validan, consultan modelos y devuelven respuestas o vistas.
 - **Rutas (`routes/web.php`)**: tienen nombres, verbos HTTP correctos y grupos `guest`, `auth` y `admin`.
 - **Migraciones (`database/migrations`)**: versionan el esquema y funcionan en MySQL y SQLite.
-- **Servicios (`app/Services`)**: concentran reglas reutilizables del carrito y generación PDF.
+- **Servicios (`app/Services`)**: concentran carrito, PDF, pago simulado, cookie reciente y estados de pedido.
 - **Middleware**: controla acceso administrativo y agrega encabezados de seguridad.
 
 ## 6. Modelo de datos
@@ -117,6 +117,7 @@ flowchart TD
 - Solo el dueño del pedido o un administrador puede abrir la factura.
 - Los reportes omiten pedidos cancelados.
 - La cookie conserva como máximo seis identificadores durante 30 días.
+- Los estados no pueden saltar etapas; cancelar antes del envío repone inventario una sola vez.
 
 ## 9. Guía de uso
 
@@ -144,12 +145,13 @@ flowchart TD
 - Escape Blade contra XSS y token CSRF en solicitudes mutables.
 - Hash seguro de contraseñas y regeneración de sesión al autenticar.
 - Sesiones y cookies cifradas, `HttpOnly` y `SameSite=Lax`.
-- Límites de intentos para inicio de sesión y compra.
+- Límites de intentos para registro, inicio de sesión, carrito, perfil, compra, estados y reportes.
 - Middleware de administrador y autorización por propietario.
-- Encabezados `nosniff`, `SAMEORIGIN`, `Referrer-Policy` y HSTS en HTTPS.
-- El número de tarjeta y CVV nunca se almacenan; solo los últimos cuatro dígitos.
+- Encabezados CSP, `nosniff`, `SAMEORIGIN`, `Referrer-Policy`, caché privada y HSTS en HTTPS.
+- El número, vencimiento y CVV no se almacenan ni quedan en la sesión; solo los últimos cuatro dígitos.
+- La pasarela académica se bloquea por defecto cuando `APP_ENV=production`.
 
-Para producción: establezca `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://...` y `SESSION_SECURE_COOKIE=true`. Laravel fuerza `https`. En un hosting con dominio, emita un certificado gratuito mediante Let's Encrypt/Certbot o el panel del proveedor y active la renovación automática.
+Para producción use `deployment/env.production.example` y `deployment/apache-ssl-vhost.conf.example`: establezca `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://...`, `ALLOW_SIMULATED_PAYMENTS_IN_PRODUCTION=false` y `SESSION_SECURE_COOKIE=true`. Laravel fuerza `https`. En un hosting con dominio, emita un certificado gratuito mediante Let's Encrypt/Certbot o el panel del proveedor y active la renovación automática.
 
 ## 11. Comandos de mantenimiento
 

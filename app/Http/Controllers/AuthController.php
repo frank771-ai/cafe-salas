@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
 /** Implementa registro, inicio y cierre de sesión con las protecciones de Laravel. */
@@ -19,11 +20,17 @@ class AuthController extends Controller
     /** Valida, crea y autentica al nuevo usuario en una sola operación. */
     public function register(Request $request)
     {
+        $request->merge([
+            'name' => trim((string) $request->input('name')),
+            'email' => Str::lower(trim((string) $request->input('email'))),
+            'phone' => $request->filled('phone') ? trim((string) $request->input('phone')) : null,
+        ]);
+
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:120'],
             'email' => ['required', 'email:rfc', 'max:255', 'unique:users,email'],
             'phone' => ['nullable', 'string', 'regex:/^[0-9+()\-\s]{8,30}$/'],
-            'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()],
+            'password' => ['required', 'string', 'max:255', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()],
         ]);
 
         $user = User::create($data);
@@ -43,9 +50,12 @@ class AuthController extends Controller
     /** Comprueba credenciales y conserva la URL originalmente solicitada. */
     public function login(Request $request)
     {
+        // Los correos se comparan con una representación canónica y predecible.
+        $request->merge(['email' => Str::lower(trim((string) $request->input('email')))]);
+
         $credentials = $request->validate([
             'email' => ['required', 'email:rfc'],
-            'password' => ['required', 'string'],
+            'password' => ['required', 'string', 'max:255'],
         ]);
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {

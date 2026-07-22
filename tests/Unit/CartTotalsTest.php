@@ -29,4 +29,14 @@ class CartTotalsTest extends TestCase
         $this->assertSame(0, $totals['shipping']);
         $this->assertSame(33900, $totals['total']);
     }
+
+    public function test_shipping_threshold_and_empty_cart_boundaries(): void
+    {
+        $belowThreshold = (new CartService)->totals(collect([['line_total' => 29999]]));
+        $empty = (new CartService)->totals(collect());
+
+        $this->assertSame(2500, $belowThreshold['shipping']);
+        $this->assertSame(36399, $belowThreshold['total']);
+        $this->assertSame(['subtotal' => 0, 'tax' => 0, 'shipping' => 0, 'total' => 0], $empty);
+    }
 }

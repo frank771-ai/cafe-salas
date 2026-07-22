@@ -4,6 +4,13 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: pruebas-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -19,7 +26,11 @@ jobs:
           extensions: mbstring, dom, fileinfo, pdo_sqlite
           coverage: none
       - run: composer install --no-interaction --prefer-dist --no-progress
+      - run: composer validate --no-check-publish
+      - run: composer audit --locked --no-interaction
       - run: cp .env.example .env
       - run: php artisan key:generate
       - run: php vendor/bin/pint --test
       - run: php artisan test
+      - run: php artisan route:cache
+      - run: php artisan view:cache

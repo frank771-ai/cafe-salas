@@ -12,18 +12,23 @@ php artisan test --filter=CheckoutTest
 php vendor/bin/pint --test
 ```
 
-Resultado de referencia: **17 pruebas aprobadas y 67 aserciones**.
+Resultado de referencia: **43 pruebas aprobadas y 197 aserciones** tanto en SQLite como en MariaDB temporal de XAMPP.
 
 ## Casos automatizados
 
 | Archivo | Casos cubiertos |
 |---|---|
 | `CartTotalsTest` | IVA, costo de envío y umbral de envío gratis. |
-| `AuthenticationTest` | Registro, hash de contraseña, login, logout, correo duplicado y clave débil. |
-| `CatalogAndCookieTest` | Búsqueda/filtros, cookie reciente y escape XSS. |
-| `CartTest` | Agregar, actualizar, eliminar, total y límite por inventario. |
-| `CheckoutTest` | Compra con tarjeta, algoritmo de Luhn, seguimiento, inventario, no almacenar tarjeta, PayPal y autorización de factura. |
-| `ProfileAndReportsTest` | Perfil, historial, permisos administrativos y PDF mensual/cliente. |
+| `AuthenticationTest` | Registro, normalización, hash, login, logout, duplicados, clave débil y rate limiting. |
+| `CatalogAndCookieTest` | Búsqueda/filtros, cookie malformada, productos inactivos y escape XSS. |
+| `CartTest` | Agregar, actualizar, eliminar, cantidades inválidas, total y límite por inventario. |
+| `CheckoutTest` | Tarjeta Luhn/vencida, privacidad de datos, transacción, stock, PayPal y autorización. |
+| `EndToEndPurchaseTest` | Recorrido completo desde registro hasta factura PDF e historial. |
+| `OrderManagementTest` | Estados permitidos, cancelación idempotente, reembolso y devolución de stock. |
+| `PaymentGatewaySafetyTest` | Bloqueo de la pasarela simulada en producción. |
+| `ProfileAndReportsTest` | Perfil, correo único, historial, permisos y PDF mensual/cliente. |
+| `SecurityHardeningTest` | CSP, HSTS, cabeceras, caché privada, login y rol administrador. |
+| `RecentProductsServiceTest` | Saneamiento, deduplicación y límite de IDs en la cookie. |
 
 ## Pruebas manuales para la exposición
 

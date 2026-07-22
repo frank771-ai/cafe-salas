@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\RateLimiter;
 use Tests\TestCase;
 
 /** Cubre registro, contraseña segura, login, logout y errores de autenticación. */
@@ -49,5 +50,40 @@ class AuthenticationTest extends TestCase
             'password' => 'weak',
             'password_confirmation' => 'weak',
         ])->assertSessionHasErrors(['email', 'password']);
+    }
+
+    public function test_registration_normalizes_identity_and_cannot_assign_admin_role(): void
+    {
+        $this->post(route('register.store'), [
+            'name' => '  Ana Castillo  ',
+            'email' => '  ANA@EXAMPLE.TEST  ',
+            'phone' => ' 8888-9999 ',
+            'password' => 'Segura123!',
+            'password_confirmation' => 'Segura123!',
+            'is_admin' => true,
+        ])->assertRedirect(route('home'));
+
+        $user = User::firstWhere('email', 'ana@example.test');
+        $this->assertNotNull($user);
+        $this->assertSame('Ana Castillo', $user->name);
+        $this->assertSame('8888-9999', $user->phone);
+        $this->assertFalse($user->is_admin);
+    }
+
+    public function test_login_is_rate_limited_after_repeated_failures(): void
+    {
+        RateLimiter::clear('127.0.0.1');
+
+        for ($attempt = 1; $attempt <= 5; $attempt++) {
+            $this->post(route('login.store'), [
+                'email' => 'unknown@example.test',
+                'password' => 'Incorrecta123!',
+            ])->assertSessionHasErrors('email');
+        }
+
+        $this->post(route('login.store'), [
+            'email' => 'unknown@example.test',
+            'password' => 'Incorrecta123!',
+        ])->assertTooManyRequests();
     }
 }

@@ -19,5 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Estos campos nunca deben quedar en la sesión como "old input" cuando falla el checkout.
+        $exceptions->dontFlash([
+            'card_holder',
+            'card_number',
+            'card_expiry',
+            'card_cvv',
+        ]);
     })->create();

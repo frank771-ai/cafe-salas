@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\PdfService;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 /** Genera reportes administrativos de ventas por periodo o por cliente. */
 class ReportController extends Controller
@@ -42,7 +43,9 @@ class ReportController extends Controller
     /** Descarga el historial de ventas no canceladas de un cliente. */
     public function customer(Request $request, PdfService $pdf)
     {
-        $data = $request->validate(['user_id' => ['required', 'integer', 'exists:users,id']]);
+        $data = $request->validate([
+            'user_id' => ['required', 'integer', Rule::exists('users', 'id')->where('is_admin', 0)],
+        ]);
         $customer = User::findOrFail($data['user_id']);
         $orders = $customer->orders()->with('items', 'payment')
             ->where('status', '!=', 'cancelled')

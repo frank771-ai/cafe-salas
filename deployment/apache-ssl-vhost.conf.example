@@ -1,0 +1,29 @@
+# Producción: sustituir dominio, PROJECT_PATH y rutas del certificado.
+# El certificado puede emitirse gratuitamente con Let's Encrypt en un servidor público.
+
+<VirtualHost *:80>
+    ServerName tienda.ejemplo.com
+    Redirect permanent / https://tienda.ejemplo.com/
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+    <VirtualHost *:443>
+        ServerName tienda.ejemplo.com
+        DocumentRoot "PROJECT_PATH/public"
+
+        SSLEngine on
+        SSLCertificateFile "CERTIFICATE_PATH/fullchain.pem"
+        SSLCertificateKeyFile "CERTIFICATE_PATH/privkey.pem"
+        SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+        SSLCipherSuite HIGH:!aNULL:!MD5
+
+        <Directory "PROJECT_PATH/public">
+            AllowOverride All
+            Options -Indexes +FollowSymLinks
+            Require all granted
+        </Directory>
+
+        ErrorLog "logs/origentico-ssl-error.log"
+        CustomLog "logs/origentico-ssl-access.log" combined
+    </VirtualHost>
+</IfModule>

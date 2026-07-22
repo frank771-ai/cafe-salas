@@ -2,12 +2,12 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Tienda virtual académica Origen Tico construida con Laravel.",
+    "keywords": ["laravel", "ecommerce", "costa-rica", "education"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "dompdf/dompdf": "3.1",
+        "dompdf/dompdf": "^3.1",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1"
     },

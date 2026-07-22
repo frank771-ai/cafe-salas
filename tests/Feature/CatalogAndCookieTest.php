@@ -48,6 +48,33 @@ class CatalogAndCookieTest extends TestCase
             ->assertDontSee('<script>alert(1)</script>', false);
     }
 
+    public function test_inactive_products_are_hidden_and_cannot_be_opened(): void
+    {
+        $category = Category::create(['name' => 'Café', 'slug' => 'cafe']);
+        $product = $this->product($category, 'Oculto', 'oculto', 5000);
+        $product->update(['is_active' => false]);
+
+        $this->get(route('products.index'))->assertOk()->assertDontSee('Oculto');
+        $this->get(route('products.show', $product))->assertNotFound();
+    }
+
+    public function test_catalog_rejects_invalid_filters_without_building_unsafe_queries(): void
+    {
+        $this->get(route('products.index', [
+            'min_price' => 9000,
+            'max_price' => 1000,
+            'sort' => 'price desc; drop table products',
+        ]))->assertSessionHasErrors(['max_price', 'sort']);
+    }
+
+    public function test_malformed_recent_cookie_is_ignored_safely(): void
+    {
+        $this->withUnencryptedCookie('recent_products', '{invalid-json')
+            ->get(route('home'))
+            ->assertOk()
+            ->assertDontSee('Vistos recientemente');
+    }
+
     private function product(Category $category, string $name, string $slug, int $price): Product
     {
         return Product::create([

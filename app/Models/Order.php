@@ -16,6 +16,15 @@ class Order extends Model
     /** Lista blanca de estados aceptados por el panel administrativo. */
     public const STATUSES = ['paid', 'preparing', 'shipped', 'delivered', 'cancelled'];
 
+    /** Flujo permitido para impedir saltos ilógicos o reaperturas accidentales. */
+    public const STATUS_TRANSITIONS = [
+        'paid' => ['preparing', 'cancelled'],
+        'preparing' => ['shipped', 'cancelled'],
+        'shipped' => ['delivered'],
+        'delivered' => [],
+        'cancelled' => [],
+    ];
+
     protected $fillable = [
         'user_id', 'order_number', 'tracking_number', 'status', 'customer_name',
         'customer_email', 'customer_phone', 'shipping_address', 'subtotal',
@@ -44,6 +53,18 @@ class Order extends Model
     public function payment(): HasOne
     {
         return $this->hasOne(Payment::class);
+    }
+
+    /** @return list<string> */
+    public function allowedStatusTransitions(): array
+    {
+        return self::STATUS_TRANSITIONS[$this->status] ?? [];
+    }
+
+    /** Comprueba el flujo sin confiar en el valor recibido desde el formulario. */
+    public function canTransitionTo(string $status): bool
+    {
+        return $status === $this->status || in_array($status, $this->allowedStatusTransitions(), true);
     }
 
     /** Expone el número público del pedido en vez del ID interno. */

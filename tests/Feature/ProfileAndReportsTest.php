@@ -53,4 +53,23 @@ class ProfileAndReportsTest extends TestCase
             ->assertOk()
             ->assertHeader('content-type', 'application/pdf');
     }
+
+    public function test_profile_rejects_another_users_email_and_admin_report_target(): void
+    {
+        $first = User::factory()->create(['email' => 'first@example.test']);
+        $second = User::factory()->create(['email' => 'second@example.test']);
+        $admin = User::factory()->create();
+        $admin->forceFill(['is_admin' => true])->save();
+
+        $this->actingAs($first)->patch(route('profile.update'), [
+            'name' => 'Primer cliente',
+            'email' => ' SECOND@EXAMPLE.TEST ',
+        ])->assertSessionHasErrors('email');
+
+        $this->actingAs($admin)
+            ->get(route('admin.reports.customer', ['user_id' => $admin->id]))
+            ->assertSessionHasErrors('user_id');
+
+        $this->assertSame('first@example.test', $first->fresh()->email);
+    }
 }
