@@ -8,6 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // Las migraciones usan tipos compatibles tanto con MariaDB de XAMPP como con SQLite.
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -16,6 +17,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // El precio se guarda como colones enteros y el stock nunca admite valores negativos.
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
@@ -36,6 +38,7 @@ return new class extends Migration
 
     public function down(): void
     {
+        // Se elimina primero la tabla hija para respetar la clave foránea.
         Schema::dropIfExists('products');
         Schema::dropIfExists('categories');
     }

@@ -10,10 +10,12 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
+/** Carga usuarios, catálogo y ventas históricas para demostración y reportes. */
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // La cuenta administradora se crea de forma explícita porque is_admin no es asignable masivamente.
         User::forceCreate([
             'name' => 'Administración Origen Tico',
             'email' => 'admin@origentico.test',
@@ -39,6 +41,7 @@ class DatabaseSeeder extends Seeder
             'password' => 'Cliente123!',
         ]);
 
+        // Se indexan categorías por slug para asociar los productos sin depender de IDs fijos.
         $categories = collect([
             ['name' => 'Café de origen', 'slug' => 'cafe-de-origen', 'description' => 'Granos trazables de regiones cafetaleras de Costa Rica.'],
             ['name' => 'Dulces artesanales', 'slug' => 'dulces-artesanales', 'description' => 'Sabores locales para acompañar cada taza.'],
@@ -62,12 +65,14 @@ class DatabaseSeeder extends Seeder
             return Product::create(['category_id' => $category->id, ...$product, 'is_active' => true]);
         });
 
+        // Estas compras permiten demostrar historial y reportes desde la primera ejecución.
         $this->seedOrder($customer, $products[0], 2, now()->subDays(2)->toImmutable(), 'card');
         $this->seedOrder($customer, $products[4], 1, now()->subMonth()->subDays(3)->toImmutable(), 'paypal');
         $this->seedOrder($secondCustomer, $products[7], 1, now()->subDays(8)->toImmutable(), 'card');
 
     }
 
+    /** Crea un pedido histórico completo con línea y pago asociados. */
     private function seedOrder(User $user, Product $product, int $quantity, CarbonImmutable $date, string $method): void
     {
         $subtotal = $product->price * $quantity;

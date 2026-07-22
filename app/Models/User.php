@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/** Usuario autenticable con perfil, rol administrativo e historial de pedidos. */
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Campos que los formularios de registro y perfil pueden asignar de forma masiva.
      *
      * @var list<string>
      */
@@ -28,7 +29,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Campos sensibles que nunca deben aparecer al serializar el modelo.
      *
      * @var list<string>
      */
@@ -38,7 +39,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Conversiones automáticas; el cast "hashed" cifra toda contraseña asignada.
      *
      * @return array<string, string>
      */
@@ -51,6 +52,7 @@ class User extends Authenticatable
         ];
     }
 
+    /** Pedidos realizados por la cuenta. */
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);

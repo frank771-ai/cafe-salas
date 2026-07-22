@@ -2,6 +2,49 @@
 @section('title', 'Reportes de ventas')
 
 @section('content')
-<header class="page-header compact"><div class="container"><span class="eyebrow text-light">Análisis comercial</span><h1>Reportes de ventas</h1><p>Descargue informes mensuales o por cliente en formato PDF.</p></div></header>
-<div class="container section-space"><div class="row g-4 justify-content-center"><div class="col-md-6"><section class="report-card"><span class="report-icon" aria-hidden="true">01</span><h2 class="h4">Ventas por mes</h2><p>Incluye pedidos, identificación del cliente, fecha, medio de pago y totales.</p><form method="GET" action="{{ route('admin.reports.monthly') }}"><label class="form-label" for="month">Mes del reporte</label><input class="form-control" type="month" id="month" name="month" value="{{ $defaultMonth }}" required><button class="btn btn-primary w-100 mt-3" type="submit">Descargar reporte mensual</button></form></section></div><div class="col-md-6"><section class="report-card"><span class="report-icon" aria-hidden="true">02</span><h2 class="h4">Ventas por cliente</h2><p>Consolida todas las compras y montos de una persona registrada.</p><form method="GET" action="{{ route('admin.reports.customer') }}"><label class="form-label" for="user_id">Cliente</label><select class="form-select" id="user_id" name="user_id" required><option value="">Seleccione...</option>@foreach($customers as $customer)<option value="{{ $customer->id }}">{{ $customer->name }} · {{ $customer->email }}</option>@endforeach</select><button class="btn btn-primary w-100 mt-3" type="submit">Descargar reporte por cliente</button></form></section></div></div><a class="btn btn-link mt-4" href="{{ route('admin.dashboard') }}">← Volver al panel</a></div>
+    <header class="page-header compact">
+        <div class="container">
+            <span class="eyebrow text-light">Análisis comercial</span>
+            <h1>Reportes de ventas</h1>
+            <p>Descargue informes mensuales o por cliente en formato PDF.</p>
+        </div>
+    </header>
+
+    {{-- Ambos formularios usan GET porque solo consultan y descargan información. --}}
+    <div class="container section-space">
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-6">
+                <section class="report-card">
+                    <span class="report-icon" aria-hidden="true">01</span>
+                    <h2 class="h4">Ventas por mes</h2>
+                    <p>Incluye pedidos, identificación del cliente, fecha, medio de pago y totales.</p>
+                    <form method="GET" action="{{ route('admin.reports.monthly') }}">
+                        <label class="form-label" for="month">Mes del reporte</label>
+                        <input class="form-control" type="month" id="month" name="month" value="{{ $defaultMonth }}" required>
+                        <button class="btn btn-primary w-100 mt-3" type="submit">Descargar reporte mensual</button>
+                    </form>
+                </section>
+            </div>
+
+            <div class="col-md-6">
+                <section class="report-card">
+                    <span class="report-icon" aria-hidden="true">02</span>
+                    <h2 class="h4">Ventas por cliente</h2>
+                    <p>Consolida todas las compras y montos de una persona registrada.</p>
+                    <form method="GET" action="{{ route('admin.reports.customer') }}">
+                        <label class="form-label" for="user_id">Cliente</label>
+                        <select class="form-select" id="user_id" name="user_id" required>
+                            <option value="">Seleccione...</option>
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->id }}">{{ $customer->name }} · {{ $customer->email }}</option>
+                            @endforeach
+                        </select>
+                        <button class="btn btn-primary w-100 mt-3" type="submit">Descargar reporte por cliente</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+
+        <a class="btn btn-link mt-4" href="{{ route('admin.dashboard') }}">← Volver al panel</a>
+    </div>
 @endsection

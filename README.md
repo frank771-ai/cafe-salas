@@ -11,7 +11,7 @@ Proyecto final de **Tecnologías y Sistemas Web II (ITI-523)**. Es una tienda de
 - Cookie cifrada con los seis productos vistos recientemente.
 - Administración de pedidos, inventario bajo y reportes PDF por mes o cliente.
 - Protecciones de Laravel contra CSRF, XSS e inyección SQL; contraseñas con hash y sesiones cifradas.
-- 16 pruebas automatizadas con 63 verificaciones.
+- 17 pruebas automatizadas con 67 verificaciones, incluida validación Luhn de tarjeta.
 
 ## Instalación recomendada: XAMPP y phpMyAdmin
 
@@ -59,6 +59,8 @@ PHPUnit utiliza SQLite en memoria, por lo que no altera `origen_tico`. GitHub Ac
 - `docs/PRUEBAS.md`: estrategia, casos y comandos de prueba.
 - `docs/RUBRICA.md`: evidencia de los 32 criterios evaluativos.
 - `docs/GUIA_EXPOSICION.md`: recorrido de demostración y preguntas probables.
+- `docs/CODIGO_EXPLICADO.md`: explicación archivo por archivo, flujos y decisiones.
+- `docs/REVISION_Y_ATRIBUCION.md`: adaptación, atribución y lista de estudio.
 - `docs/Documentacion_Origen_Tico.docx`: manual formal para entregar.
 
 ## Nota sobre pagos y HTTPS

@@ -7,8 +7,10 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
+/** Controla el catálogo público, sus filtros y la cookie de productos recientes. */
 class ProductController extends Controller
 {
+    /** Valida los filtros y construye una consulta Eloquent paginada. */
     public function index(Request $request)
     {
         $filters = $request->validate([
@@ -27,6 +29,7 @@ class ProductController extends Controller
             ->when(isset($filters['min_price']), fn ($query) => $query->where('price', '>=', $filters['min_price']))
             ->when(isset($filters['max_price']), fn ($query) => $query->where('price', '<=', $filters['max_price']));
 
+        // Se limita el ordenamiento a una lista blanca para no aceptar columnas arbitrarias.
         match ($filters['sort'] ?? 'newest') {
             'price_asc' => $products->orderBy('price'),
             'price_desc' => $products->orderByDesc('price'),
@@ -40,11 +43,13 @@ class ProductController extends Controller
         ]);
     }
 
+    /** Muestra el detalle y actualiza la lista cifrada de visitas recientes. */
     public function show(Request $request, Product $product)
     {
         abort_unless($product->is_active, 404);
         $recent = json_decode((string) $request->cookie('recent_products', '[]'), true) ?: [];
         $recent = array_values(array_unique([$product->id, ...array_map('intval', $recent)]));
+        // HttpOnly y SameSite=Lax reducen exposición de la cookie a scripts y solicitudes cruzadas.
         Cookie::queue(cookie('recent_products', json_encode(array_slice($recent, 0, 6)), 43200, '/', null, $request->isSecure(), true, false, 'lax'));
 
         return view('products.show', [

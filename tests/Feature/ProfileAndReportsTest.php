@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/** Cubre perfil, historial, permisos administrativos y generación de reportes PDF. */
 class ProfileAndReportsTest extends TestCase
 {
     use RefreshDatabase;

@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/** Cubre altas, cambios, eliminación y límites de inventario del carrito. */
 class CartTest extends TestCase
 {
     use RefreshDatabase;

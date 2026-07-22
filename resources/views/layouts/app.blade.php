@@ -14,6 +14,8 @@
 <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <div class="announcement">Envío gratis en compras superiores a ₡30.000 · Pago de demostración protegido</div>
+
+    {{-- Navegación compartida; adapta opciones según autenticación y rol. --}}
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top" aria-label="Navegación principal">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
@@ -53,17 +55,29 @@
     </nav>
 
     <main id="contenido">
-        @if(session('success'))
-            <div class="container mt-4"><div class="alert alert-success alert-dismissible fade show" role="alert">{{ session('success') }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button></div></div>
+        {{-- Mensajes flash y errores de validación de la solicitud anterior. --}}
+        @if (session('success'))
+            <div class="container mt-4">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                </div>
+            </div>
         @endif
-        @if(session('error'))
-            <div class="container mt-4"><div class="alert alert-danger" role="alert">{{ session('error') }}</div></div>
+        @if (session('error'))
+            <div class="container mt-4">
+                <div class="alert alert-danger" role="alert">{{ session('error') }}</div>
+            </div>
         @endif
-        @if($errors->any())
+        @if ($errors->any())
             <div class="container mt-4">
                 <div class="alert alert-danger" role="alert">
                     <strong>Revise la información:</strong>
-                    <ul class="mb-0 mt-2">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+                    <ul class="mb-0 mt-2">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         @endif
@@ -74,11 +88,22 @@
     <footer class="site-footer mt-5">
         <div class="container py-5">
             <div class="row g-4">
-                <div class="col-md-5"><h2 class="h4">Origen Tico</h2><p class="mb-0">Proyecto académico de comercio electrónico inspirado en productores y caficultores costarricenses.</p></div>
-                <div class="col-md-3"><h2 class="h6 text-uppercase">Comprar</h2><a href="{{ route('products.index') }}">Catálogo</a><br><a href="{{ route('cart.index') }}">Carrito</a></div>
-                <div class="col-md-4"><h2 class="h6 text-uppercase">Compra segura</h2><p class="small mb-0">Contraseñas cifradas, sesiones protegidas y datos de tarjeta no almacenados.</p></div>
+                <div class="col-md-5">
+                    <h2 class="h4">Origen Tico</h2>
+                    <p class="mb-0">Proyecto académico de comercio electrónico inspirado en productores y caficultores costarricenses.</p>
+                </div>
+                <div class="col-md-3">
+                    <h2 class="h6 text-uppercase">Comprar</h2>
+                    <a href="{{ route('products.index') }}">Catálogo</a><br>
+                    <a href="{{ route('cart.index') }}">Carrito</a>
+                </div>
+                <div class="col-md-4">
+                    <h2 class="h6 text-uppercase">Compra segura</h2>
+                    <p class="small mb-0">Contraseñas cifradas, sesiones protegidas y datos de tarjeta no almacenados.</p>
+                </div>
             </div>
-            <hr><p class="small mb-0">© {{ date('Y') }} Origen Tico · Demostración educativa UTN</p>
+            <hr>
+            <p class="small mb-0">© {{ date('Y') }} Origen Tico · Demostración educativa UTN</p>
         </div>
     </footer>
 

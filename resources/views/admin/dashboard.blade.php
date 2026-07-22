@@ -2,11 +2,111 @@
 @section('title', 'Administración')
 
 @section('content')
-<header class="page-header compact"><div class="container"><span class="eyebrow text-light">Panel interno</span><h1>Administración</h1><p>Ventas, pedidos, clientes e inventario.</p></div></header>
-<div class="container section-space">
-    <div class="d-flex justify-content-between align-items-center mb-4"><h2 class="h4 mb-0">Resumen del mes</h2><a class="btn btn-primary" href="{{ route('admin.reports.index') }}">Generar reportes PDF</a></div>
-    <div class="row g-4 mb-5"><div class="col-md-4"><div class="metric-card"><span>Ventas del mes</span><strong>₡{{ number_format($monthlySales, 0, ',', '.') }}</strong></div></div><div class="col-md-4"><div class="metric-card"><span>Pedidos del mes</span><strong>{{ $monthlyOrders }}</strong></div></div><div class="col-md-4"><div class="metric-card"><span>Clientes registrados</span><strong>{{ $customers }}</strong></div></div></div>
-    @if($lowStock->isNotEmpty())<div class="alert alert-warning"><strong>Inventario bajo:</strong> {{ $lowStock->map(fn($product) => $product->name.' ('.$product->stock.')')->join(', ') }}</div>@endif
-    <section><div class="section-heading"><div><span class="eyebrow">Operación</span><h2>Pedidos recientes</h2></div></div><div class="table-responsive admin-table"><table class="table align-middle"><thead><tr><th>Pedido / cliente</th><th>Fecha</th><th>Pago</th><th class="text-end">Total</th><th>Estado</th><th>Factura</th></tr></thead><tbody>@foreach($orders as $order)<tr><td><strong>{{ $order->order_number }}</strong><small>{{ $order->user->name }} · ID {{ $order->user_id }}</small></td><td>{{ $order->purchased_at->format('d/m/Y H:i') }}</td><td>{{ $order->payment->method === 'card' ? 'Tarjeta •••• '.$order->payment->last_four : 'PayPal' }}</td><td class="text-end">₡{{ number_format($order->total, 0, ',', '.') }}</td><td><form method="POST" action="{{ route('admin.orders.status', $order) }}" class="d-flex gap-2">@csrf @method('PATCH')<select class="form-select form-select-sm" name="status" aria-label="Estado de {{ $order->order_number }}">@foreach(\App\Models\Order::STATUSES as $status)<option value="{{ $status }}" @selected($order->status === $status)>{{ match($status){'paid'=>'Pagado','preparing'=>'Preparando','shipped'=>'Enviado','delivered'=>'Entregado','cancelled'=>'Cancelado'} }}</option>@endforeach</select><button class="btn btn-sm btn-outline-primary" type="submit">Guardar</button></form></td><td><a href="{{ route('orders.invoice', $order) }}">Ver</a></td></tr>@endforeach</tbody></table></div><div class="mt-4">{{ $orders->links() }}</div></section>
-</div>
+    {{-- Encabezado del panel protegido por los middleware auth y admin. --}}
+    <header class="page-header compact">
+        <div class="container">
+            <span class="eyebrow text-light">Panel interno</span>
+            <h1>Administración</h1>
+            <p>Ventas, pedidos, clientes e inventario.</p>
+        </div>
+    </header>
+
+    <div class="container section-space">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4 mb-0">Resumen del mes</h2>
+            <a class="btn btn-primary" href="{{ route('admin.reports.index') }}">Generar reportes PDF</a>
+        </div>
+
+        {{-- Indicadores calculados en AdminController. --}}
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <span>Ventas del mes</span>
+                    <strong>₡{{ number_format($monthlySales, 0, ',', '.') }}</strong>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <span>Pedidos del mes</span>
+                    <strong>{{ $monthlyOrders }}</strong>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <span>Clientes registrados</span>
+                    <strong>{{ $customers }}</strong>
+                </div>
+            </div>
+        </div>
+
+        @if ($lowStock->isNotEmpty())
+            <div class="alert alert-warning">
+                <strong>Inventario bajo:</strong>
+                {{ $lowStock->map(fn ($product) => $product->name.' ('.$product->stock.')')->join(', ') }}
+            </div>
+        @endif
+
+        {{-- Cada cambio de estado usa PATCH, CSRF y una lista blanca validada en el controlador. --}}
+        <section>
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Operación</span>
+                    <h2>Pedidos recientes</h2>
+                </div>
+            </div>
+
+            <div class="table-responsive admin-table">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Pedido / cliente</th>
+                            <th>Fecha</th>
+                            <th>Pago</th>
+                            <th class="text-end">Total</th>
+                            <th>Estado</th>
+                            <th>Factura</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($orders as $order)
+                            <tr>
+                                <td>
+                                    <strong>{{ $order->order_number }}</strong>
+                                    <small>{{ $order->user->name }} · ID {{ $order->user_id }}</small>
+                                </td>
+                                <td>{{ $order->purchased_at->format('d/m/Y H:i') }}</td>
+                                <td>
+                                    {{ $order->payment->method === 'card' ? 'Tarjeta •••• '.$order->payment->last_four : 'PayPal' }}
+                                </td>
+                                <td class="text-end">₡{{ number_format($order->total, 0, ',', '.') }}</td>
+                                <td>
+                                    <form method="POST" action="{{ route('admin.orders.status', $order) }}" class="d-flex gap-2">
+                                        @csrf
+                                        @method('PATCH')
+                                        <select class="form-select form-select-sm" name="status" aria-label="Estado de {{ $order->order_number }}">
+                                            @foreach (\App\Models\Order::STATUSES as $status)
+                                                <option value="{{ $status }}" @selected($order->status === $status)>
+                                                    {{ match ($status) {
+                                                        'paid' => 'Pagado',
+                                                        'preparing' => 'Preparando',
+                                                        'shipped' => 'Enviado',
+                                                        'delivered' => 'Entregado',
+                                                        'cancelled' => 'Cancelado'
+                                                    } }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <button class="btn btn-sm btn-outline-primary" type="submit">Guardar</button>
+                                    </form>
+                                </td>
+                                <td><a href="{{ route('orders.invoice', $order) }}">Ver</a></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4">{{ $orders->links() }}</div>
+        </section>
+    </div>
 @endsection

@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/** Cabecera histórica de una compra, incluidos cliente, dirección y totales. */
 class Order extends Model
 {
     use HasFactory;
 
+    /** Lista blanca de estados aceptados por el panel administrativo. */
     public const STATUSES = ['paid', 'preparing', 'shipped', 'delivered', 'cancelled'];
 
     protected $fillable = [
@@ -20,26 +22,31 @@ class Order extends Model
         'tax', 'shipping', 'total', 'purchased_at',
     ];
 
+    /** @return array<string, string> */
     protected function casts(): array
     {
         return ['purchased_at' => 'datetime'];
     }
 
+    /** Cuenta que realizó el pedido. */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** Líneas de productos congeladas al momento de comprar. */
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
+    /** Resultado seguro del pago asociado. */
     public function payment(): HasOne
     {
         return $this->hasOne(Payment::class);
     }
 
+    /** Expone el número público del pedido en vez del ID interno. */
     public function getRouteKeyName(): string
     {
         return 'order_number';

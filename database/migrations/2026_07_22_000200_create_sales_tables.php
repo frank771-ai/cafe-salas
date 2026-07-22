@@ -8,6 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // La cabecera conserva los datos usados al comprar aunque el perfil cambie después.
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->index(['purchased_at', 'status']);
         });
 
+        // Las líneas congelan nombre y precio para mantener facturas históricas correctas.
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
@@ -39,6 +41,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // Solo se persiste una referencia de pasarela y, para tarjeta, cuatro dígitos.
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->unique()->constrained()->cascadeOnDelete();
@@ -54,6 +57,7 @@ return new class extends Migration
 
     public function down(): void
     {
+        // El orden inverso evita violaciones de integridad referencial.
         Schema::dropIfExists('payments');
         Schema::dropIfExists('order_items');
         Schema::dropIfExists('orders');

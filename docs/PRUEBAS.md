@@ -12,7 +12,7 @@ php artisan test --filter=CheckoutTest
 php vendor/bin/pint --test
 ```
 
-Resultado de referencia: **16 pruebas aprobadas y 63 aserciones**.
+Resultado de referencia: **17 pruebas aprobadas y 67 aserciones**.
 
 ## Casos automatizados
 
@@ -22,7 +22,7 @@ Resultado de referencia: **16 pruebas aprobadas y 63 aserciones**.
 | `AuthenticationTest` | Registro, hash de contraseña, login, logout, correo duplicado y clave débil. |
 | `CatalogAndCookieTest` | Búsqueda/filtros, cookie reciente y escape XSS. |
 | `CartTest` | Agregar, actualizar, eliminar, total y límite por inventario. |
-| `CheckoutTest` | Compra con tarjeta, seguimiento, inventario, no almacenar tarjeta, PayPal y autorización de factura. |
+| `CheckoutTest` | Compra con tarjeta, algoritmo de Luhn, seguimiento, inventario, no almacenar tarjeta, PayPal y autorización de factura. |
 | `ProfileAndReportsTest` | Perfil, historial, permisos administrativos y PDF mensual/cliente. |
 
 ## Pruebas manuales para la exposición

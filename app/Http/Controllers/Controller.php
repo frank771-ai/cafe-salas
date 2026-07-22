@@ -2,7 +2,5 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
-{
-    //
-}
+/** Clase base común para los controladores HTTP del proyecto. */
+abstract class Controller {}

@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/** Cubre filtros, cookie de recientes y escape de contenido potencialmente peligroso. */
 class CatalogAndCookieTest extends TestCase
 {
     use RefreshDatabase;

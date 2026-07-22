@@ -422,7 +422,7 @@ def build_document() -> None:
         "de productos recientes, administración y reportes PDF. La implementación se inspira directamente "
         "en los temas de Laravel explicados en las sesiones 9 y 10 del curso."
     )
-    add_callout(document, "Resultado verificable", "La batería automatizada contiene 16 pruebas con 63 aserciones. La aplicación también fue ejecutada contra MariaDB de XAMPP y revisada visualmente en escritorio y móvil.")
+    add_callout(document, "Resultado verificable", "La batería automatizada contiene 17 pruebas con 67 aserciones. La aplicación también fue ejecutada contra MariaDB de XAMPP y revisada visualmente en escritorio y móvil.")
 
     document.add_heading("2. Tecnologías", level=1)
     add_table(document, ["Capa", "Tecnología y propósito"], [
@@ -538,7 +538,7 @@ def build_document() -> None:
         (20, "Mostrar recientes", "Sección visible en inicio."),
         (21, "Código completo", "Fuente, SQL, pruebas y docs."),
         (22, "Documentación", "README, MD y este DOCX."),
-        (23, "Pruebas unitarias", "16 pruebas, 63 aserciones."),
+        (23, "Pruebas unitarias", "17 pruebas, 67 aserciones."),
         (24, "Exposición", "Guion preparado; asistencia humana."),
         (25, "Funciones especificadas", "Trazadas en esta matriz."),
         (26, "Responsive y UX", "Validado en escritorio y móvil."),

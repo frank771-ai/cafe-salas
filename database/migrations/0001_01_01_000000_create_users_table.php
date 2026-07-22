@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Perfil y rol usados por autenticación, checkout y panel administrativo.
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
+        // Las sesiones en base de datos permiten invalidarlas y auditarlas desde Laravel.
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();

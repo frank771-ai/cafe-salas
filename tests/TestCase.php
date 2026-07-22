@@ -4,7 +4,5 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
-abstract class TestCase extends BaseTestCase
-{
-    //
-}
+/** Arranque común de Laravel para todas las pruebas de integración. */
+abstract class TestCase extends BaseTestCase {}

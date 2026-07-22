@@ -8,8 +8,10 @@ use App\Services\PdfService;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 
+/** Genera reportes administrativos de ventas por periodo o por cliente. */
 class ReportController extends Controller
 {
+    /** Muestra los parámetros disponibles para ambos tipos de reporte. */
     public function index()
     {
         return view('admin.reports', [
@@ -18,6 +20,7 @@ class ReportController extends Controller
         ]);
     }
 
+    /** Descarga las ventas no canceladas del mes solicitado. */
     public function monthly(Request $request, PdfService $pdf)
     {
         $data = $request->validate(['month' => ['required', 'date_format:Y-m']]);
@@ -36,6 +39,7 @@ class ReportController extends Controller
         ], 'ventas-'.$data['month'].'.pdf', 'landscape');
     }
 
+    /** Descarga el historial de ventas no canceladas de un cliente. */
     public function customer(Request $request, PdfService $pdf)
     {
         $data = $request->validate(['user_id' => ['required', 'integer', 'exists:users,id']]);

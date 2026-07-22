@@ -7,6 +7,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * Encapsula el carrito almacenado en sesión y todas sus reglas monetarias.
+ * Los importes se guardan como enteros de colones para evitar errores de punto flotante.
+ */
 class CartService
 {
     public const TAX_RATE = 0.13;
@@ -15,12 +19,13 @@ class CartService
 
     public const FREE_SHIPPING_FROM = 30000;
 
-    /** @return array<int, int> */
+    /** @return array<int, int> Mapa producto_id => cantidad. */
     public function raw(): array
     {
         return Session::get('cart', []);
     }
 
+    /** Agrega unidades sin superar el inventario disponible. */
     public function add(Product $product, int $quantity = 1): void
     {
         if (! $product->is_active || $product->stock < 1) {
@@ -40,6 +45,7 @@ class CartService
         Session::put('cart', $cart);
     }
 
+    /** Reemplaza la cantidad actual o elimina la línea cuando llega a cero. */
     public function update(Product $product, int $quantity): void
     {
         if ($quantity < 1) {
@@ -59,6 +65,7 @@ class CartService
         Session::put('cart', $cart);
     }
 
+    /** Elimina un producto del mapa guardado en sesión. */
     public function remove(Product $product): void
     {
         $cart = $this->raw();
@@ -66,11 +73,13 @@ class CartService
         Session::put('cart', $cart);
     }
 
+    /** Vacía el carrito después de completar una compra. */
     public function clear(): void
     {
         Session::forget('cart');
     }
 
+    /** Devuelve la suma de unidades para la insignia de navegación. */
     public function count(): int
     {
         return array_sum($this->raw());
@@ -97,7 +106,11 @@ class CartService
         })->filter()->values();
     }
 
-    /** @return array{subtotal: int, tax: int, shipping: int, total: int} */
+    /**
+     * Calcula subtotal, IVA, envío y total aplicando una única fuente de reglas.
+     *
+     * @return array{subtotal: int, tax: int, shipping: int, total: int}
+     */
     public function totals(?Collection $items = null): array
     {
         $items ??= $this->items();

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/** Cubre registro, contraseña segura, login, logout y errores de autenticación. */
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;

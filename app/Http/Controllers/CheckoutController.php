@@ -6,15 +6,23 @@ use App\Http\Requests\CheckoutRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\CartService;
+use App\Services\SimulatedPaymentGateway;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * Coordina el checkout: valida el carrito, reserva inventario y crea pedido y pago.
+ */
 class CheckoutController extends Controller
 {
-    public function __construct(private readonly CartService $cart) {}
+    public function __construct(
+        private readonly CartService $cart,
+        private readonly SimulatedPaymentGateway $paymentGateway,
+    ) {}
 
+    /** Muestra el resumen de compra con los datos actuales del usuario. */
     public function create(Request $request)
     {
         $items = $this->cart->items();
@@ -29,6 +37,10 @@ class CheckoutController extends Controller
         ]);
     }
 
+    /**
+     * Confirma la compra dentro de una transacción para mantener consistentes
+     * el inventario, el pedido, sus líneas y el registro del pago.
+     */
     public function store(CheckoutRequest $request)
     {
         $data = $request->validated();
@@ -83,15 +95,10 @@ class CheckoutController extends Controller
                 $item['product']->decrement('stock', $item['quantity']);
             }
 
-            // Por seguridad solo se conserva la referencia simulada y los últimos cuatro dígitos.
-            $order->payment()->create([
-                'method' => $data['payment_method'],
-                'status' => 'approved',
-                'provider_reference' => 'SIM-'.Str::upper(Str::random(16)),
-                'last_four' => $data['payment_method'] === 'card' ? substr($data['card_number'], -4) : null,
-                'amount' => $totals['total'],
-                'processed_at' => $now,
-            ]);
+            // La pasarela retorna solo la referencia y los últimos cuatro dígitos seguros para persistir.
+            $order->payment()->create(
+                $this->paymentGateway->authorize($data, $totals['total'], $now)
+            );
 
             $request->user()->update([
                 'phone' => $data['customer_phone'],
@@ -106,6 +113,7 @@ class CheckoutController extends Controller
         return redirect()->route('orders.confirmation', $order)->with('success', '¡Pago aprobado y pedido confirmado!');
     }
 
+    /** Muestra la confirmación únicamente al dueño del pedido o a un administrador. */
     public function confirmation(Request $request, Order $order)
     {
         abort_unless($request->user()->id === $order->user_id || $request->user()->is_admin, 403);

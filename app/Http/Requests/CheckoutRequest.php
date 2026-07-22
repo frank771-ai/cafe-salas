@@ -5,13 +5,21 @@ namespace App\Http\Requests;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Centraliza la autorización, normalización y validación del formulario de compra.
+ *
+ * Mantener estas reglas fuera del controlador permite reutilizarlas, probarlas y
+ * evitar que datos de pago sin validar lleguen a la capa de negocio.
+ */
 class CheckoutRequest extends FormRequest
 {
+    /** Solo un usuario autenticado puede confirmar un pedido. */
     public function authorize(): bool
     {
         return $this->user() !== null;
     }
 
+    /** Elimina espacios y guiones antes de validar el número de tarjeta. */
     protected function prepareForValidation(): void
     {
         $this->merge([
@@ -19,6 +27,7 @@ class CheckoutRequest extends FormRequest
         ]);
     }
 
+    /** @return array<string, mixed> */
     public function rules(): array
     {
         return [
@@ -27,7 +36,16 @@ class CheckoutRequest extends FormRequest
             'shipping_address' => ['required', 'string', 'min:10', 'max:500'],
             'payment_method' => ['required', 'in:card,paypal'],
             'card_holder' => ['nullable', 'required_if:payment_method,card', 'string', 'max:120'],
-            'card_number' => ['nullable', 'required_if:payment_method,card', 'digits_between:13,19'],
+            'card_number' => [
+                'nullable',
+                'required_if:payment_method,card',
+                'digits_between:13,19',
+                function (string $attribute, mixed $value, Closure $fail): void {
+                    if ($value && ! $this->passesLuhnCheck((string) $value)) {
+                        $fail('El número de tarjeta no supera la validación de seguridad.');
+                    }
+                },
+            ],
             'card_expiry' => [
                 'nullable', 'required_if:payment_method,card', 'regex:/^(0[1-9]|1[0-2])\/([0-9]{2})$/',
                 function (string $attribute, mixed $value, Closure $fail): void {
@@ -44,6 +62,7 @@ class CheckoutRequest extends FormRequest
         ];
     }
 
+    /** @return array<string, string> */
     public function messages(): array
     {
         return [
@@ -52,5 +71,29 @@ class CheckoutRequest extends FormRequest
             'card_expiry.regex' => 'Use el formato MM/AA para el vencimiento.',
             'payment_method.in' => 'Seleccione tarjeta o PayPal.',
         ];
+    }
+
+    /**
+     * Aplica el algoritmo de Luhn usado para detectar números de tarjeta mal digitados.
+     * Esta comprobación no sustituye la autorización de una pasarela bancaria real.
+     */
+    private function passesLuhnCheck(string $number): bool
+    {
+        $sum = 0;
+        $shouldDouble = false;
+
+        for ($position = strlen($number) - 1; $position >= 0; $position--) {
+            $digit = (int) $number[$position];
+
+            if ($shouldDouble) {
+                $digit *= 2;
+                $digit = $digit > 9 ? $digit - 9 : $digit;
+            }
+
+            $sum += $digit;
+            $shouldDouble = ! $shouldDouble;
+        }
+
+        return $sum > 0 && $sum % 10 === 0;
     }
 }

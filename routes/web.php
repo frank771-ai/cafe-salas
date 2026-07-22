@@ -11,10 +11,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
+// Catálogo público: cualquier visitante puede explorar y consultar productos.
 Route::get('/', HomeController::class)->name('home');
 Route::get('/productos', [ProductController::class, 'index'])->name('products.index');
 Route::get('/productos/{product}', [ProductController::class, 'show'])->name('products.show');
 
+// Autenticación: el middleware guest evita mostrar estos formularios a usuarios conectados.
 Route::middleware('guest')->group(function () {
     Route::get('/registro', [AuthController::class, 'registerForm'])->name('register');
     Route::post('/registro', [AuthController::class, 'register'])->name('register.store');
@@ -24,6 +26,7 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/cerrar-sesion', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
+// Carrito en sesión: puede prepararse antes de iniciar sesión.
 Route::prefix('carrito')->name('cart.')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('index');
     Route::post('/{product}', [CartController::class, 'store'])->name('store');
@@ -31,6 +34,7 @@ Route::prefix('carrito')->name('cart.')->group(function () {
     Route::delete('/{product}', [CartController::class, 'destroy'])->name('destroy');
 });
 
+// Perfil, checkout y facturas requieren una identidad autenticada.
 Route::middleware('auth')->group(function () {
     Route::get('/perfil', [ProfileController::class, 'show'])->name('profile.show');
     Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update');
@@ -42,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pedidos/{order}/factura.pdf', [InvoiceController::class, 'pdf'])->name('orders.invoice.pdf');
 });
 
+// Panel interno: exige autenticación y rol administrador en toda la agrupación.
 Route::prefix('administracion')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
     Route::patch('/pedidos/{order}/estado', [AdminController::class, 'updateStatus'])->name('orders.status');

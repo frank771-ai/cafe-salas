@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Services\CartService;
 use PHPUnit\Framework\TestCase;
 
+/** Verifica de forma aislada IVA, costo de envío y umbral de envío gratuito. */
 class CartTotalsTest extends TestCase
 {
     public function test_it_calculates_tax_and_shipping_for_a_regular_purchase(): void

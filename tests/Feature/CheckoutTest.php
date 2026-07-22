@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/** Verifica compra, validación de pagos, inventario y autorización de facturas. */
 class CheckoutTest extends TestCase
 {
     use RefreshDatabase;
@@ -51,6 +52,27 @@ class CheckoutTest extends TestCase
                 'payment_method' => 'paypal',
                 'paypal_email' => 'correo-invalido',
             ])->assertSessionHasErrors('paypal_email');
+    }
+
+    public function test_card_checkout_rejects_a_number_that_fails_luhn_validation(): void
+    {
+        $user = User::factory()->create();
+        $product = $this->product();
+
+        $this->actingAs($user)->withSession(['cart' => [$product->id => 1]])
+            ->post(route('checkout.store'), [
+                'customer_name' => 'Laura Jiménez',
+                'customer_phone' => '8888-1212',
+                'shipping_address' => 'San Pedro, Montes de Oca, casa número 10',
+                'payment_method' => 'card',
+                'card_holder' => 'Laura Jiménez',
+                'card_number' => '4111 1111 1111 1112',
+                'card_expiry' => now()->addYear()->format('m/y'),
+                'card_cvv' => '123',
+            ])->assertSessionHasErrors('card_number');
+
+        $this->assertDatabaseCount('orders', 0);
+        $this->assertSame(5, $product->fresh()->stock);
     }
 
     public function test_customer_cannot_open_another_users_invoice(): void
