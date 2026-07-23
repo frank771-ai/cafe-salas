@@ -111,7 +111,7 @@ flowchart TD
 ## 8. Reglas del negocio
 
 - IVA: 13 % del subtotal.
-- Envío: ₡2.500; gratuito cuando el subtotal alcanza ₡30.000.
+- Envío: ₡2.500; gratuito cuando el subtotal alcanza ₡20.000.
 - El carrito no permite superar el inventario.
 - En la compra se vuelve a validar y bloquear el inventario dentro de una transacción.
 - Solo el dueño del pedido o un administrador puede abrir la factura.

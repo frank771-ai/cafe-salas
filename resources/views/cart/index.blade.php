@@ -73,7 +73,7 @@
                             <a class="btn btn-primary btn-lg w-100" href="{{ route('checkout.create') }}">Continuar al pago</a>
                         @endguest
 
-                        <p class="summary-help">Envío gratis desde ₡30.000 antes de IVA.</p>
+                        <p class="summary-help">Envío gratis desde ₡20.000 antes de IVA.</p>
                     </div>
                 </aside>
             </div>

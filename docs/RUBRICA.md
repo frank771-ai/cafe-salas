@@ -12,7 +12,7 @@
 | 8 | Lista/detalles/imágenes/precio | Catálogo, detalle y ocho SVG locales. |
 | 9 | Búsqueda/filtros | Nombre/descripción, categoría, precio y orden. |
 | 10 | Carrito CRUD | `CartService` y `CartController`. |
-| 11 | Impuesto/envío | IVA 13 %, ₡2.500 y envío gratis desde ₡30.000. |
+| 11 | Impuesto/envío | IVA 13 %, ₡2.500 y envío gratis desde ₡20.000. |
 | 12 | Compra/factura | `orders`, `order_items`, factura web/PDF con ID, fecha y montos. |
 | 13 | Tarjeta/PayPal | Formulario condicional y validación; simulación documentada. |
 | 14 | Confirmación/seguimiento | `order_number`, `tracking_number` y confirmación. |

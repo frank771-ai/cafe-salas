@@ -7,10 +7,10 @@ El enunciado advierte que el uso de herramientas de inteligencia artificial sin 
 - Tema elegido: tienda costarricense de café y productos artesanales.
 - Base principal: MariaDB/MySQL de XAMPP administrada en phpMyAdmin.
 - Compatibilidad SQLite: conservada para pruebas automáticas y revisión de la consigna.
-- Reglas comerciales: IVA 13 %, envío de ₡2.500 y envío gratuito desde ₡30.000.
+- Reglas comerciales: IVA 13 %, envío de ₡2.500 y envío gratuito desde ₡20.000.
 - Pago: pasarela académica sustituible; no realiza cobros reales.
 - Seguridad adicional: bloqueo de inventario, algoritmo de Luhn, encabezados HTTP y privacidad de facturas.
-- Diseño: identidad visual propia, responsive y accesible.
+- Diseño: identidad visual propia, responsive y accesible; las fotografías aportadas deben conservar evidencia de licencia antes de un uso comercial.
 
 ## Declaración sugerida
 

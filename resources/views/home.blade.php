@@ -3,18 +3,18 @@
 @section('title', 'Café con origen')
 
 @section('content')
-    {{-- Una fotografía original muestra el trabajo detrás del producto y sostiene la nueva identidad premium. --}}
+    {{-- Las fotografías aportadas por el equipo conectan la compra con el origen humano del café. --}}
     <section class="hero" aria-labelledby="hero-title">
         <div class="container hero-inner">
             <div class="hero-copy">
-                <span class="eyebrow text-light">Café costarricense, sin distancias</span>
-                <h1 id="hero-title">Origen que se nota.<br>Calidad que se disfruta.</h1>
-                <p class="lead">Café de especialidad y productos artesanales elegidos con criterio, trazabilidad y un precio honesto para todos los días.</p>
+                <span class="eyebrow text-light">Café costarricense · precio justo</span>
+                <h1 id="hero-title">Calidad de origen.<br>Precio que invita a volver.</h1>
+                <p class="lead">Café de especialidad y productos artesanales con trazabilidad, sabor auténtico y precios pensados para disfrutarlos todos los días.</p>
                 <div class="d-flex flex-wrap gap-3 mt-4">
-                    <a class="btn btn-cream btn-lg" href="{{ route('products.index') }}">Descubrir la colección</a>
-                    <a class="btn btn-outline-light btn-lg" href="#nuestra-historia">Conocer el proceso</a>
+                    <a class="btn btn-purchase btn-lg" href="{{ route('products.index') }}">Comprar café costarricense</a>
+                    <a class="btn btn-outline-light btn-lg" href="#nuestra-historia">Conocer a quienes lo hacen</a>
                 </div>
-                <p class="hero-note">Selecciones desde ₡4.200 · Compra segura · Envíos en Costa Rica</p>
+                <p class="hero-note">Opciones desde ₡3.500 · Envío gratis desde ₡20.000 · Compra protegida</p>
             </div>
         </div>
     </section>
@@ -24,15 +24,15 @@
             <div class="row g-0">
                 <div class="col-md-4 value-item">
                     <span class="value-number">01</span>
-                    <div><strong>Selección consciente</strong><small>Elegimos calidad, origen y oficio.</small></div>
+                    <div><strong>Cosecha costarricense</strong><small>Origen que puede reconocer y disfrutar.</small></div>
                 </div>
                 <div class="col-md-4 value-item">
                     <span class="value-number">02</span>
-                    <div><strong>Hecho en Costa Rica</strong><small>Sabores y manos de nuestra tierra.</small></div>
+                    <div><strong>Precios competitivos</strong><small>Calidad superior sin pagar de más.</small></div>
                 </div>
                 <div class="col-md-4 value-item">
                     <span class="value-number">03</span>
-                    <div><strong>Precio honesto</strong><small>Calidad premium para disfrutar a diario.</small></div>
+                    <div><strong>Compra sin sorpresas</strong><small>Totales, impuestos y envío siempre claros.</small></div>
                 </div>
             </div>
         </div>
@@ -71,19 +71,20 @@
         <div class="container">
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6">
-                    <div class="story-image" role="img" aria-label="Manos seleccionando cerezas de café maduras en una finca costarricense">
-                        <span>Selección manual</span>
-                    </div>
+                    <figure class="story-image">
+                        <img src="{{ asset('images/brand/coffee-producer-harvest.png') }}" alt="Productor recolectando cerezas maduras de café en una finca costarricense" width="1536" height="2048" loading="lazy">
+                        <figcaption>Personas reales · café con historia</figcaption>
+                    </figure>
                 </div>
                 <div class="col-lg-6 story-copy">
                     <span class="eyebrow">Del cafetal a su mesa</span>
-                    <h2 id="story-title">Lo extraordinario empieza con hacer bien lo esencial.</h2>
-                    <p class="lead">Detrás de una gran taza hay paciencia, conocimiento y decisiones cuidadosas. Origen Tico celebra ese proceso con productos que cuentan de dónde vienen y por qué valen la pena.</p>
-                    <p>No buscamos lujo distante. Buscamos una calidad real, cercana y consistente: la que se reconoce en el aroma, en el sabor y en las manos que la hacen posible.</p>
+                    <h2 id="story-title">Cuando conoce el origen, cada taza sabe mejor.</h2>
+                    <p class="lead">Detrás de una gran taza hay personas, experiencia y una cosecha cuidada. Origen Tico acerca ese trabajo a su mesa con productos de calidad y precios accesibles.</p>
+                    <p>No vendemos lujo distante. Ofrecemos calidad real y cercana: la que se reconoce en el aroma, en el sabor y en las manos que la hacen posible.</p>
                     <div class="story-facts" aria-label="Datos de nuestra propuesta">
                         <div><strong>100%</strong><span>identidad costarricense</span></div>
                         <div><strong>4</strong><span>colecciones para descubrir</span></div>
-                        <div><strong>₡30 mil</strong><span>envío gratuito</span></div>
+                        <div><strong>₡20 mil</strong><span>envío gratuito</span></div>
                     </div>
                 </div>
             </div>

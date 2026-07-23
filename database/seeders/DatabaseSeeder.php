@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\CartService;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -50,14 +51,14 @@ class DatabaseSeeder extends Seeder
         ])->mapWithKeys(fn (array $category) => [$category['slug'] => Category::create($category)]);
 
         $products = collect([
-            ['category' => 'cafe-de-origen', 'name' => 'Tarrazú Reserva 340 g', 'slug' => 'tarrazu-reserva-340g', 'description' => 'Café de altura con notas de cacao, naranja dulce y caramelo. Tueste medio y proceso lavado.', 'price' => 8500, 'stock' => 28, 'image' => 'images/products/cafe-tarrazu.svg', 'featured' => true],
-            ['category' => 'cafe-de-origen', 'name' => 'Poás Volcánico 340 g', 'slug' => 'poas-volcanico-340g', 'description' => 'Taza balanceada con aroma floral, acidez de manzana y final de chocolate con leche.', 'price' => 7900, 'stock' => 18, 'image' => 'images/products/cafe-poas.svg', 'featured' => true],
-            ['category' => 'dulces-artesanales', 'name' => 'Miel de flor de café', 'slug' => 'miel-flor-cafe', 'description' => 'Miel costarricense de temporada, delicada y floral. Frasco de 300 gramos.', 'price' => 6200, 'stock' => 12, 'image' => 'images/products/miel-cafe.svg', 'featured' => false],
-            ['category' => 'dulces-artesanales', 'name' => 'Chocolate oscuro 70%', 'slug' => 'chocolate-oscuro-70', 'description' => 'Chocolate artesanal elaborado con cacao costarricense y un toque de café.', 'price' => 4500, 'stock' => 34, 'image' => 'images/products/chocolate.svg', 'featured' => true],
-            ['category' => 'metodos-y-tazas', 'name' => 'Taza Bosque Nuboso', 'slug' => 'taza-bosque-nuboso', 'description' => 'Taza de cerámica de 350 ml pintada a mano por un taller local.', 'price' => 9800, 'stock' => 9, 'image' => 'images/products/taza.svg', 'featured' => true],
-            ['category' => 'metodos-y-tazas', 'name' => 'Chorreador tradicional', 'slug' => 'chorreador-tradicional', 'description' => 'Chorreador de madera nacional con bolsa de tela reutilizable y base para taza.', 'price' => 14500, 'stock' => 5, 'image' => 'images/products/chorreador.svg', 'featured' => true],
-            ['category' => 'listo-para-disfrutar', 'name' => 'Cold Brew 500 ml', 'slug' => 'cold-brew-500ml', 'description' => 'Café extraído en frío durante 18 horas, suave y naturalmente dulce.', 'price' => 4200, 'stock' => 22, 'image' => 'images/products/cold-brew.svg', 'featured' => false],
-            ['category' => 'listo-para-disfrutar', 'name' => 'Caja cuatro orígenes', 'slug' => 'caja-cuatro-origenes', 'description' => 'Degustación de cuatro regiones en presentaciones de 100 g, ideal para regalo.', 'price' => 18900, 'stock' => 14, 'image' => 'images/products/degustacion.svg', 'featured' => true],
+            ['category' => 'cafe-de-origen', 'name' => 'Tarrazú Reserva 340 g', 'slug' => 'tarrazu-reserva-340g', 'description' => 'Café de altura con notas de cacao, naranja dulce y caramelo. Tueste medio y proceso lavado.', 'price' => 7900, 'stock' => 28, 'image' => 'images/products/cafe-tarrazu.svg', 'featured' => true],
+            ['category' => 'cafe-de-origen', 'name' => 'Poás Volcánico 340 g', 'slug' => 'poas-volcanico-340g', 'description' => 'Taza balanceada con aroma floral, acidez de manzana y final de chocolate con leche.', 'price' => 6490, 'stock' => 18, 'image' => 'images/products/cafe-poas.svg', 'featured' => true],
+            ['category' => 'dulces-artesanales', 'name' => 'Miel de flor de café', 'slug' => 'miel-flor-cafe', 'description' => 'Miel costarricense de temporada, delicada y floral. Frasco de 300 gramos.', 'price' => 5900, 'stock' => 12, 'image' => 'images/products/miel-cafe.svg', 'featured' => false],
+            ['category' => 'dulces-artesanales', 'name' => 'Chocolate oscuro 70%', 'slug' => 'chocolate-oscuro-70', 'description' => 'Chocolate artesanal elaborado con cacao costarricense y un toque de café.', 'price' => 3900, 'stock' => 34, 'image' => 'images/products/chocolate.svg', 'featured' => true],
+            ['category' => 'metodos-y-tazas', 'name' => 'Taza Bosque Nuboso', 'slug' => 'taza-bosque-nuboso', 'description' => 'Taza de cerámica de 350 ml pintada a mano por un taller local.', 'price' => 6900, 'stock' => 9, 'image' => 'images/products/taza.svg', 'featured' => true],
+            ['category' => 'metodos-y-tazas', 'name' => 'Chorreador tradicional', 'slug' => 'chorreador-tradicional', 'description' => 'Chorreador de madera nacional con bolsa de tela reutilizable y base para taza.', 'price' => 11900, 'stock' => 5, 'image' => 'images/products/chorreador.svg', 'featured' => true],
+            ['category' => 'listo-para-disfrutar', 'name' => 'Café frío artesanal 500 ml', 'slug' => 'cold-brew-500ml', 'description' => 'Café extraído en frío durante 18 horas, suave y naturalmente dulce.', 'price' => 3500, 'stock' => 22, 'image' => 'images/products/cold-brew.svg', 'featured' => false],
+            ['category' => 'listo-para-disfrutar', 'name' => 'Caja cuatro orígenes', 'slug' => 'caja-cuatro-origenes', 'description' => 'Degustación de cuatro regiones en presentaciones de 100 g, ideal para regalo.', 'price' => 15900, 'stock' => 14, 'image' => 'images/products/degustacion.svg', 'featured' => true],
         ])->map(function (array $product) use ($categories) {
             $category = $categories[$product['category']];
             unset($product['category']);
@@ -77,7 +78,7 @@ class DatabaseSeeder extends Seeder
     {
         $subtotal = $product->price * $quantity;
         $tax = (int) round($subtotal * 0.13);
-        $shipping = $subtotal >= 30000 ? 0 : 2500;
+        $shipping = $subtotal >= CartService::FREE_SHIPPING_FROM ? 0 : CartService::SHIPPING_COST;
         $total = $subtotal + $tax + $shipping;
         $suffix = strtoupper(substr(hash('sha256', $user->email.$date->timestamp), 0, 6));
 

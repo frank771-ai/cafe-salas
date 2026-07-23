@@ -22,6 +22,7 @@
                 <span class="eyebrow">{{ $product->category->name }}</span>
                 <h1 class="display-5">{{ $product->name }}</h1>
                 <p class="lead text-secondary">{{ $product->description }}</p>
+                <span class="price-context">Precio justo en colones</span>
                 <div class="price price-large">₡{{ number_format($product->price, 0, ',', '.') }}</div>
                 <p id="product-stock" class="stock {{ $product->stock < 6 ? 'low' : '' }}">
                     {{ $product->stock > 0 ? $product->stock.' unidades disponibles' : 'Producto agotado' }}

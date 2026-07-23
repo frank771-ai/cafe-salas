@@ -51,6 +51,7 @@ Las pruebas se hicieron sobre la aplicación Laravel realmente ejecutada en `htt
 - Imágenes de producto con texto alternativo; decoraciones marcadas para no generar ruido.
 - Estados de éxito anunciados de forma no intrusiva y errores agrupados como alerta.
 - La portada y el catálogo se comprobaron en 1440 × 900 y 390 × 844; no presentaron superposición, texto cortado, acciones ocultas ni desplazamiento horizontal.
+- La segunda revisión confirmó fotografías cargadas, catálogo completamente en español, precios en colones, botones de compra contrastantes y el nuevo umbral de envío gratuito de ₡20.000.
 - La interfaz renovada mantiene foco visible, contraste legible, texto alternativo y adaptaciones específicas para tableta, teléfono y preferencia de movimiento reducido. Antes de una publicación comercial se recomienda repetir en teléfonos físicos y con un lector de pantalla real; esta revisión no pretende ser una certificación WCAG formal.
 
 ## Evidencia automatizada

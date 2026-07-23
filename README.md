@@ -70,6 +70,7 @@ La entrega contiene historial Git, workflow de Actions, Dependabot, `.gitignore`
 - `docs/REVISION_Y_ATRIBUCION.md`: adaptación, atribución y lista de estudio.
 - `docs/AUDITORIA_LANZAMIENTO.md`: pruebas de lanzamiento, riesgos y lista previa a producción.
 - `docs/PRUEBAS_USABILIDAD.md`: recorridos de capa 8, hallazgos, correcciones y evidencia de navegador.
+- `docs/ESTRATEGIA_COMERCIAL.md`: paleta, precios comparados, fotografías y principios éticos de conversión.
 - `docs/Documentacion_Origen_Tico.docx`: manual formal para entregar.
 
 ## Nota sobre pagos y HTTPS

@@ -40,7 +40,7 @@ Permite que visitantes seleccionen productos sin crear una cuenta y reduce tabla
 
 ### ¿Cómo se calcula el total?
 
-Subtotal es suma de precio por cantidad; IVA es subtotal por 0,13; envío cuesta ₡2.500 salvo subtotal igual o mayor a ₡30.000; total suma los tres valores.
+Subtotal es suma de precio por cantidad; IVA es subtotal por 0,13; envío cuesta ₡2.500 salvo subtotal igual o mayor a ₡20.000; total suma los tres valores.
 
 ### ¿Por qué se usa una transacción?
 

@@ -4,18 +4,20 @@
  * de marca para que futuros ajustes de diseño no afecten las reglas del negocio.
  */
 :root {
-    --forest: #163c2d;
-    --leaf: #285b43;
-    --lime: #b8c995;
-    --cream: #f4ecdf;
-    --paper: #fcfaf5;
-    --ink: #20241f;
-    --muted: #6e726c;
-    --rust: #aa573e;
+    --forest: #123d2c;
+    --leaf: #2f6b45;
+    --lime: #c7d59d;
+    --cream: #f8edd9;
+    --paper: #fffaf0;
+    --ink: #242119;
+    --muted: #6f6b60;
+    --rust: #a92e36;
+    --cherry: #a92e36;
+    --cherry-dark: #7f1e28;
     --cacao: #4b2b20;
-    --gold: #c59a58;
-    --sand: #e9dcc8;
-    --line: #ded8cd;
+    --gold: #e3ad39;
+    --sand: #ead8bb;
+    --line: #e1d5c2;
     --shadow: 0 24px 70px rgba(44, 38, 29, .12);
     --shadow-soft: 0 12px 38px rgba(44, 38, 29, .08);
 }
@@ -48,12 +50,12 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-    outline: 3px solid rgba(197, 154, 88, .55);
+    outline: 3px solid rgba(227, 173, 57, .68);
     outline-offset: 3px;
 }
 
 .announcement {
-    background: var(--cacao);
+    background: linear-gradient(90deg, var(--forest), #235f40);
     color: #fff9ef;
     min-height: 35px;
     padding: .52rem 1rem;
@@ -64,7 +66,7 @@ textarea:focus-visible {
 }
 
 .announcement span {
-    color: #d7b982;
+    color: #f4ca69;
     padding: 0 .45rem;
 }
 
@@ -160,19 +162,35 @@ textarea:focus-visible {
 
 .btn-primary,
 .btn-brand {
-    background: var(--forest);
-    border-color: var(--forest);
+    background: var(--cherry);
+    border-color: var(--cherry);
     color: #fff;
+    box-shadow: 0 8px 22px rgba(169, 46, 54, .2);
 }
 
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-brand:hover,
 .btn-brand:focus {
-    background: #0e2d21;
-    border-color: #0e2d21;
+    background: var(--cherry-dark);
+    border-color: var(--cherry-dark);
     color: #fff;
     transform: translateY(-1px);
+}
+
+.btn-purchase {
+    background: var(--cherry);
+    border: 1px solid var(--cherry);
+    color: #fff;
+    box-shadow: 0 14px 34px rgba(68, 14, 20, .34);
+}
+
+.btn-purchase:hover,
+.btn-purchase:focus {
+    background: var(--cherry-dark);
+    border-color: var(--cherry-dark);
+    color: #fff;
+    transform: translateY(-2px);
 }
 
 .btn-cream {
@@ -218,14 +236,14 @@ textarea:focus-visible {
     color: #fff;
 }
 
-/* Portada fotográfica original: proceso, territorio y oficio en una sola escena. */
+/* El rojo cereza atrae la atención hacia la compra; el verde conserva confianza y origen natural. */
 .hero {
     position: relative;
     isolation: isolate;
     min-height: 690px;
     display: grid;
     overflow: hidden;
-    background: var(--forest) url("../images/brand/hero-coffee-harvest.png") center center / cover no-repeat;
+    background: var(--forest) url("../images/brand/coffee-cherries-basket.png") center center / cover no-repeat;
     color: #fff;
 }
 
@@ -234,8 +252,8 @@ textarea:focus-visible {
     inset: 0;
     z-index: -1;
     background:
-        linear-gradient(90deg, rgba(15, 31, 23, .92) 0%, rgba(15, 31, 23, .78) 37%, rgba(15, 31, 23, .18) 72%, rgba(15, 31, 23, .08) 100%),
-        linear-gradient(0deg, rgba(27, 19, 13, .28), transparent 45%);
+        linear-gradient(90deg, rgba(11, 39, 27, .96) 0%, rgba(11, 39, 27, .84) 42%, rgba(11, 39, 27, .25) 76%, rgba(11, 39, 27, .08) 100%),
+        linear-gradient(0deg, rgba(47, 12, 15, .34), transparent 48%);
     content: "";
 }
 
@@ -284,7 +302,7 @@ textarea:focus-visible {
 
 .hero .eyebrow,
 .quality-process .eyebrow {
-    color: #e8c992 !important;
+    color: #f4ca69 !important;
 }
 
 .value-strip {
@@ -411,10 +429,10 @@ textarea:focus-visible {
     background: rgba(255, 255, 255, .08);
 }
 
-.category-tone-1 { background: linear-gradient(145deg, #244f3b, #0f3023); }
-.category-tone-2 { background: linear-gradient(145deg, #9d533d, #6c3024); }
-.category-tone-3 { background: linear-gradient(145deg, #b48a54, #7a5932); }
-.category-tone-4 { background: linear-gradient(145deg, #4c4437, #26271f); }
+.category-tone-1 { background: linear-gradient(145deg, #286346, #103b29); }
+.category-tone-2 { background: linear-gradient(145deg, #b53b43, #7f1e28); }
+.category-tone-3 { background: linear-gradient(145deg, #d39b35, #805626); }
+.category-tone-4 { background: linear-gradient(145deg, #58412f, #27251d); }
 
 .category-card:hover {
     border-color: transparent;
@@ -480,10 +498,18 @@ textarea:focus-visible {
 .story-image {
     position: relative;
     min-height: 610px;
+    margin: 0;
     overflow: hidden;
     border-radius: 48% 48% 1.5rem 1.5rem;
-    background: url("../images/brand/hero-coffee-harvest.png") 72% center / cover no-repeat;
     box-shadow: var(--shadow);
+}
+
+.story-image img {
+    width: 100%;
+    height: 610px;
+    display: block;
+    object-fit: cover;
+    object-position: center 38%;
 }
 
 .story-image::after {
@@ -493,7 +519,7 @@ textarea:focus-visible {
     content: "";
 }
 
-.story-image span {
+.story-image figcaption {
     position: absolute;
     left: 2rem;
     bottom: 2rem;
@@ -565,7 +591,7 @@ textarea:focus-visible {
 }
 
 .product-card:hover {
-    border-color: #cfc4b4 !important;
+    border-color: rgba(169, 46, 54, .4) !important;
     box-shadow: var(--shadow-soft);
     transform: translateY(-6px);
 }
@@ -650,7 +676,7 @@ textarea:focus-visible {
 }
 
 .product-price small {
-    color: var(--muted);
+    color: var(--cherry);
     font-size: .64rem;
     text-transform: uppercase;
 }
@@ -660,13 +686,23 @@ textarea:focus-visible {
     font: 650 1.28rem Georgia, serif;
 }
 
+.price-context {
+    display: block;
+    margin: 1.4rem 0 .25rem;
+    color: var(--cherry);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
 .product-card-footer .btn {
     padding: .58rem .9rem;
     font-size: .76rem;
 }
 
 .quality-process {
-    background: var(--forest);
+    background: linear-gradient(135deg, #0f3928, #235f40);
     color: #fff;
 }
 
@@ -710,7 +746,7 @@ textarea:focus-visible {
     display: flex;
     align-items: center;
     overflow: hidden;
-    background: var(--forest) url("../images/brand/hero-coffee-harvest.png") center 58% / cover no-repeat;
+    background: var(--forest) url("../images/brand/coffee-cherries-basket.png") center 58% / cover no-repeat;
     color: #fff;
     padding: 5rem 0;
 }
@@ -1043,6 +1079,10 @@ textarea:focus-visible {
     .story-image {
         min-height: 430px;
         border-radius: 48% 48% 1.15rem 1.15rem;
+    }
+
+    .story-image img {
+        height: 430px;
     }
 
     .story-facts {

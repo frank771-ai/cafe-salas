@@ -172,7 +172,7 @@ El carrito se guarda como un mapa `producto_id => cantidad` en la sesión. Sus c
 
 - `TAX_RATE = 0.13`.
 - `SHIPPING_COST = 2500`.
-- `FREE_SHIPPING_FROM = 30000`.
+- `FREE_SHIPPING_FROM = 20000`.
 
 `items()` reconsulta los productos, agrega la relación de categoría y calcula cada línea. `totals()` devuelve subtotal, impuesto, envío y total. Todos los importes son enteros de colones; así se evitan errores de punto flotante.
 

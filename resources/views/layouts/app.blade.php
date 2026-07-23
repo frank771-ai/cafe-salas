@@ -15,14 +15,14 @@
 <body>
     @php($cartCount = app(\App\Services\CartService::class)->count())
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
-    <div class="announcement">Envío gratis desde ₡30.000 <span aria-hidden="true">·</span> Seleccionado con orgullo en Costa Rica</div>
+    <div class="announcement">Envío gratis desde ₡20.000 <span aria-hidden="true">·</span> Precios justos en colones <span aria-hidden="true">·</span> Hecho en Costa Rica</div>
 
     {{-- Navegación compartida; adapta opciones según autenticación y rol. --}}
     <nav class="navbar navbar-expand-lg navbar-light sticky-top" aria-label="Navegación principal">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
                 <span class="brand-mark" aria-hidden="true">OT</span>
-                <span class="brand-copy"><strong>Origen Tico</strong><small>Café & artesanía costarricense</small></span>
+                <span class="brand-copy"><strong>Origen Tico</strong><small>Café y artesanía costarricense</small></span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menú">
                 <span class="navbar-toggler-icon"></span>

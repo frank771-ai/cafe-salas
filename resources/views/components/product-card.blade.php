@@ -16,7 +16,7 @@
         <h3 class="h5 card-title"><a href="{{ route('products.show', $product) }}">{{ $product->name }}</a></h3>
         <p class="card-text text-secondary flex-grow-1">{{ \Illuminate\Support\Str::limit($product->description, 92) }}</p>
         <div class="product-card-footer">
-            <div class="product-price"><small>Precio</small><strong class="price">₡{{ number_format($product->price, 0, ',', '.') }}</strong></div>
+            <div class="product-price"><small>Precio justo en colones</small><strong class="price">₡{{ number_format($product->price, 0, ',', '.') }}</strong></div>
             <form method="POST" action="{{ route('cart.store', $product) }}">
                 @csrf
                 <input type="hidden" name="quantity" value="1">
@@ -25,7 +25,7 @@
                     type="submit"
                     aria-label="{{ $product->stock ? 'Agregar '.$product->name.' al carrito' : $product->name.' está agotado' }}"
                     @disabled($product->stock < 1)
-                >{{ $product->stock ? 'Agregar +' : 'Agotado' }}</button>
+                >{{ $product->stock ? 'Agregar' : 'Agotado' }}</button>
             </form>
         </div>
     </div>

@@ -17,7 +17,7 @@ class CartService
 
     public const SHIPPING_COST = 2500;
 
-    public const FREE_SHIPPING_FROM = 30000;
+    public const FREE_SHIPPING_FROM = 20000;
 
     /** @return array<int, int> Mapa producto_id => cantidad. */
     public function raw(): array
