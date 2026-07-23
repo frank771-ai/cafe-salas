@@ -885,9 +885,6 @@ textarea:focus-visible {
 }
 
 .footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
     margin-top: 3rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, .13);
@@ -1063,9 +1060,6 @@ textarea:focus-visible {
         align-items: center;
     }
 
-    .footer-bottom {
-        flex-direction: column;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {

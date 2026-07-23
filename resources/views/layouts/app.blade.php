@@ -107,7 +107,7 @@
                     <p class="small mb-0">Precio transparente, sesiones protegidas y datos de tarjeta que nunca se almacenan.</p>
                 </div>
             </div>
-            <div class="footer-bottom"><span>© {{ date('Y') }} Origen Tico</span><span>Demostración educativa UTN · Costa Rica</span></div>
+            <div class="footer-bottom">© {{ date('Y') }} Origen Tico</div>
         </div>
     </footer>
 
