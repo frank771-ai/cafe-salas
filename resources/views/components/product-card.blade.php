@@ -3,7 +3,7 @@
 {{-- Componente reutilizado por portada, catálogo y productos vistos recientemente. --}}
 <article class="product-card card h-100 border-0">
     <a href="{{ route('products.show', $product) }}" class="product-image-wrap">
-        <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}" loading="lazy" width="640" height="480">
+        <x-product-image :product="$product" class="card-img-top" width="640" height="480" />
         @if ($product->featured)
             <span class="product-badge">Selección</span>
         @endif

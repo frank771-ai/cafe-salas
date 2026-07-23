@@ -15,7 +15,7 @@
         <div class="row g-5 align-items-center">
             <div class="col-lg-6">
                 <div class="product-detail-image">
-                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" width="800" height="600">
+                    <x-product-image :product="$product" loading="eager" width="800" height="600" />
                 </div>
             </div>
             <div class="col-lg-6">

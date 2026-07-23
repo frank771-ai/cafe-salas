@@ -40,10 +40,11 @@ Los valores son demostrativos y deben revisarse nuevamente antes de una operaci�
 
 ## Fotografías
 
-Las dos fotografías de cosecha fueron aportadas por el equipo y se integraron en:
+Las fotografías de cosecha y de los ocho productos fueron aportadas por el equipo. Los recursos principales se integraron en:
 
 - `public/images/brand/coffee-cherries-basket.png`
 - `public/images/brand/coffee-producer-harvest.png`
+- `public/images/products/*-real.png`
 
 Antes de una publicación comercial, el equipo debe conservar evidencia de autoría o licencia de uso. Si no dispone de esa autorización, debe sustituirlas por fotografías propias o con licencia compatible.
 

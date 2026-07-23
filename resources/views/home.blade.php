@@ -53,13 +53,11 @@
                 @foreach ($categories as $category)
                     <div class="col-sm-6 col-lg-3">
                         <a class="category-card category-tone-{{ $loop->iteration }}" href="{{ route('products.index', ['category' => $category->slug]) }}">
-                            <span class="category-number">0{{ $loop->iteration }}</span>
                             <div class="category-copy">
                                 <h3>{{ $category->name }}</h3>
                                 <p>{{ $category->description }}</p>
                                 <small>{{ $category->products_count }} productos</small>
                             </div>
-                            <span class="category-arrow" aria-hidden="true">↗</span>
                         </a>
                     </div>
                 @endforeach
