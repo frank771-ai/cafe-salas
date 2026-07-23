@@ -27,11 +27,6 @@
             </form>
 
             <p class="text-center mt-4 mb-0">¿No tiene una cuenta? <a href="{{ route('register') }}">Regístrese</a></p>
-            <div class="demo-access">
-                <strong>Acceso de demostración</strong>
-                <span>Cliente: cliente@origentico.test / Cliente123!</span>
-                <span>Admin: admin@origentico.test / Admin123!</span>
-            </div>
         </div>
     </div>
 @endsection

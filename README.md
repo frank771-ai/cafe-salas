@@ -12,7 +12,7 @@ Proyecto final de **Tecnologías y Sistemas Web II (ITI-523)**. Es una tienda de
 - Administración de pedidos, inventario bajo y reportes PDF por mes o cliente.
 - Identidad visual editorial propia: tonos de cafetal, cacao y crema, fotografías seleccionadas por el equipo, tarjetas de producto limpias y diseño responsive.
 - Protecciones de Laravel contra CSRF, XSS e inyección SQL; contraseñas con hash y sesiones cifradas.
-- 48 pruebas automatizadas con 233 verificaciones en SQLite y MariaDB, incluidas validación Luhn, protección CSRF y regresiones del catálogo y de usabilidad.
+- 49 pruebas automatizadas con 237 verificaciones en SQLite y MariaDB, incluidas validación Luhn, protección CSRF y regresiones del catálogo, la seguridad y la usabilidad.
 
 ## Instalación recomendada: XAMPP y phpMyAdmin
 

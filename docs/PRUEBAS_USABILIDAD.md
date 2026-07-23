@@ -6,7 +6,7 @@ Fecha de ejecución: 22 de julio de 2026.
 
 La “capa 8” se usa aquí en su sentido informal: comprobar cómo una persona entiende y opera el sistema, además de verificar que el código responda correctamente. La revisión cubrió lenguaje, continuidad de tareas, prevención y recuperación de errores, accesibilidad semántica, claridad visual y retroalimentación.
 
-Las pruebas se hicieron sobre la aplicación Laravel realmente ejecutada en `http://127.0.0.1:8000`, con MariaDB de XAMPP y una base temporal aislada. La base principal `origen_tico` no fue modificada y conservó sus 3 usuarios, 8 productos y 3 pedidos.
+Las pruebas se hicieron sobre la aplicación Laravel realmente ejecutada en `http://127.0.0.1:8000`. La batería automatizada utilizó SQLite en memoria y la base temporal `origen_tico_layer8_test_20260722` en MariaDB de XAMPP; esta última se eliminó al terminar. El recorrido humano completo utilizó la base local `origen_tico` y creó el pedido simulado `OT-20260722-ZL5BRL` como evidencia auditable, sin realizar un cargo real.
 
 ## Perfiles y recorridos ejecutados
 
@@ -32,6 +32,19 @@ Las pruebas se hicieron sobre la aplicación Laravel realmente ejecutada en `htt
 | La navegación activa dependía solo del color | Faltaba contexto semántico | Se agregó `aria-current="page"` | Aprobada por prueba de HTML |
 | Cantidad y existencia estaban visualmente próximas, pero no asociadas | Un lector de pantalla podía omitir el límite disponible | `aria-describedby` enlaza la cantidad con el inventario | Aprobada por prueba de HTML |
 | El catálogo decía “1 resultados” | Error de redacción visible | Singular/plural dinámico y lenguaje comercial más natural | Aprobada: “1 producto” |
+| La pantalla de acceso publicaba las credenciales sembradas de cliente y administrador | Cualquier visitante podía entrar al panel interno | Se retiraron de la interfaz; permanecen únicamente en la documentación de instalación y exposición | Aprobada en navegador y protegida por una prueba de regresión |
+
+## Evidencia del recorrido humano del 22 de julio de 2026
+
+- El filtro combinado “Chocolate” + “Dulces artesanales” + ₡3.000–₡5.000 devolvió solo “Chocolate oscuro 82%”.
+- El rango inválido ₡9.000–₡1.000 mostró: “El campo precio máximo debe ser mayor o igual que 9000”.
+- El carrito conservó tres unidades de Poás Volcánico y calculó subtotal ₡19.470, IVA ₡2.531, envío ₡2.500 y total ₡24.501.
+- Un inicio de sesión incorrecto mostró un mensaje claro y el acceso correcto regresó automáticamente a “Finalizar compra”.
+- La tarjeta de prueba con Luhn inválido fue rechazada y los campos sensibles quedaron vacíos. La tarjeta de demostración válida confirmó el pedido `OT-20260722-ZL5BRL`, seguimiento `CRPOST-PR0PCH5GWD` y total ₡24.501.
+- La factura mostró usuario, fecha, artículo, impuestos, envío, medio de pago y total; el historial del perfil incorporó el pedido.
+- El panel administrativo reflejó el pedido y mantuvo disponibles la gestión de estado, la factura y los reportes por mes y cliente.
+- Portada, catálogo, acceso, administración y reportes se revisaron a 390 × 844. En todas las pantallas el ancho útil y el ancho desplazable fueron 375 px, sin desbordamiento horizontal.
+- Las pantallas recorridas conservaron un solo `h1`, imágenes con alternativa y controles visibles con etiqueta accesible.
 
 ## Validaciones humanas comprobadas
 
@@ -62,12 +75,13 @@ Se agregó `tests/Feature/UsabilityTest.php` para impedir regresiones en:
 2. Precio máximo opcional sin precio mínimo.
 3. Mensajes de validación en español, sin claves internas.
 4. Contexto accesible de navegación, carrito, producto y cantidad.
+5. Ausencia de credenciales sembradas en la pantalla pública de acceso.
 
 Resultado final en ambos motores:
 
 ```text
-SQLite en memoria: 48 pruebas, 233 aserciones, 0 fallos
-MariaDB de XAMPP:   48 pruebas, 233 aserciones, 0 fallos
+SQLite en memoria: 49 pruebas, 237 aserciones, 0 fallos
+MariaDB de XAMPP:   49 pruebas, 237 aserciones, 0 fallos
 Laravel Pint:       aprobado
 ```
 

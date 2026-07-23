@@ -4,7 +4,7 @@ Fecha de revisión: 22 de julio de 2026.
 
 ## Dictamen
 
-El proyecto está **apto para entrega y demostración académica**. La lógica se verificó con SQLite en memoria y con MariaDB real de XAMPP: **48 pruebas y 233 aserciones aprobadas en ambos motores**.
+El proyecto está **apto para entrega y demostración académica**. La lógica se verificó con SQLite en memoria y con MariaDB real de XAMPP: **49 pruebas y 237 aserciones aprobadas en ambos motores**.
 
 No debe anunciarse todavía como comercio productivo con cobros reales. Para salir al mercado faltan credenciales de una pasarela certificada, dominio/hosting, certificado público, correo transaccional, monitoreo y responsables de operación. Esos puntos dependen de cuentas externas y no pueden simularse honestamente.
 

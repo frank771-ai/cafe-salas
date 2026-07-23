@@ -86,6 +86,15 @@ class UsabilityTest extends TestCase
             ->assertSee('aria-describedby="product-stock"', false);
     }
 
+    public function test_login_does_not_publish_seeded_credentials(): void
+    {
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertDontSee('Acceso de demostración')
+            ->assertDontSee('admin@origentico.test')
+            ->assertDontSee('Admin123!');
+    }
+
     private function product(
         string $name = 'Café de prueba',
         string $slug = 'cafe-prueba',

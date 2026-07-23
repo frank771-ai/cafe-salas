@@ -12,7 +12,7 @@ php artisan test --filter=CheckoutTest
 php vendor/bin/pint --test
 ```
 
-Resultado de referencia: **48 pruebas aprobadas y 233 aserciones** tanto en SQLite como en MariaDB temporal de XAMPP.
+Resultado de referencia: **49 pruebas aprobadas y 237 aserciones** tanto en SQLite como en MariaDB temporal de XAMPP.
 
 ## Casos automatizados
 
