@@ -12,7 +12,7 @@ php artisan test --filter=CheckoutTest
 php vendor/bin/pint --test
 ```
 
-Resultado de referencia: **47 pruebas aprobadas y 226 aserciones** tanto en SQLite como en MariaDB temporal de XAMPP.
+Resultado de referencia: **48 pruebas aprobadas y 233 aserciones** tanto en SQLite como en MariaDB temporal de XAMPP.
 
 ## Casos automatizados
 
@@ -20,7 +20,7 @@ Resultado de referencia: **47 pruebas aprobadas y 226 aserciones** tanto en SQLi
 |---|---|
 | `CartTotalsTest` | IVA, costo de envío y umbral de envío gratis. |
 | `AuthenticationTest` | Registro, normalización, hash, login, logout, duplicados, clave débil y rate limiting. |
-| `CatalogAndCookieTest` | Búsqueda/filtros, cookie malformada, productos inactivos y escape XSS. |
+| `CatalogAndCookieTest` | Búsqueda/filtros, cookie malformada, productos inactivos, escape XSS y nombres reales del catálogo. |
 | `CartTest` | Agregar, actualizar, eliminar, cantidades inválidas, total y límite por inventario. |
 | `CheckoutTest` | Tarjeta Luhn/vencida, privacidad de datos, transacción, stock, PayPal y autorización. |
 | `EndToEndPurchaseTest` | Recorrido completo desde registro hasta factura PDF e historial. |
@@ -33,7 +33,7 @@ Resultado de referencia: **47 pruebas aprobadas y 226 aserciones** tanto en SQLi
 
 ## Pruebas manuales para la exposición
 
-1. Filtrar `Tarrazú` entre ₡8.000 y ₡9.000.
+1. Filtrar `Tarrazú` entre ₡7.000 y ₡8.000.
 2. Abrir dos productos y volver al inicio; confirmar “Vistos recientemente”.
 3. Agregar cantidades, actualizar y eliminar en el carrito.
 4. Confirmar que aparecen subtotal, IVA 13 %, envío y total.

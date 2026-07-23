@@ -9,7 +9,7 @@
 | 5 | Login/logout | Rutas, regeneración/invalidez de sesión y rate limit. |
 | 6 | Perfil e historial | `ProfileController` y `profile/show.blade.php`. |
 | 7 | Categorías | `Category`, relación y filtro. |
-| 8 | Lista/detalles/imágenes/precio | Catálogo, detalle y ocho SVG locales. |
+| 8 | Lista/detalles/imágenes/precio | Catálogo, detalle y ocho fotografías locales de productos. |
 | 9 | Búsqueda/filtros | Nombre/descripción, categoría, precio y orden. |
 | 10 | Carrito CRUD | `CartService` y `CartController`. |
 | 11 | Impuesto/envío | IVA 13 %, ₡2.500 y envío gratis desde ₡20.000. |
@@ -18,13 +18,13 @@
 | 14 | Confirmación/seguimiento | `order_number`, `tracking_number` y confirmación. |
 | 15 | Reportes de ventas | PDF mensual y por cliente. |
 | 16 | PHP y base de datos | PHP/Laravel; MySQL/phpMyAdmin principal y SQLite para pruebas/perfil alternativo. |
-| 17 | Frontend | Bootstrap, CSS propio, SVG y jerarquía visual. |
+| 17 | Frontend | Bootstrap, CSS propio, fotografías reales y jerarquía visual. |
 | 18 | Validación | Form Request, reglas por campo, CSRF y mensajes. |
 | 19 | Cookie reciente | Cookie cifrada `recent_products`, 30 días. |
 | 20 | Mostrar recientes | Sección en inicio, preserva orden de visita. |
 | 21 | Código completo | Aplicación, dependencias declaradas, SQL, pruebas y documentación. |
 | 22 | Instrucciones de uso | README, manual MD y DOCX. |
-| 23 | Documento de pruebas | `docs/PRUEBAS.md`, auditoría y 43 pruebas/197 aserciones en dos motores. |
+| 23 | Documento de pruebas | `docs/PRUEBAS.md`, auditoría y batería automatizada en SQLite y MariaDB. |
 | 24 | Exposición | Guion preparado; la asistencia corresponde al equipo. |
 | 25 | Funcionalidades | Matriz completa y pruebas verdes. |
 | 26 | Responsive/UX | Bootstrap, breakpoints, accesibilidad y validación visual móvil. |

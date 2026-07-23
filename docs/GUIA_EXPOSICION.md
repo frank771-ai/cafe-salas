@@ -12,6 +12,10 @@
 8. **phpMyAdmin (1 min):** relaciones y registros de pedido/pago.
 9. **Seguridad/pruebas/GitHub (1 min):** ejecutar tests y mostrar Actions.
 
+## Preparación obligatoria ante las sanciones
+
+El enunciado permite anular hasta el 75 % del proyecto si un estudiante no responde al menos la mitad de las preguntas. Antes de exponer, cada integrante debe ejecutar por sí mismo el recorrido de compra, explicar un controlador, una validación, una relación de base de datos y una prueba. También debe reconocer la asistencia de Codex y describir qué adaptó y verificó; la atribución no reemplaza la comprensión.
+
 ## Preguntas probables
 
 ### ¿Qué es MVC y dónde se aplica?
@@ -65,3 +69,11 @@ Autenticación comprueba quién es el usuario; autorización decide qué puede h
 ### ¿Cómo se publica con HTTPS?
 
 Se sube a un hosting con PHP/MySQL, se apunta el dominio, se emite Let's Encrypt, se configura `APP_URL=https://...`, `APP_ENV=production`, `APP_DEBUG=false` y `SESSION_SECURE_COOKIE=true`.
+
+### ¿Qué adaptación demuestra que el catálogo fue revisado?
+
+El chocolate se corrigió a 82 % de cacao y la caja se renombró para representar las ocho regiones cafetaleras de Costa Rica. Una migración actualiza instalaciones existentes, mientras el seeder y el respaldo SQL garantizan que una instalación nueva tenga los mismos datos.
+
+### ¿Cómo se controlan vulnerabilidades de dependencias?
+
+`composer audit --locked` compara `composer.lock` con avisos publicados. Durante la revisión se actualizó Dompdf de 3.1.0 a 3.1.6 porque la versión anterior tenía seis avisos; después se repitieron los reportes PDF y toda la batería de pruebas.

@@ -2,6 +2,16 @@
 
 El enunciado advierte que el uso de herramientas de inteligencia artificial sin comprensión, adaptación ni atribución puede penalizarse. Este proyecto fue asistido con Codex para generar, revisar y documentar código. El equipo debe declarar el apoyo de acuerdo con la política de la universidad y demostrar dominio del resultado.
 
+## Sanciones del enunciado y cómo prevenirlas
+
+| Riesgo indicado por la docente | Evidencia preparada | Responsabilidad del equipo |
+|---|---|---|
+| No responder al menos el 50 % de las preguntas puede anular hasta el 75 % del valor evaluativo. | `GUIA_EXPOSICION.md`, `CODIGO_EXPLICADO.md` y pruebas demostrables. | Cada integrante debe practicar las preguntas y explicar el código con sus propias palabras. |
+| Usar código asistido por IA sin comprensión, adaptación ni atribución puede generar pérdida de puntos, repetición o sanción disciplinaria. | Esta declaración, historial Git, decisiones documentadas, pruebas y adaptación a XAMPP/Origen Tico. | Declarar la asistencia conforme a la política institucional; no memorizar respuestas sin comprenderlas. |
+| No entregar o exponer a tiempo afecta los criterios 1 y 24. | ZIP final, repositorio GitHub y guion de demostración. | Subir el archivo y asistir en las fechas del 25 y 26 de agosto de 2026. |
+
+La documentación reduce el riesgo, pero no sustituye la comprensión individual ni garantiza una calificación. La atribución debe conservarse; eliminarla para ocultar la asistencia sería contrario al propio enunciado.
+
 ## Adaptaciones realizadas por el equipo
 
 - Tema elegido: tienda costarricense de café y productos artesanales.
@@ -36,5 +46,7 @@ Cada integrante debe poder explicar y demostrar:
 12. Qué protegen `auth`, `admin` y la comprobación de propietario.
 13. Cómo ejecutar pruebas y leer una falla.
 14. Qué archivos se suben a GitHub y por qué `.env` no se publica.
+15. Por qué el chocolate se identifica como 82 % y la caja representa las ocho regiones cafetaleras.
+16. Por qué Dompdf se actualizó a 3.1.6 y cómo se comprueba con `composer audit`.
 
 La guía `CODIGO_EXPLICADO.md` contiene las respuestas técnicas para estudiar estos puntos.

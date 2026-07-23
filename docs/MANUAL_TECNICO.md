@@ -30,6 +30,18 @@ El diseño del código sigue los conceptos estudiados en las sesiones 9 y 10: ar
 
 Puede sustituir los pasos 3, 4 y 8 importando `database/sql/origen_tico.sql` en phpMyAdmin.
 
+### Comprobación completa con SQLite
+
+Aunque la demostración principal utiliza XAMPP y phpMyAdmin, la consigna escrita menciona SQLite. Para demostrar ese motor sin modificar la base MariaDB:
+
+1. Detenga el servidor y respalde el entorno con `Copy-Item .env .env.backup`.
+2. Ejecute `Copy-Item .env.sqlite.example .env -Force`.
+3. Si no existe, cree el archivo con `New-Item -ItemType File -Path database/database.sqlite`.
+4. Ejecute `php artisan key:generate`, `php artisan migrate --seed` y `php artisan serve`.
+5. Al terminar, restaure `Copy-Item .env.backup .env -Force` y ejecute `php artisan optimize:clear`.
+
+`.gitignore` excluye el archivo SQLite, `.env` y `.env.backup`, por lo que ninguna configuración local se publica.
+
 ## 4. Ejecución directa en Apache
 
 Use `deployment/apache-vhost.conf.example`. Cambie la ruta del proyecto y agregue el bloque al archivo `C:\xampp\apache\conf\extra\httpd-vhosts.conf`. Verifique que `httpd.conf` incluya `httpd-vhosts.conf` y que `mod_rewrite` esté activo. Agregue `127.0.0.1 origentico.test` a `C:\Windows\System32\drivers\etc\hosts` y reinicie Apache.

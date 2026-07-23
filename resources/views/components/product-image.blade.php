@@ -2,9 +2,9 @@
 
 @php
     $showComplete = in_array($product->slug, [
-        'chocolate-oscuro-70',
+        'chocolate-oscuro-82',
         'miel-flor-cafe',
-        'caja-cuatro-origenes',
+        'caja-regiones-costa-rica',
     ], true);
 @endphp
 

@@ -24,10 +24,10 @@ El rojo se reserva para acciones importantes, de modo que “Comprar” y “Agr
 |---|---:|
 | Tarrazú Reserva 340 g | ₡7.900 |
 | Poás Volcánico 340 g | ₡6.490 |
-| Chocolate oscuro 70 % | ₡3.900 |
+| Chocolate oscuro 82 % | ₡3.900 |
 | Taza Bosque Nuboso | ₡6.900 |
 | Café frío artesanal 500 ml | ₡3.500 |
-| Caja cuatro orígenes | ₡15.900 |
+| Caja de las 8 regiones cafetaleras | ₡15.900 |
 
 Como referencia, la tienda oficial de Coopedota mostraba cafés gourmet de 340 g entre ₡6.590 y ₡8.035, y un kit familiar gourmet en ₡17.705. Café Britt publicaba envío de ₡3.000 y envío gratuito desde ₡19.000. Origen Tico conserva envío de ₡2.500 y lo hace gratuito desde ₡20.000.
 

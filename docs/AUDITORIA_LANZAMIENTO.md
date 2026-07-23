@@ -4,7 +4,7 @@ Fecha de revisión: 22 de julio de 2026.
 
 ## Dictamen
 
-El proyecto está **apto para entrega y demostración académica**. La lógica se verificó con SQLite en memoria y con MariaDB real de XAMPP: **47 pruebas y 226 aserciones aprobadas en ambos motores**.
+El proyecto está **apto para entrega y demostración académica**. La lógica se verificó con SQLite en memoria y con MariaDB real de XAMPP: **48 pruebas y 233 aserciones aprobadas en ambos motores**.
 
 No debe anunciarse todavía como comercio productivo con cobros reales. Para salir al mercado faltan credenciales de una pasarela certificada, dominio/hosting, certificado público, correo transaccional, monitoreo y responsables de operación. Esos puntos dependen de cuentas externas y no pueden simularse honestamente.
 
@@ -36,7 +36,7 @@ php artisan config:cache
 composer validate --strict
 ```
 
-`composer validate` reconoce el manifiesto y solo advierte que Dompdf usa una versión exacta. El análisis remoto `composer audit` requiere autorización para enviar a Packagist las versiones de `composer.lock`; el workflow de GitHub queda preparado para ejecutarlo de forma automática.
+`composer audit --locked` detectó seis avisos que afectaban Dompdf 3.1.0. La dependencia se actualizó a **Dompdf 3.1.6**, se regeneró `composer.lock` y una segunda auditoría confirmó **cero avisos de seguridad**. Los reportes PDF y la batería completa se volvieron a probar después de la actualización.
 
 ## Controles añadidos durante la auditoría
 
@@ -48,6 +48,8 @@ composer validate --strict
 - Pagos simulados bloqueados por defecto en producción.
 - Configuración de Apache SSL, ambiente productivo, Dependabot y política de seguridad.
 - Mensajes de validación completos en español y correcciones de continuidad, singular/plural y contexto accesible.
+- Catálogo corregido a chocolate oscuro 82 % y caja de las ocho regiones cafetaleras.
+- Documento de atribución y guía de defensa ampliados según las sanciones indicadas en el enunciado.
 
 ## Lista obligatoria antes de producción real
 

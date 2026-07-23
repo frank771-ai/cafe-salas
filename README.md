@@ -10,9 +10,9 @@ Proyecto final de **Tecnologías y Sistemas Web II (ITI-523)**. Es una tienda de
 - Compra con tarjeta o PayPal simulados, factura, confirmación y seguimiento.
 - Cookie cifrada con los seis productos vistos recientemente.
 - Administración de pedidos, inventario bajo y reportes PDF por mes o cliente.
-- Identidad visual editorial propia: tonos de cafetal, cacao y crema, fotografía original, tarjetas de producto limpias y diseño responsive.
+- Identidad visual editorial propia: tonos de cafetal, cacao y crema, fotografías seleccionadas por el equipo, tarjetas de producto limpias y diseño responsive.
 - Protecciones de Laravel contra CSRF, XSS e inyección SQL; contraseñas con hash y sesiones cifradas.
-- 47 pruebas automatizadas con 226 verificaciones en SQLite y MariaDB, incluidas validación Luhn, protección CSRF y regresiones de usabilidad.
+- 48 pruebas automatizadas con 233 verificaciones en SQLite y MariaDB, incluidas validación Luhn, protección CSRF y regresiones del catálogo y de usabilidad.
 
 ## Instalación recomendada: XAMPP y phpMyAdmin
 
@@ -34,6 +34,23 @@ php artisan serve
 
 Alternativa de phpMyAdmin: en **Importar**, seleccione `database/sql/origen_tico.sql`. Ese respaldo ya contiene esquema y datos demostrativos; no ejecute `migrate --seed` después de importarlo.
 
+### Modo SQLite para comprobar la consigna escrita
+
+El proyecto también puede ejecutarse completamente con SQLite, no solo en las pruebas. Si la docente solicita demostrar ese motor, detenga el servidor y ejecute:
+
+```powershell
+Copy-Item .env .env.backup
+Copy-Item .env.sqlite.example .env -Force
+if (-not (Test-Path database/database.sqlite)) {
+    New-Item -ItemType File -Path database/database.sqlite
+}
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
+
+Para volver a XAMPP, restaure `Copy-Item .env.backup .env -Force` y ejecute `php artisan optimize:clear`. El archivo SQLite y ambos `.env` permanecen excluidos de GitHub.
+
 ### Usuarios de demostración
 
 | Rol | Correo | Contraseña |
@@ -50,9 +67,12 @@ El directorio público debe ser `public`, nunca la raíz del repositorio. Copie 
 ```powershell
 php artisan test
 php vendor/bin/pint --test
+composer audit --locked
 ```
 
 PHPUnit utiliza SQLite en memoria, por lo que no altera `origen_tico`. La auditoría también ejecutó la batería completa contra una base MariaDB temporal de XAMPP. GitHub Actions repite pruebas, formato, caché de rutas/vistas y auditoría de dependencias en cada `push` o `pull request`.
+
+La revisión de seguridad actualizó Dompdf a 3.1.6 y dejó `composer audit --locked` sin avisos conocidos.
 
 ## Publicación en GitHub
 

@@ -66,8 +66,8 @@ Se agregó `tests/Feature/UsabilityTest.php` para impedir regresiones en:
 Resultado final en ambos motores:
 
 ```text
-SQLite en memoria: 47 pruebas, 226 aserciones, 0 fallos
-MariaDB de XAMPP:   47 pruebas, 226 aserciones, 0 fallos
+SQLite en memoria: 48 pruebas, 233 aserciones, 0 fallos
+MariaDB de XAMPP:   48 pruebas, 233 aserciones, 0 fallos
 Laravel Pint:       aprobado
 ```
 

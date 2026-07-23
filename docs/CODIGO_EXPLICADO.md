@@ -193,6 +193,7 @@ Bloquea el pedido en una transacción, aplica el flujo pagado → preparación �
 ### `PdfService`
 
 - Renderiza una vista Blade con Dompdf.
+- Usa Dompdf 3.1.6, versión verificada sin avisos mediante `composer audit --locked`.
 - usa DejaVu Sans para soportar caracteres españoles y el símbolo de colón.
 - deshabilita recursos remotos.
 - entrega `Content-Type: application/pdf` y `nosniff`.

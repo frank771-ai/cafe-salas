@@ -422,7 +422,7 @@ def build_document() -> None:
         "de productos recientes, administración y reportes PDF. La implementación se inspira directamente "
         "en los temas de Laravel explicados en las sesiones 9 y 10 del curso."
     )
-    add_callout(document, "Resultado verificable", "La batería automatizada contiene 43 pruebas con 197 aserciones aprobadas tanto en SQLite como en MariaDB temporal de XAMPP. También se verificaron formato y cachés de producción.")
+    add_callout(document, "Resultado verificable", "La batería automatizada contiene 48 pruebas con 233 aserciones aprobadas tanto en SQLite como en MariaDB temporal de XAMPP. También se verificaron formato, cachés de producción y dependencias.")
 
     document.add_heading("2. Tecnologías", level=1)
     add_table(document, ["Capa", "Tecnología y propósito"], [
@@ -430,7 +430,7 @@ def build_document() -> None:
         ["Base principal", "MariaDB/MySQL de XAMPP, visible y administrable desde phpMyAdmin."],
         ["Pruebas", "SQLite en memoria para aislamiento y compatibilidad con la consigna."],
         ["Frontend", "Blade, HTML5, Bootstrap 5.3, CSS responsive y JavaScript."],
-        ["PDF", "Dompdf para factura y ventas por mes o cliente."],
+        ["PDF", "Dompdf 3.1.6 para factura y ventas por mes o cliente."],
         ["Calidad", "PHPUnit, Laravel Pint y GitHub Actions."],
     ], [2200, 7160])
 
@@ -447,6 +447,20 @@ def build_document() -> None:
         add_bullet(document, step, numbered=True)
     document.add_paragraph("Como alternativa, phpMyAdmin puede importar database/sql/origen_tico.sql. El respaldo contiene esquema y datos de demostración.")
     add_callout(document, "Apache de XAMPP", "Si se usa un VirtualHost, el DocumentRoot debe apuntar a la carpeta public. El ejemplo deployment/apache-vhost.conf.example evita exponer .env o vendor.")
+
+    document.add_heading("Comprobación con SQLite", level=2)
+    document.add_paragraph(
+        "La demostración principal utiliza MariaDB de XAMPP, pero la consigna escrita menciona SQLite. "
+        "El sistema completo puede ejecutarse con ese motor sin modificar origen_tico."
+    )
+    for step in [
+        "Respaldar el entorno con Copy-Item .env .env.backup.",
+        "Copiar .env.sqlite.example a .env con el parámetro -Force.",
+        "Crear database/database.sqlite si todavía no existe.",
+        "Ejecutar php artisan key:generate, php artisan migrate --seed y php artisan serve.",
+        "Restaurar .env.backup al terminar y ejecutar php artisan optimize:clear.",
+    ]:
+        add_bullet(document, step, numbered=True)
 
     document.add_heading("4. Arquitectura MVC", level=1)
     for label, text in [
@@ -482,7 +496,8 @@ def build_document() -> None:
         "Registro, login, logout, perfil editable e historial paginado.",
         "Catálogo por categorías, detalle, imágenes, búsqueda, precios y ordenamiento.",
         "Carrito en sesión con agregar, actualizar y eliminar.",
-        "IVA de 13 %, envío de CRC 2.500 y envío gratis desde CRC 30.000.",
+        "IVA de 13 %, envío de CRC 2.500 y envío gratis desde CRC 20.000.",
+        "Chocolate oscuro 82 % y caja de las ocho regiones cafetaleras de Costa Rica.",
         "Tarjeta y PayPal simulados; confirmación, factura y seguimiento único.",
         "Cookie cifrada con hasta seis productos vistos durante 30 días.",
         "Panel administrativo, inventario bajo y estados de pedido.",
@@ -502,6 +517,7 @@ def build_document() -> None:
         ["Carrera de inventario", "Transacción de base y validación final antes del descuento."],
         ["Navegador", "CSP, anti-frame, nosniff, Referrer Policy y páginas privadas sin caché."],
         ["Transporte", "HTTPS forzado en producción, HSTS y cookie Secure en el perfil productivo."],
+        ["Dependencias", "Dompdf 3.1.6 y composer audit sin avisos conocidos."],
     ], [2600, 6760])
     add_callout(document, "Pasarela académica", "No se realizan cargos reales. Una pasarela productiva exige credenciales del comercio, webhooks y cumplimiento del proveedor.")
 
@@ -509,7 +525,7 @@ def build_document() -> None:
     add_table(document, ["Suite", "Cobertura"], [
         ["CartTotalsTest", "IVA, envío y envío gratis."],
         ["AuthenticationTest", "Registro, hash, login, logout y validaciones."],
-        ["CatalogAndCookieTest", "Filtros, cookie y XSS."],
+        ["CatalogAndCookieTest", "Filtros, cookie, XSS y datos reales del catálogo."],
         ["CartTest", "Altas, cambios, bajas, total e inventario."],
         ["CheckoutTest", "Pago, seguimiento, inventario, privacidad y autorización."],
         ["EndToEndPurchaseTest", "Registro hasta factura e historial en una sesión."],
@@ -528,7 +544,7 @@ def build_document() -> None:
         (5, "Login y logout", "Sesión segura y limitación de intentos."),
         (6, "Perfil e historial", "Edición y pedidos paginados."),
         (7, "Categorías", "Modelo y relación Eloquent."),
-        (8, "Detalles e imágenes", "Ocho productos con SVG local."),
+        (8, "Detalles e imágenes", "Ocho productos con fotografías locales."),
         (9, "Búsqueda y filtros", "Nombre, categoría, precio y orden."),
         (10, "Carrito", "Agregar, actualizar y eliminar."),
         (11, "Impuesto y envío", "IVA 13 % y reglas verificadas."),
@@ -537,13 +553,13 @@ def build_document() -> None:
         (14, "Confirmación y seguimiento", "Números únicos."),
         (15, "Reportes", "PDF mensual y por cliente."),
         (16, "PHP y base", "Laravel + MySQL/phpMyAdmin; SQLite en pruebas."),
-        (17, "Frontend", "Bootstrap, CSS propio y SVG."),
+        (17, "Frontend", "Bootstrap, CSS propio y fotografías reales."),
         (18, "Validación", "Servidor, CSRF y mensajes."),
         (19, "Cookie", "recent_products cifrada."),
         (20, "Mostrar recientes", "Sección visible en inicio."),
         (21, "Código completo", "Fuente, SQL, pruebas y docs."),
         (22, "Documentación", "README, MD y este DOCX."),
-        (23, "Pruebas unitarias", "43 pruebas, 197 aserciones; SQLite y MariaDB."),
+        (23, "Pruebas unitarias", "48 pruebas, 233 aserciones; SQLite y MariaDB."),
         (24, "Exposición", "Guion preparado; asistencia humana."),
         (25, "Funciones especificadas", "Trazadas en esta matriz."),
         (26, "Responsive y UX", "Validado en escritorio y móvil."),
@@ -552,11 +568,18 @@ def build_document() -> None:
         (29, "Pregunta docente 1", "Banco de respuestas preparado."),
         (30, "Pregunta docente 2", "Banco de respuestas preparado."),
         (31, "Pregunta docente 3", "Banco de respuestas preparado."),
-        (32, "GitHub", "Git, .gitignore y workflow de CI; asociar remoto del equipo."),
+        (32, "GitHub", "Repositorio Byroncha1323/origen-tico, .gitignore y workflow de CI."),
     ]
     add_table(document, ["N.", "Criterio", "Evidencia"], [[str(n), item, evidence] for n, item, evidence in rubric], [650, 3300, 5410])
 
     document.add_heading("11. Exposición y operación", level=1)
+    add_callout(
+        document,
+        "Prevención de sanciones",
+        "No responder al menos el 50 % de las preguntas puede anular hasta el 75 % del valor del proyecto. "
+        "Cada integrante debe comprender y demostrar su módulo. La asistencia de Codex se declara y se acompaña "
+        "con adaptación, pruebas, historial Git y documentación; ocultarla no demuestra autoría.",
+    )
     document.add_heading("Recorrido sugerido", level=2)
     for item in [
         "Presentar MVC y tablas en phpMyAdmin.",
@@ -575,7 +598,8 @@ def build_document() -> None:
     ], [2100, 4500, 2760])
 
     document.add_heading("Límites externos", level=2)
-    document.add_paragraph("La asistencia y respuestas de la exposición son responsabilidad del equipo. Publicar en un hosting, crear el repositorio remoto y emitir el certificado requieren las cuentas del equipo; el código, workflow y procedimiento están preparados.")
+    document.add_paragraph("La asistencia y respuestas de la exposición son responsabilidad del equipo. El repositorio privado ya está publicado. El hosting público y el certificado todavía requieren una cuenta, un dominio y la configuración final del equipo.")
+    add_callout(document, "Antes de entregar", "Reemplazar [Reemplazar por nombres completos] en la portada y sustituir NombreEstudiantes en el nombre del ZIP por los nombres o apellidos reales del equipo.")
 
     document.core_properties.title = "Origen Tico - Documentación del proyecto final"
     document.core_properties.subject = "Tienda virtual Laravel con XAMPP y phpMyAdmin"

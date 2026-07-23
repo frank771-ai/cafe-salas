@@ -75,6 +75,27 @@ class CatalogAndCookieTest extends TestCase
             ->assertDontSee('Vistos recientemente');
     }
 
+    public function test_seeded_catalog_uses_the_real_chocolate_percentage_and_all_regions(): void
+    {
+        $this->seed();
+
+        $this->assertDatabaseHas('products', [
+            'name' => 'Chocolate oscuro 82%',
+            'slug' => 'chocolate-oscuro-82',
+        ]);
+        $this->assertDatabaseHas('products', [
+            'name' => 'Caja de las 8 regiones cafetaleras',
+            'slug' => 'caja-regiones-costa-rica',
+        ]);
+
+        $this->get(route('products.index'))
+            ->assertOk()
+            ->assertSee('Chocolate oscuro 82%')
+            ->assertSee('Caja de las 8 regiones cafetaleras')
+            ->assertDontSee('Chocolate oscuro 70%')
+            ->assertDontSee('Caja cuatro orígenes');
+    }
+
     private function product(Category $category, string $name, string $slug, int $price): Product
     {
         return Product::create([
