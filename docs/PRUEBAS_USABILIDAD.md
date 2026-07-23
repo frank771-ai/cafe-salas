@@ -31,7 +31,7 @@ Las pruebas se hicieron sobre la aplicación Laravel realmente ejecutada en `htt
 | El carrito anunciaba siempre “artículos” | Frase incorrecta con una unidad | Singular/plural dinámico | Aprobada: “Carrito con 1 artículo” |
 | La navegación activa dependía solo del color | Faltaba contexto semántico | Se agregó `aria-current="page"` | Aprobada por prueba de HTML |
 | Cantidad y existencia estaban visualmente próximas, pero no asociadas | Un lector de pantalla podía omitir el límite disponible | `aria-describedby` enlaza la cantidad con el inventario | Aprobada por prueba de HTML |
-| El catálogo decía “1 resultados” | Error de redacción visible | Singular/plural dinámico | Aprobada: “1 resultado” |
+| El catálogo decía “1 resultados” | Error de redacción visible | Singular/plural dinámico y lenguaje comercial más natural | Aprobada: “1 producto” |
 
 ## Validaciones humanas comprobadas
 
@@ -50,8 +50,8 @@ Las pruebas se hicieron sobre la aplicación Laravel realmente ejecutada en `htt
 - Encabezado principal único y jerarquía de títulos comprensible en las pantallas recorridas.
 - Imágenes de producto con texto alternativo; decoraciones marcadas para no generar ruido.
 - Estados de éxito anunciados de forma no intrusiva y errores agrupados como alerta.
-- La captura de escritorio de 1265 × 712 no mostró superposición, texto cortado ni acciones ocultas.
-- El CSS contiene adaptaciones específicas para tableta (991,98 px), teléfono (575,98 px) y preferencia de movimiento reducido. Antes de una publicación comercial se recomienda repetir en teléfonos físicos y con un lector de pantalla real; esta revisión no pretende ser una certificación WCAG formal.
+- La portada y el catálogo se comprobaron en 1440 × 900 y 390 × 844; no presentaron superposición, texto cortado, acciones ocultas ni desplazamiento horizontal.
+- La interfaz renovada mantiene foco visible, contraste legible, texto alternativo y adaptaciones específicas para tableta, teléfono y preferencia de movimiento reducido. Antes de una publicación comercial se recomienda repetir en teléfonos físicos y con un lector de pantalla real; esta revisión no pretende ser una certificación WCAG formal.
 
 ## Evidencia automatizada
 

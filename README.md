@@ -10,6 +10,7 @@ Proyecto final de **Tecnologías y Sistemas Web II (ITI-523)**. Es una tienda de
 - Compra con tarjeta o PayPal simulados, factura, confirmación y seguimiento.
 - Cookie cifrada con los seis productos vistos recientemente.
 - Administración de pedidos, inventario bajo y reportes PDF por mes o cliente.
+- Identidad visual editorial propia: tonos de cafetal, cacao y crema, fotografía original, tarjetas de producto limpias y diseño responsive.
 - Protecciones de Laravel contra CSRF, XSS e inyección SQL; contraseñas con hash y sesiones cifradas.
 - 47 pruebas automatizadas con 226 verificaciones en SQLite y MariaDB, incluidas validación Luhn, protección CSRF y regresiones de usabilidad.
 

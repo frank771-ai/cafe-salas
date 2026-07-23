@@ -40,7 +40,7 @@ class UsabilityTest extends TestCase
 
         $this->get(route('products.index', ['max_price' => 9000]))
             ->assertOk()
-            ->assertSee('1 resultado')
+            ->assertSee('1 producto')
             ->assertDontSee('Caja de regalo');
     }
 

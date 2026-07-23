@@ -2,20 +2,29 @@
 @section('title', 'Catálogo')
 
 @section('content')
-    <header class="page-header">
+    <header class="page-header catalog-header">
         <div class="container">
-            <span class="eyebrow text-light">Hecho y seleccionado en Costa Rica</span>
-            <h1>Catálogo</h1>
-            <p>Busque por nombre, categoría y rango de precio.</p>
+            <span class="eyebrow text-light">Colección Origen Tico</span>
+            <h1>Café y detalles<br>con historia.</h1>
+            <p>Calidad costarricense elegida para regalar, preparar y disfrutar todos los días.</p>
         </div>
     </header>
 
     <div class="container section-space">
-        <div class="row g-4">
+        <nav class="catalog-chips" aria-label="Categorías del catálogo">
+            <a class="{{ request('category') ? '' : 'active' }}" href="{{ route('products.index') }}">Todo</a>
+            @foreach ($categories as $category)
+                <a class="{{ request('category') === $category->slug ? 'active' : '' }}" href="{{ route('products.index', ['category' => $category->slug]) }}">{{ $category->name }}</a>
+            @endforeach
+        </nav>
+
+        <div class="row g-5">
             {{-- Los parámetros GET pueden compartirse por URL y se conservan al paginar. --}}
             <aside class="col-lg-3">
                 <form method="GET" action="{{ route('products.index') }}" class="filter-panel" aria-label="Filtros del catálogo">
-                    <h2 class="h5">Filtrar productos</h2>
+                    <span class="eyebrow">A su gusto</span>
+                    <h2 class="h4">Encuentre lo suyo</h2>
+                    <p class="filter-intro">Combine nombre, categoría y presupuesto.</p>
                     <div class="mb-3">
                         <label class="form-label" for="q">Nombre o descripción</label>
                         <input class="form-control" id="q" name="q" value="{{ request('q') }}" maxlength="80" placeholder="Ej. Tarrazú">
@@ -54,8 +63,8 @@
             </aside>
 
             <section class="col-lg-9" aria-live="polite">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="h5 mb-0">{{ $products->total() }} {{ $products->total() === 1 ? 'resultado' : 'resultados' }}</h2>
+                <div class="catalog-results-heading">
+                    <h2 class="h4 mb-0">{{ $products->total() }} {{ $products->total() === 1 ? 'producto' : 'productos' }}</h2>
                     <span class="text-secondary small">Página {{ $products->currentPage() }} de {{ $products->lastPage() }}</span>
                 </div>
                 <div class="row g-4">

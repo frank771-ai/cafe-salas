@@ -9,19 +9,20 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/premium.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
 <body>
     @php($cartCount = app(\App\Services\CartService::class)->count())
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
-    <div class="announcement">Envío gratis en compras superiores a ₡30.000 · Pago de demostración protegido</div>
+    <div class="announcement">Envío gratis desde ₡30.000 <span aria-hidden="true">·</span> Seleccionado con orgullo en Costa Rica</div>
 
     {{-- Navegación compartida; adapta opciones según autenticación y rol. --}}
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" aria-label="Navegación principal">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" aria-label="Navegación principal">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
                 <span class="brand-mark" aria-hidden="true">OT</span>
-                <span>Origen <strong>Tico</strong></span>
+                <span class="brand-copy"><strong>Origen Tico</strong><small>Café & artesanía costarricense</small></span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menú">
                 <span class="navbar-toggler-icon"></span>
@@ -42,12 +43,12 @@
                         Carrito <span class="badge rounded-pill">{{ $cartCount }}</span>
                     </a>
                     @guest
-                        <a class="btn btn-outline-light" href="{{ route('login') }}">Ingresar</a>
-                        <a class="btn btn-cream" href="{{ route('register') }}">Crear cuenta</a>
+                        <a class="btn nav-account" href="{{ route('login') }}">Ingresar</a>
+                        <a class="btn btn-brand" href="{{ route('register') }}">Crear cuenta</a>
                     @else
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button class="btn btn-outline-light" type="submit">Salir</button>
+                            <button class="btn nav-account" type="submit">Salir</button>
                         </form>
                     @endguest
                 </div>
@@ -86,25 +87,27 @@
         @yield('content')
     </main>
 
-    <footer class="site-footer mt-5">
+    <footer class="site-footer">
         <div class="container py-5">
             <div class="row g-4">
-                <div class="col-md-5">
-                    <h2 class="h4">Origen Tico</h2>
-                    <p class="mb-0">Proyecto académico de comercio electrónico inspirado en productores y caficultores costarricenses.</p>
+                <div class="col-lg-5">
+                    <div class="footer-brand"><span class="brand-mark" aria-hidden="true">OT</span><h2>Origen Tico</h2></div>
+                    <p class="footer-intro">Calidad con raíz costarricense: café, detalles artesanales y experiencias elegidas para disfrutar sin complicaciones.</p>
                 </div>
-                <div class="col-md-3">
-                    <h2 class="h6 text-uppercase">Comprar</h2>
-                    <a href="{{ route('products.index') }}">Catálogo</a><br>
-                    <a href="{{ route('cart.index') }}">Carrito</a>
+                <div class="col-6 col-lg-3">
+                    <h2 class="footer-title">Explorar</h2>
+                    <nav class="footer-links" aria-label="Enlaces de compra">
+                        <a href="{{ route('products.index') }}">Catálogo</a>
+                        <a href="{{ route('cart.index') }}">Carrito</a>
+                        @auth<a href="{{ route('profile.show') }}">Mi perfil</a>@endauth
+                    </nav>
                 </div>
-                <div class="col-md-4">
-                    <h2 class="h6 text-uppercase">Compra segura</h2>
-                    <p class="small mb-0">Contraseñas cifradas, sesiones protegidas y datos de tarjeta no almacenados.</p>
+                <div class="col-6 col-lg-4">
+                    <h2 class="footer-title">Nuestra promesa</h2>
+                    <p class="small mb-0">Precio transparente, sesiones protegidas y datos de tarjeta que nunca se almacenan.</p>
                 </div>
             </div>
-            <hr>
-            <p class="small mb-0">© {{ date('Y') }} Origen Tico · Demostración educativa UTN</p>
+            <div class="footer-bottom"><span>© {{ date('Y') }} Origen Tico</span><span>Demostración educativa UTN · Costa Rica</span></div>
         </div>
     </footer>
 
