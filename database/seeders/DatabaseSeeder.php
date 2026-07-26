@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         // La cuenta administradora se crea de forma explícita porque is_admin no es asignable masivamente.
         User::forceCreate([
-            'name' => 'Administración Origen Tico',
-            'email' => 'admin@origentico.test',
+            'name' => 'Administración Café Salas',
+            'email' => 'admin@cafesalas.test',
             'phone' => '8888-0001',
             'address' => 'San José, Costa Rica',
             'is_admin' => true,
@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
         $customer = User::create([
             'name' => 'María Fernanda Solano',
-            'email' => 'cliente@origentico.test',
+            'email' => 'cliente@cafesalas.test',
             'phone' => '8888-1122',
             'address' => 'Barrio Escalante, San José, casa 12',
             'password' => 'Cliente123!',
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
 
         $secondCustomer = User::create([
             'name' => 'Carlos Vargas Mora',
-            'email' => 'carlos@origentico.test',
+            'email' => 'carlos@cafesalas.test',
             'phone' => '8700-4400',
             'address' => 'San Rafael, Heredia, 200 m norte de la iglesia',
             'password' => 'Cliente123!',
@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
 
         $order = Order::create([
             'user_id' => $user->id,
-            'order_number' => 'OT-'.$date->format('Ymd').'-'.$suffix,
+            'order_number' => 'CS-'.$date->format('Ymd').'-'.$suffix,
             'tracking_number' => 'CRPOST-'.strtoupper(substr(hash('sha256', $suffix), 0, 10)),
             'status' => $date->isBefore(now()->subWeeks(2)) ? 'delivered' : 'preparing',
             'customer_name' => $user->name,

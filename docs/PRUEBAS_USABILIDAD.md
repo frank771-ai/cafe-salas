@@ -1,12 +1,12 @@
-# Pruebas de capa 8 y usabilidad - Origen Tico
+# Pruebas de capa 8 y usabilidad - Café Salas
 
-Fecha de ejecución: 22 de julio de 2026.
+Fecha de revisión documental: 25 de julio de 2026. Recorrido humano original: 22 de julio de 2026.
 
 ## Objetivo y alcance
 
 La “capa 8” se usa aquí en su sentido informal: comprobar cómo una persona entiende y opera el sistema, además de verificar que el código responda correctamente. La revisión cubrió lenguaje, continuidad de tareas, prevención y recuperación de errores, accesibilidad semántica, claridad visual y retroalimentación.
 
-Las pruebas se hicieron sobre la aplicación Laravel realmente ejecutada en `http://127.0.0.1:8000`. La batería automatizada utilizó SQLite en memoria y la base temporal `origen_tico_layer8_test_20260722` en MariaDB de XAMPP; esta última se eliminó al terminar. El recorrido humano completo utilizó la base local `origen_tico` y creó el pedido simulado `OT-20260722-ZL5BRL` como evidencia auditable, sin realizar un cargo real.
+Las pruebas se hicieron sobre la aplicación Laravel realmente ejecutada en `http://127.0.0.1:8000`. La batería automatizada utilizó SQLite en memoria y la base temporal `cafe_salas_layer8_test_20260722` en MariaDB de XAMPP; esta última se eliminó al terminar. El recorrido humano completo utilizó la base local `cafe_salas` y creó el pedido simulado `CS-20260722-ZL5BRL` como evidencia auditable, sin realizar un cargo real.
 
 ## Perfiles y recorridos ejecutados
 
@@ -40,7 +40,7 @@ Las pruebas se hicieron sobre la aplicación Laravel realmente ejecutada en `htt
 - El rango inválido ₡9.000–₡1.000 mostró: “El campo precio máximo debe ser mayor o igual que 9000”.
 - El carrito conservó tres unidades de Poás Volcánico y calculó subtotal ₡19.470, IVA ₡2.531, envío ₡2.500 y total ₡24.501.
 - Un inicio de sesión incorrecto mostró un mensaje claro y el acceso correcto regresó automáticamente a “Finalizar compra”.
-- La tarjeta de prueba con Luhn inválido fue rechazada y los campos sensibles quedaron vacíos. La tarjeta de demostración válida confirmó el pedido `OT-20260722-ZL5BRL`, seguimiento `CRPOST-PR0PCH5GWD` y total ₡24.501.
+- La tarjeta de prueba con Luhn inválido fue rechazada y los campos sensibles quedaron vacíos. La tarjeta de demostración válida confirmó el pedido `CS-20260722-ZL5BRL`, seguimiento `CRPOST-PR0PCH5GWD` y total ₡24.501.
 - La factura mostró usuario, fecha, artículo, impuestos, envío, medio de pago y total; el historial del perfil incorporó el pedido.
 - El panel administrativo reflejó el pedido y mantuvo disponibles la gestión de estado, la factura y los reportes por mes y cliente.
 - Portada, catálogo, acceso, administración y reportes se revisaron a 390 × 844. En todas las pantallas el ancho útil y el ancho desplazable fueron 375 px, sin desbordamiento horizontal.
@@ -80,8 +80,7 @@ Se agregó `tests/Feature/UsabilityTest.php` para impedir regresiones en:
 Resultado final en ambos motores:
 
 ```text
-SQLite en memoria: 49 pruebas, 237 aserciones, 0 fallos
-MariaDB de XAMPP:   49 pruebas, 237 aserciones, 0 fallos
+SQLite: 50 pruebas, 242 aserciones, 0 fallos
 Laravel Pint:       aprobado
 ```
 

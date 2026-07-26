@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Origen Tico: café de especialidad y productos artesanales de Costa Rica.">
-    <title>@yield('title', 'Inicio') | {{ config('app.name') }}</title>
+    <meta name="description" content="Café Salas — Tienda virtual de café y productos costarricenses.">
+    <title>{{ config('app.name') }} — @yield('title', 'Tienda virtual de café y productos costarricenses')</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -21,8 +21,8 @@
     <nav class="navbar navbar-expand-lg navbar-light sticky-top" aria-label="Navegación principal">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
-                <span class="brand-mark" aria-hidden="true">OT</span>
-                <span class="brand-copy"><strong>Origen Tico</strong><small>Café y artesanía costarricense</small></span>
+                <span class="brand-mark" aria-hidden="true">CS</span>
+                <span class="brand-copy"><strong>Café Salas</strong><small>Café y artesanía costarricense</small></span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menú">
                 <span class="navbar-toggler-icon"></span>
@@ -91,7 +91,7 @@
         <div class="container py-5">
             <div class="row g-4">
                 <div class="col-lg-5">
-                    <div class="footer-brand"><span class="brand-mark" aria-hidden="true">OT</span><h2>Origen Tico</h2></div>
+                    <div class="footer-brand"><span class="brand-mark" aria-hidden="true">CS</span><h2>Café Salas</h2></div>
                     <p class="footer-intro">Calidad con raíz costarricense: café, detalles artesanales y experiencias elegidas para disfrutar sin complicaciones.</p>
                 </div>
                 <div class="col-6 col-lg-3">
@@ -107,7 +107,7 @@
                     <p class="small mb-0">Precio transparente, sesiones protegidas y datos de tarjeta que nunca se almacenan.</p>
                 </div>
             </div>
-            <div class="footer-bottom">© {{ date('Y') }} Origen Tico</div>
+            <div class="footer-bottom">© {{ date('Y') }} Café Salas</div>
         </div>
     </footer>
 

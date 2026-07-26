@@ -73,7 +73,7 @@ class CheckoutController extends Controller
             $now = now();
             $order = Order::create([
                 'user_id' => $request->user()->id,
-                'order_number' => 'OT-'.$now->format('Ymd').'-'.Str::upper(Str::random(6)),
+                'order_number' => 'CS-'.$now->format('Ymd').'-'.Str::upper(Str::random(6)),
                 'tracking_number' => 'CRPOST-'.Str::upper(Str::random(10)),
                 'status' => 'paid',
                 'customer_name' => $data['customer_name'],

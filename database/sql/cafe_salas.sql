@@ -10,9 +10,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `origen_tico` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `cafe_salas` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
 
-USE `origen_tico`;
+USE `cafe_salas`;
 DROP TABLE IF EXISTS `cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -200,7 +200,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,2,'OT-20260720-113A6C','CRPOST-2CDAFA3CBA','preparing','María Fernanda Solano','cliente@origentico.test','8888-1122','Barrio Escalante, San José, casa 12',17000,2210,2500,21710,'2026-07-20 20:09:21','2026-07-20 20:09:21','2026-07-20 20:09:21'),(2,2,'OT-20260619-F4EF80','CRPOST-55EE692942','delivered','María Fernanda Solano','cliente@origentico.test','8888-1122','Barrio Escalante, San José, casa 12',9800,1274,2500,13574,'2026-06-19 20:09:21','2026-06-19 20:09:21','2026-06-19 20:09:21'),(3,3,'OT-20260714-DEEFFE','CRPOST-5C4E269EAB','preparing','Carlos Vargas Mora','carlos@origentico.test','8700-4400','San Rafael, Heredia, 200 m norte de la iglesia',18900,2457,2500,23857,'2026-07-14 20:09:21','2026-07-14 20:09:21','2026-07-14 20:09:21');
+INSERT INTO `orders` VALUES (1,2,'CS-20260720-113A6C','CRPOST-2CDAFA3CBA','preparing','María Fernanda Solano','cliente@cafesalas.test','8888-1122','Barrio Escalante, San José, casa 12',17000,2210,2500,21710,'2026-07-20 20:09:21','2026-07-20 20:09:21','2026-07-20 20:09:21'),(2,2,'CS-20260619-F4EF80','CRPOST-55EE692942','delivered','María Fernanda Solano','cliente@cafesalas.test','8888-1122','Barrio Escalante, San José, casa 12',9800,1274,2500,13574,'2026-06-19 20:09:21','2026-06-19 20:09:21','2026-06-19 20:09:21'),(3,3,'CS-20260714-DEEFFE','CRPOST-5C4E269EAB','preparing','Carlos Vargas Mora','carlos@cafesalas.test','8700-4400','San Rafael, Heredia, 200 m norte de la iglesia',18900,2457,2500,23857,'2026-07-14 20:09:21','2026-07-14 20:09:21','2026-07-14 20:09:21');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `password_reset_tokens`;
@@ -315,7 +315,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Administración Origen Tico','admin@origentico.test','8888-0001','San José, Costa Rica',1,NULL,'$2y$12$k6quGlduo48y5IDSw7tHheInbQ0hAqs788RON6uyUqKoEZD777Dha',NULL,'2026-07-22 20:09:20','2026-07-22 20:09:21'),(2,'María Fernanda Solano','cliente@origentico.test','8888-1122','Barrio Escalante, San José, casa 12',0,NULL,'$2y$12$wDM6CoDPDmHcfAe4Jpz8BOQev702yziGJmxf.TZVS22a9/Hpk/3wW',NULL,'2026-07-22 20:09:20','2026-07-22 20:09:20'),(3,'Carlos Vargas Mora','carlos@origentico.test','8700-4400','San Rafael, Heredia, 200 m norte de la iglesia',0,NULL,'$2y$12$kEU2k3iTZzhbr3Y/hLuGm.hosoOa2auhMJutfY0oZfqr9mrnmovv.',NULL,'2026-07-22 20:09:21','2026-07-22 20:09:21');
+INSERT INTO `users` VALUES (1,'Administración Café Salas','admin@cafesalas.test','8888-0001','San José, Costa Rica',1,NULL,'$2y$12$k6quGlduo48y5IDSw7tHheInbQ0hAqs788RON6uyUqKoEZD777Dha',NULL,'2026-07-22 20:09:20','2026-07-22 20:09:21'),(2,'María Fernanda Solano','cliente@cafesalas.test','8888-1122','Barrio Escalante, San José, casa 12',0,NULL,'$2y$12$wDM6CoDPDmHcfAe4Jpz8BOQev702yziGJmxf.TZVS22a9/Hpk/3wW',NULL,'2026-07-22 20:09:20','2026-07-22 20:09:20'),(3,'Carlos Vargas Mora','carlos@cafesalas.test','8700-4400','San Rafael, Heredia, 200 m norte de la iglesia',0,NULL,'$2y$12$kEU2k3iTZzhbr3Y/hLuGm.hosoOa2auhMJutfY0oZfqr9mrnmovv.',NULL,'2026-07-22 20:09:21','2026-07-22 20:09:21');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

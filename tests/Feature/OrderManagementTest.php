@@ -70,7 +70,7 @@ class OrderManagementTest extends TestCase
         ]);
         $order = Order::create([
             'user_id' => $customer->id,
-            'order_number' => 'OT-TEST-001',
+            'order_number' => 'CS-TEST-001',
             'tracking_number' => 'CRPOST-TEST001',
             'status' => 'paid',
             'customer_name' => $customer->name,

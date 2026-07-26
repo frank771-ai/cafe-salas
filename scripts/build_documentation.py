@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "docs" / "Documentacion_Origen_Tico.docx"
+OUTPUT = ROOT / "docs" / "Documentacion_Cafe_Salas.docx"
 ASSET_DIR = ROOT / "tmp" / "docx" / "final_assets"
 
 FOREST = RGBColor(31, 104, 71)
@@ -107,7 +107,7 @@ def add_page_field(paragraph) -> None:
 def configure_header_footer(document: Document) -> None:
     for section in document.sections:
         header = section.header.paragraphs[0]
-        header.text = "ORIGEN TICO  |  Proyecto Final ITI-523"
+        header.text = "CAFÉ SALAS  |  Proyecto Final ITI-523"
         header.alignment = WD_ALIGN_PARAGRAPH.RIGHT
         set_run_font(header.runs[0], size=8.5, color=MUTED, bold=True)
 
@@ -274,15 +274,15 @@ def build_diagrams() -> tuple[Path, Path]:
     draw = ImageDraw.Draw(image)
     title_font = find_font(36)
     box_font = find_font(24)
-    draw.text((55, 35), "Proceso de compra", font=title_font, fill="#1f6847")
+    draw.text((55, 35), "Casos de uso principales", font=title_font, fill="#1f6847")
     boxes = [
-        (60, 130, 350, 260, "Explorar y\nfiltrar"),
-        (440, 130, 730, 260, "Detalle y cookie\nde recientes"),
-        (820, 130, 1110, 260, "Carrito y\ntotales"),
-        (1150, 375, 1440, 505, "Registro o\ninicio de sesión"),
-        (820, 620, 1110, 750, "Entrega y\nmétodo de pago"),
-        (440, 620, 730, 750, "Transacción e\ninventario"),
-        (60, 620, 350, 750, "Confirmación,\nseguimiento y factura"),
+        (60, 130, 350, 260, "Visitante\nExplorar y filtrar"),
+        (440, 130, 730, 260, "Registrarse e\niniciar sesión"),
+        (820, 130, 1110, 260, "Cliente\nGestionar carrito"),
+        (1150, 375, 1440, 505, "Comprar con tarjeta\no PayPal simulado"),
+        (820, 620, 1110, 750, "Ver confirmación,\nseguimiento y factura"),
+        (440, 620, 730, 750, "Perfil e historial\nde pedidos"),
+        (60, 620, 350, 750, "Administrador\nPedidos y reportes"),
     ]
     for left, top, right, bottom, label in boxes:
         draw.rounded_rectangle((left, top, right, bottom), radius=22, fill="#e7f0e9", outline="#1f6847", width=4)
@@ -358,13 +358,13 @@ def add_cover(document: Document) -> None:
     title = document.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     title.paragraph_format.space_after = Pt(8)
-    run = title.add_run("ORIGEN TICO")
+    run = title.add_run("CAFÉ SALAS")
     set_run_font(run, size=31, color=FOREST, bold=True)
 
     subtitle = document.add_paragraph()
     subtitle.alignment = WD_ALIGN_PARAGRAPH.CENTER
     subtitle.paragraph_format.space_after = Pt(80)
-    run = subtitle.add_run("Tienda virtual con Laravel, XAMPP y phpMyAdmin")
+    run = subtitle.add_run("Tienda virtual de café y productos costarricenses")
     set_run_font(run, size=15, color=DARK)
 
     meta = document.add_table(rows=5, cols=2)
@@ -378,8 +378,8 @@ def add_cover(document: Document) -> None:
     data = [
         ("Curso", "Tecnologías y Sistemas Web II"),
         ("Docente", "Ing. Milena Vargas Blanco"),
-        ("Participantes", "[Reemplazar por nombres completos]"),
-        ("Fecha", "Agosto de 2026"),
+        ("Participantes", "Byron Chacón y Franklin Castillo"),
+        ("Fecha", "25 y 26 de agosto de 2026"),
     ]
     for index, (label, value) in enumerate(data, start=1):
         meta.cell(index, 0).text = label
@@ -407,7 +407,7 @@ def build_document() -> None:
 
     document.add_heading("Contenido", level=1)
     toc_items = [
-        "1. Resumen y alcance", "2. Tecnologías", "3. Instalación con XAMPP y phpMyAdmin",
+        "1. Resumen y alcance", "2. Tecnologías", "3. Instalación principal con SQLite",
         "4. Arquitectura MVC", "5. Modelo de datos", "6. Proceso de compra",
         "7. Funcionalidades y reglas", "8. Seguridad", "9. Pruebas",
         "10. Matriz de cumplimiento", "11. Exposición y operación",
@@ -417,50 +417,36 @@ def build_document() -> None:
 
     document.add_heading("1. Resumen y alcance", level=1)
     document.add_paragraph(
-        "Origen Tico es una tienda virtual académica para café y productos artesanales costarricenses. "
+        "Café Salas es una tienda virtual académica para café y productos artesanales costarricenses. "
         "Incluye autenticación, perfil, catálogo, búsqueda, carrito, compra, factura, seguimiento, cookies "
         "de productos recientes, administración y reportes PDF. La implementación se inspira directamente "
         "en los temas de Laravel explicados en las sesiones 9 y 10 del curso."
     )
-    add_callout(document, "Resultado verificable", "La batería automatizada contiene 49 pruebas con 237 aserciones aprobadas tanto en SQLite como en MariaDB temporal de XAMPP. También se verificaron formato, cachés de producción y dependencias.")
+    add_callout(document, "Resultado verificable", "La batería automatizada se ejecuta con SQLite aislado. El resultado exacto de la revisión final consta en docs/PRUEBAS.md, junto con formato, compilación y auditoría de dependencias.")
 
     document.add_heading("2. Tecnologías", level=1)
     add_table(document, ["Capa", "Tecnología y propósito"], [
         ["Backend", "PHP 8.2 y Laravel 12 bajo el patrón MVC."],
-        ["Base principal", "MariaDB/MySQL de XAMPP, visible y administrable desde phpMyAdmin."],
-        ["Pruebas", "SQLite en memoria para aislamiento y compatibilidad con la consigna."],
+        ["Base principal", "SQLite mediante database/database.sqlite, como exige la consigna."],
+        ["Base alternativa", "MariaDB/MySQL de XAMPP, administrable desde phpMyAdmin."],
         ["Frontend", "Blade, HTML5, Bootstrap 5.3, CSS responsive y JavaScript."],
         ["PDF", "Dompdf 3.1.6 para factura y ventas por mes o cliente."],
         ["Calidad", "PHPUnit, Laravel Pint y GitHub Actions."],
     ], [2200, 7160])
 
-    document.add_heading("3. Instalación con XAMPP y phpMyAdmin", level=1)
+    document.add_heading("3. Instalación principal con SQLite", level=1)
     for step in [
-        "Iniciar Apache y MySQL desde el panel de XAMPP.",
-        "Abrir http://localhost/phpmyadmin y crear origen_tico con utf8mb4_unicode_ci.",
         "Ejecutar composer install dentro de la carpeta del proyecto.",
         "Copiar .env.example a .env y ejecutar php artisan key:generate.",
-        "Verificar en .env: mysql, 127.0.0.1, puerto 3306, base origen_tico y usuario root.",
-        "Ejecutar php artisan migrate --seed.",
+        "Crear database/database.sqlite si todavía no existe.",
+        "Verificar DB_CONNECTION=sqlite y DB_DATABASE=database/database.sqlite.",
+        "Ejecutar php artisan migrate:fresh --seed.",
         "Ejecutar php artisan serve y abrir http://127.0.0.1:8000.",
     ]:
         add_bullet(document, step, numbered=True)
-    document.add_paragraph("Como alternativa, phpMyAdmin puede importar database/sql/origen_tico.sql. El respaldo contiene esquema y datos de demostración.")
+    document.add_heading("MariaDB/MySQL como alternativa", level=2)
+    document.add_paragraph("Para una demostración opcional con XAMPP, copie .env.mysql.example a .env, cree cafe_salas en phpMyAdmin y ejecute las migraciones. También puede importar database/sql/cafe_salas.sql.")
     add_callout(document, "Apache de XAMPP", "Si se usa un VirtualHost, el DocumentRoot debe apuntar a la carpeta public. El ejemplo deployment/apache-vhost.conf.example evita exponer .env o vendor.")
-
-    document.add_heading("Comprobación con SQLite", level=2)
-    document.add_paragraph(
-        "La demostración principal utiliza MariaDB de XAMPP, pero la consigna escrita menciona SQLite. "
-        "El sistema completo puede ejecutarse con ese motor sin modificar origen_tico."
-    )
-    for step in [
-        "Respaldar el entorno con Copy-Item .env .env.backup.",
-        "Copiar .env.sqlite.example a .env con el parámetro -Force.",
-        "Crear database/database.sqlite si todavía no existe.",
-        "Ejecutar php artisan key:generate, php artisan migrate --seed y php artisan serve.",
-        "Restaurar .env.backup al terminar y ejecutar php artisan optimize:clear.",
-    ]:
-        add_bullet(document, step, numbered=True)
 
     document.add_heading("4. Arquitectura MVC", level=1)
     for label, text in [
@@ -488,7 +474,7 @@ def build_document() -> None:
     ], [2500, 6860])
 
     document.add_heading("6. Proceso de compra", level=1)
-    add_figure(document, use_case_diagram, "Figura 2. Flujo del caso de uso de compra.", "Flujo desde explorar productos hasta factura y seguimiento.")
+    add_figure(document, use_case_diagram, "Figura 2. Casos de uso principales.", "Acciones del visitante, cliente y administrador en Café Salas.")
     document.add_paragraph("Actores: visitante, cliente, administrador y pasarela simulada. El cliente puede completar el pedido solo después de autenticarse; el administrador no interviene en el pago, pero controla estados y reportes.")
 
     document.add_heading("7. Funcionalidades y reglas", level=1)
@@ -533,12 +519,12 @@ def build_document() -> None:
         ["SecurityHardeningTest", "CSP, HSTS, permisos y caché privada."],
         ["ProfileAndReportsTest", "Perfil, historial, rol admin y ambos PDF."],
     ], [2700, 6660])
-    document.add_paragraph("Comandos: php artisan test y php vendor/bin/pint --test. PHPUnit usa SQLite en memoria y no modifica origen_tico.")
+    document.add_paragraph("Comandos: php artisan test y php vendor/bin/pint --test. PHPUnit usa SQLite en memoria y no modifica cafe_salas.")
 
     document.add_heading("10. Matriz de cumplimiento", level=1)
     rubric = [
         (1, "Entrega a tiempo", "Paquete preparado; carga a cargo del equipo."),
-        (2, "Carpeta ProyectoFinalNombreEstudiantes", "ZIP generado con el formato solicitado."),
+        (2, "Carpeta comprimida identificada", "ProyectoFinal-ByronChacon-FranklinCastillo.zip."),
         (3, "Autenticación y usuarios", "AuthController, sesiones y middleware."),
         (4, "Registro", "Formulario, validación y prueba."),
         (5, "Login y logout", "Sesión segura y limitación de intentos."),
@@ -552,14 +538,14 @@ def build_document() -> None:
         (13, "Tarjeta y PayPal", "Opciones validadas y simuladas."),
         (14, "Confirmación y seguimiento", "Números únicos."),
         (15, "Reportes", "PDF mensual y por cliente."),
-        (16, "PHP y base", "Laravel + MySQL/phpMyAdmin; SQLite en pruebas."),
+        (16, "PHP y SQLite", "Laravel/PHP con SQLite como base principal."),
         (17, "Frontend", "Bootstrap, CSS propio y fotografías reales."),
         (18, "Validación", "Servidor, CSRF y mensajes."),
         (19, "Cookie", "recent_products cifrada."),
         (20, "Mostrar recientes", "Sección visible en inicio."),
         (21, "Código completo", "Fuente, SQL, pruebas y docs."),
         (22, "Documentación", "README, MD y este DOCX."),
-        (23, "Pruebas unitarias", "49 pruebas, 237 aserciones; SQLite y MariaDB."),
+        (23, "Pruebas automatizadas", "PHPUnit con SQLite aislado y reporte reproducible."),
         (24, "Exposición", "Guion preparado; asistencia humana."),
         (25, "Funciones especificadas", "Trazadas en esta matriz."),
         (26, "Responsive y UX", "Validado en escritorio y móvil."),
@@ -568,7 +554,7 @@ def build_document() -> None:
         (29, "Pregunta docente 1", "Banco de respuestas preparado."),
         (30, "Pregunta docente 2", "Banco de respuestas preparado."),
         (31, "Pregunta docente 3", "Banco de respuestas preparado."),
-        (32, "GitHub", "Repositorio Byroncha1323/origen-tico, .gitignore y workflow de CI."),
+        (32, "GitHub", "Repositorio real documentado; no se inventa un enlace cafe-salas."),
     ]
     add_table(document, ["N.", "Criterio", "Evidencia"], [[str(n), item, evidence] for n, item, evidence in rubric], [650, 3300, 5410])
 
@@ -582,7 +568,7 @@ def build_document() -> None:
     )
     document.add_heading("Recorrido sugerido", level=2)
     for item in [
-        "Presentar MVC y tablas en phpMyAdmin.",
+        "Presentar MVC, migraciones y tablas SQLite.",
         "Filtrar productos y mostrar cookie de recientes.",
         "Modificar carrito y explicar cálculos.",
         "Completar compra simulada y descargar factura.",
@@ -593,18 +579,18 @@ def build_document() -> None:
 
     document.add_heading("Credenciales de demostración", level=2)
     add_table(document, ["Rol", "Correo", "Clave"], [
-        ["Administrador", "admin@origentico.test", "Admin123!"],
-        ["Cliente", "cliente@origentico.test", "Cliente123!"],
+        ["Administrador", "admin@cafesalas.test", "Admin123!"],
+        ["Cliente", "cliente@cafesalas.test", "Cliente123!"],
     ], [2100, 4500, 2760])
 
     document.add_heading("Límites externos", level=2)
-    document.add_paragraph("La asistencia y respuestas de la exposición son responsabilidad del equipo. El repositorio privado ya está publicado. El hosting público y el certificado todavía requieren una cuenta, un dominio y la configuración final del equipo.")
-    add_callout(document, "Antes de entregar", "Reemplazar [Reemplazar por nombres completos] en la portada y sustituir NombreEstudiantes en el nombre del ZIP por los nombres o apellidos reales del equipo.")
+    document.add_paragraph("La asistencia y las respuestas de la exposición son responsabilidad de Byron Chacón y Franklin Castillo. El repositorio privado real es github.com/Byroncha1323/cafe-salas. El hosting y un certificado público requieren cuenta, dominio y autorización del equipo.")
+    add_callout(document, "Uso responsable de herramientas", "Para apoyar la revisión se utilizó OpenAI Codex. Byron Chacón y Franklin Castillo deben revisar, comprender, adaptar y poder explicar el código, las pruebas y la documentación antes de entregar.")
 
-    document.core_properties.title = "Origen Tico - Documentación del proyecto final"
-    document.core_properties.subject = "Tienda virtual Laravel con XAMPP y phpMyAdmin"
-    document.core_properties.author = "Equipo Origen Tico"
-    document.core_properties.keywords = "Laravel, XAMPP, phpMyAdmin, tienda virtual, ITI-523"
+    document.core_properties.title = "Café Salas — Tienda virtual de café y productos costarricenses"
+    document.core_properties.subject = "Proyecto final de Tecnologías y Sistemas Web II, ITI-523"
+    document.core_properties.author = "Byron Chacón y Franklin Castillo"
+    document.core_properties.keywords = "Laravel, PHP, SQLite, Café Salas, tienda virtual, ITI-523"
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     document.save(OUTPUT)
 

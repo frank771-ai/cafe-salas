@@ -1,98 +1,90 @@
-# Origen Tico - Tienda virtual Laravel
+# Café Salas — Tienda virtual de café y productos costarricenses
 
-Proyecto final de **Tecnologías y Sistemas Web II (ITI-523)**. Es una tienda de café y productos artesanales costarricenses construida con Laravel 12, PHP 8.2, Blade, Bootstrap, JavaScript y MariaDB/MySQL de XAMPP. Incluye un perfil alternativo SQLite para las pruebas automatizadas y para cubrir literalmente la opción indicada en la consigna.
+Proyecto final de **Tecnologías y Sistemas Web II (ITI-523)**.
+
+- Participantes: Byron Chacón y Franklin Castillo.
+- Docente: Ing. Milena Vargas Blanco.
+- Exposición: 25 y 26 de agosto de 2026.
+- Nombre técnico: `cafe_salas`.
+- Identificador para URL o repositorio: `cafe-salas`.
 
 ## Funcionalidades
 
-- Registro, inicio/cierre de sesión y perfil editable con historial de pedidos.
-- Catálogo por categorías, detalle, imágenes, búsqueda, precio y ordenamiento.
-- Carrito en sesión: agregar, actualizar y eliminar; IVA de 13 %, envío y envío gratis.
-- Compra con tarjeta o PayPal simulados, factura, confirmación y seguimiento.
-- Cookie cifrada con los seis productos vistos recientemente.
-- Administración de pedidos, inventario bajo y reportes PDF por mes o cliente.
-- Identidad visual editorial propia: tonos de cafetal, cacao y crema, fotografías seleccionadas por el equipo, tarjetas de producto limpias y diseño responsive.
-- Protecciones de Laravel contra CSRF, XSS e inyección SQL; contraseñas con hash y sesiones cifradas.
-- 49 pruebas automatizadas con 237 verificaciones en SQLite y MariaDB, incluidas validación Luhn, protección CSRF y regresiones del catálogo, la seguridad y la usabilidad.
+Incluye registro, inicio y cierre de sesión, perfil editable, historial de pedidos, catálogo categorizado, búsqueda y filtros, productos vistos recientemente mediante cookie, carrito, impuestos y envío automáticos, compra simulada con tarjeta o PayPal, factura web/PDF, seguimiento, administración de pedidos e inventario y reportes PDF.
 
-## Instalación recomendada: XAMPP y phpMyAdmin
+El frontend utiliza Blade, Bootstrap, CSS y JavaScript. El backend utiliza PHP 8.2, Laravel 12 y **SQLite como base principal**. MariaDB/MySQL de XAMPP se conserva únicamente como alternativa.
 
-Requisitos: XAMPP con PHP 8.2 o superior, extensiones `pdo_mysql`, `mbstring`, `openssl`, `dom`, `fileinfo`; Composer 2.
+## Instalación principal con SQLite
 
-1. Abra el panel de XAMPP e inicie **Apache** y **MySQL**.
-2. Abra [http://localhost/phpmyadmin](http://localhost/phpmyadmin), seleccione **Nueva** y cree `origen_tico` con cotejamiento `utf8mb4_unicode_ci`.
-3. Abra una terminal en la carpeta del proyecto y ejecute:
+Requisitos: PHP 8.2 o superior con `pdo_sqlite`, Composer 2 y Node.js/npm.
 
 ```powershell
 composer install
 Copy-Item .env.example .env
 php artisan key:generate
-php artisan migrate --seed
-php artisan serve
-```
-
-4. Visite [http://127.0.0.1:8000](http://127.0.0.1:8000).
-
-Alternativa de phpMyAdmin: en **Importar**, seleccione `database/sql/origen_tico.sql`. Ese respaldo ya contiene esquema y datos demostrativos; no ejecute `migrate --seed` después de importarlo.
-
-### Modo SQLite para comprobar la consigna escrita
-
-El proyecto también puede ejecutarse completamente con SQLite, no solo en las pruebas. Si la docente solicita demostrar ese motor, detenga el servidor y ejecute:
-
-```powershell
-Copy-Item .env .env.backup
-Copy-Item .env.sqlite.example .env -Force
 if (-not (Test-Path database/database.sqlite)) {
     New-Item -ItemType File -Path database/database.sqlite
 }
-php artisan key:generate
-php artisan migrate --seed
+php artisan migrate:fresh --seed
+npm install
+npm run build
 php artisan serve
 ```
 
-Para volver a XAMPP, restaure `Copy-Item .env.backup .env -Force` y ejecute `php artisan optimize:clear`. El archivo SQLite y ambos `.env` permanecen excluidos de GitHub.
+Abra `http://127.0.0.1:8000`. El archivo SQLite local y `.env` están excluidos de Git; una instalación nueva reconstruye todo mediante migraciones y seeders.
 
 ### Usuarios de demostración
 
 | Rol | Correo | Contraseña |
 |---|---|---|
-| Administrador | `admin@origentico.test` | `Admin123!` |
-| Cliente | `cliente@origentico.test` | `Cliente123!` |
+| Administrador | `admin@cafesalas.test` | `Admin123!` |
+| Cliente | `cliente@cafesalas.test` | `Cliente123!` |
 
-## Ejecutar con Apache de XAMPP
+Son credenciales académicas. No deben reutilizarse en producción.
 
-El directorio público debe ser `public`, nunca la raíz del repositorio. Copie y adapte `deployment/apache-vhost.conf.example` dentro de `C:\xampp\apache\conf\extra\httpd-vhosts.conf`, agregue `127.0.0.1 origentico.test` al archivo `hosts` de Windows y reinicie Apache. Luego use `http://origentico.test`.
+## Alternativa XAMPP/MariaDB
 
-## Pruebas y calidad
+1. Inicie Apache y MySQL en XAMPP.
+2. Cree `cafe_salas` en phpMyAdmin.
+3. Copie `.env.mysql.example` como `.env`.
+4. Ejecute `php artisan key:generate` y `php artisan migrate:fresh --seed`.
+
+También se entrega `database/sql/cafe_salas.sql` como respaldo importable. SQLite sigue siendo la configuración oficial y predeterminada.
+
+## Verificación
 
 ```powershell
+php artisan optimize:clear
+php artisan route:list
 php artisan test
 php vendor/bin/pint --test
-composer audit --locked
+composer audit
+npm run build
 ```
 
-PHPUnit utiliza SQLite en memoria, por lo que no altera `origen_tico`. La auditoría también ejecutó la batería completa contra una base MariaDB temporal de XAMPP. GitHub Actions repite pruebas, formato, caché de rutas/vistas y auditoría de dependencias en cada `push` o `pull request`.
+Consulte el resultado exacto de la última ejecución en `docs/PRUEBAS.md` y el mapeo de los 32 criterios en `docs/RUBRICA.md`.
 
-La revisión de seguridad actualizó Dompdf a 3.1.6 y dejó `composer audit --locked` sin avisos conocidos.
+## Seguridad
 
-## Publicación en GitHub
+Se aplican validaciones del servidor, CSRF, escape de Blade, consultas parametrizadas con Eloquent, hash de contraseñas, regeneración de sesión, control por rol, autorización por propietario, cabeceras defensivas y transacciones para proteger inventario. La pasarela es simulada: no realiza cargos y no almacena número completo ni CVV.
 
-Repositorio privado: [github.com/Byroncha1323/origen-tico](https://github.com/Byroncha1323/origen-tico).
-
-La entrega contiene historial Git, workflow de Actions, Dependabot, `.gitignore` y política de seguridad. Para que la docente pueda revisarlo mientras sea privado, agréguela como colaboradora desde **Settings → Collaborators**. Nunca confirme `.env`, contraseñas, `APP_KEY` ni tarjetas reales.
+En producción se debe configurar `APP_ENV=production`, `APP_DEBUG=false`, HTTPS, cookies seguras, correo real, respaldos, monitoreo y una pasarela certificada.
 
 ## Documentación
 
-- `docs/MANUAL_TECNICO.md`: instalación, arquitectura, base de datos, uso y seguridad.
-- `docs/PRUEBAS.md`: estrategia, casos y comandos de prueba.
-- `docs/RUBRICA.md`: evidencia de los 32 criterios evaluativos.
-- `docs/GUIA_EXPOSICION.md`: recorrido de demostración y preguntas probables.
-- `docs/CODIGO_EXPLICADO.md`: explicación archivo por archivo, flujos y decisiones.
-- `docs/REVISION_Y_ATRIBUCION.md`: adaptación, atribución y lista de estudio.
-- `docs/AUDITORIA_LANZAMIENTO.md`: pruebas de lanzamiento, riesgos y lista previa a producción.
-- `docs/PRUEBAS_USABILIDAD.md`: recorridos de capa 8, hallazgos, correcciones y evidencia de navegador.
-- `docs/ESTRATEGIA_COMERCIAL.md`: paleta, precios comparados, fotografías y principios éticos de conversión.
-- `docs/Documentacion_Origen_Tico.docx`: manual formal para entregar.
+- `docs/Documentacion_Cafe_Salas.docx`: documento técnico final.
+- `docs/MANUAL_TECNICO.md`: arquitectura, instalación y diagramas.
+- `docs/CODIGO_EXPLICADO.md`: explicación del código por capa.
+- `docs/PRUEBAS.md`: pruebas automatizadas y manuales.
+- `docs/PRUEBAS_USABILIDAD.md`: revisión de capa 8 y usabilidad.
+- `docs/GUIA_EXPOSICION.md`: distribución de exposición y preguntas.
+- `docs/RUBRICA.md`: matriz de los 32 criterios.
+- `docs/REVISION_Y_ATRIBUCION.md`: revisión académica y atribución.
 
-## Nota sobre pagos y HTTPS
+## GitHub
 
-La pasarela es una simulación académica: valida los datos, aprueba la operación y **nunca almacena** el número completo ni el CVV. Además, los campos de tarjeta no se conservan en la sesión cuando falla una validación. Un cobro real requiere credenciales del comercio y un proveedor como PayPal/Stripe. En producción, la simulación queda bloqueada por defecto, Laravel fuerza HTTPS y `deployment/apache-ssl-vhost.conf.example` muestra la configuración con certificado.
+Repositorio privado real: [github.com/Byroncha1323/cafe-salas](https://github.com/Byroncha1323/cafe-salas). No se confirma `.env`, `APP_KEY`, bases con datos personales, credenciales ni el ZIP destinado a la plataforma universitaria.
+
+## Atribución responsable
+
+Para apoyar la revisión, adaptación y documentación se utilizó OpenAI Codex. Byron Chacón y Franklin Castillo son responsables de revisar, comprender, probar y poder explicar el resultado. La asistencia no sustituye su autoría académica ni debe ocultarse.

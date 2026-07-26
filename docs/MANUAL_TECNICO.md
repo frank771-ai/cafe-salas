@@ -1,50 +1,41 @@
-# Manual técnico y de uso - Origen Tico
+# Manual técnico y de uso - Café Salas
 
 ## 1. Descripción
 
-Origen Tico es una aplicación de comercio electrónico para café y productos artesanales de Costa Rica. Resuelve el recorrido completo: descubrimiento del producto, autenticación, carrito, cálculo de totales, pago académico, factura, seguimiento e historial. El panel administrativo permite observar ventas, actualizar estados y producir reportes PDF.
+Café Salas es una aplicación de comercio electrónico para café y productos artesanales de Costa Rica. Resuelve el recorrido completo: descubrimiento del producto, autenticación, carrito, cálculo de totales, pago académico, factura, seguimiento e historial. El panel administrativo permite observar ventas, actualizar estados y producir reportes PDF.
 
 El diseño del código sigue los conceptos estudiados en las sesiones 9 y 10: arquitectura MVC, rutas nombradas y agrupadas, controladores, vistas Blade, migraciones, Eloquent ORM, relaciones, `$fillable`, casts, validación, middleware y paginación.
 
 ## 2. Tecnologías
 
 - Backend: PHP 8.2 y Laravel 12.
-- Base principal: MariaDB 10.4/MySQL de XAMPP, administrada con phpMyAdmin.
-- Base de pruebas/perfil alternativo: SQLite.
+- Base principal y de pruebas: SQLite.
+- Base alternativa: MariaDB 10.4/MySQL de XAMPP, administrada con phpMyAdmin.
 - Frontend: HTML5 semántico, Blade, Bootstrap 5.3, CSS responsive y JavaScript.
 - Servidor: Apache de XAMPP o servidor de desarrollo Artisan.
 - PDF: Dompdf sin acceso a recursos remotos.
 - Pruebas: PHPUnit integrado con Laravel.
 
-## 3. Instalación con XAMPP y phpMyAdmin
+## 3. Instalación principal con SQLite
 
-1. Instale XAMPP y Composer.
-2. En el panel de XAMPP inicie Apache y MySQL.
-3. Ingrese a `http://localhost/phpmyadmin`.
-4. Cree `origen_tico` con `utf8mb4_unicode_ci`.
-5. En la terminal del proyecto ejecute `composer install`.
-6. Copie `.env.example` a `.env` y ejecute `php artisan key:generate`.
-7. Revise en `.env`: conexión `mysql`, host `127.0.0.1`, puerto `3306`, base `origen_tico`, usuario `root` y contraseña vacía para la configuración XAMPP predeterminada.
-8. Ejecute `php artisan migrate --seed`.
-9. Ejecute `php artisan serve` y abra `http://127.0.0.1:8000`.
+1. Instale PHP 8.2 o superior, Composer y Node.js.
+2. En la terminal del proyecto ejecute `composer install`.
+3. Copie `.env.example` a `.env` y ejecute `php artisan key:generate`.
+4. Cree `database/database.sqlite` si todavía no existe.
+5. Verifique `DB_CONNECTION=sqlite` y `DB_DATABASE=database/database.sqlite`.
+6. Ejecute `php artisan migrate:fresh --seed`.
+7. Ejecute `npm install` y `npm run build`.
+8. Ejecute `php artisan serve` y abra `http://127.0.0.1:8000`.
 
-Puede sustituir los pasos 3, 4 y 8 importando `database/sql/origen_tico.sql` en phpMyAdmin.
+### Alternativa XAMPP/MariaDB
 
-### Comprobación completa con SQLite
-
-Aunque la demostración principal utiliza XAMPP y phpMyAdmin, la consigna escrita menciona SQLite. Para demostrar ese motor sin modificar la base MariaDB:
-
-1. Detenga el servidor y respalde el entorno con `Copy-Item .env .env.backup`.
-2. Ejecute `Copy-Item .env.sqlite.example .env -Force`.
-3. Si no existe, cree el archivo con `New-Item -ItemType File -Path database/database.sqlite`.
-4. Ejecute `php artisan key:generate`, `php artisan migrate --seed` y `php artisan serve`.
-5. Al terminar, restaure `Copy-Item .env.backup .env -Force` y ejecute `php artisan optimize:clear`.
+Copie `.env.mysql.example` a `.env`, cree `cafe_salas` en phpMyAdmin y ejecute las migraciones. También puede importar `database/sql/cafe_salas.sql`. Esta alternativa no sustituye la configuración oficial SQLite.
 
 `.gitignore` excluye el archivo SQLite, `.env` y `.env.backup`, por lo que ninguna configuración local se publica.
 
 ## 4. Ejecución directa en Apache
 
-Use `deployment/apache-vhost.conf.example`. Cambie la ruta del proyecto y agregue el bloque al archivo `C:\xampp\apache\conf\extra\httpd-vhosts.conf`. Verifique que `httpd.conf` incluya `httpd-vhosts.conf` y que `mod_rewrite` esté activo. Agregue `127.0.0.1 origentico.test` a `C:\Windows\System32\drivers\etc\hosts` y reinicie Apache.
+Use `deployment/apache-vhost.conf.example`. Cambie la ruta del proyecto y agregue el bloque al archivo `C:\xampp\apache\conf\extra\httpd-vhosts.conf`. Verifique que `httpd.conf` incluya `httpd-vhosts.conf` y que `mod_rewrite` esté activo. Agregue `127.0.0.1 cafe-salas.test` a `C:\Windows\System32\drivers\etc\hosts` y reinicie Apache.
 
 El `DocumentRoot` debe terminar en `/public`. Esto evita que `.env`, `vendor` y otros archivos privados sean accesibles desde el navegador.
 
@@ -145,7 +136,7 @@ flowchart TD
 
 ### Administrador
 
-1. Ingrese con `admin@origentico.test` / `Admin123!`.
+1. Ingrese con `admin@cafesalas.test` / `Admin123!`.
 2. Abra Administración para revisar métricas e inventario bajo.
 3. Cambie el estado de un pedido y guarde.
 4. Abra Reportes PDF y seleccione mes o cliente.

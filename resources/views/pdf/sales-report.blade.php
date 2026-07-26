@@ -56,6 +56,6 @@
         </table>
     @endif
 
-    <p class="footer">Origen Tico · Reporte administrativo confidencial · Los pedidos cancelados se excluyen de los totales.</p>
+    <p class="footer">Café Salas · Reporte administrativo confidencial · Los pedidos cancelados se excluyen de los totales.</p>
 </body>
 </html>

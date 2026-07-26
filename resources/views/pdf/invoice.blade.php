@@ -24,7 +24,7 @@
 <body>
     <table style="width: 100%">
         <tr>
-            <td><div class="brand">ORIGEN TICO</div><div>Factura de compra</div></td>
+            <td><div class="brand">CAFÉ SALAS</div><div>Factura de compra</div></td>
             <td class="meta"><strong>{{ $order->order_number }}</strong><br>{{ $order->purchased_at->format('d/m/Y H:i') }}<br>ID usuario: {{ $order->user_id }}</td>
         </tr>
     </table>
@@ -59,7 +59,7 @@
 
     <p class="footer">
         Pago {{ $order->payment->method === 'card' ? 'con tarjeta terminada en '.$order->payment->last_four : 'mediante PayPal' }}
-        · Referencia {{ $order->payment->provider_reference }} · Documento generado por Origen Tico.
+        · Referencia {{ $order->payment->provider_reference }} · Documento generado por Café Salas.
     </p>
 </body>
 </html>

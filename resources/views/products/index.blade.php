@@ -4,7 +4,7 @@
 @section('content')
     <header class="page-header catalog-header">
         <div class="container">
-            <span class="eyebrow text-light">Colección Origen Tico</span>
+            <span class="eyebrow text-light">Colección Café Salas</span>
             <h1>Café y detalles<br>con historia.</h1>
             <p>Calidad costarricense elegida para regalar, preparar y disfrutar todos los días.</p>
         </div>

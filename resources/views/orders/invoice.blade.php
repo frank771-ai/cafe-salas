@@ -7,9 +7,9 @@
         <div class="invoice web-invoice">
             <header class="invoice-header">
                 <div>
-                    <span class="brand-mark">OT</span>
+                    <span class="brand-mark">CS</span>
                     <h1 class="h3 mt-3">Factura de compra</h1>
-                    <p class="mb-0">Origen Tico · Costa Rica</p>
+                    <p class="mb-0">Café Salas · Costa Rica</p>
                 </div>
                 <div class="text-md-end">
                     <span class="eyebrow">Pedido</span>

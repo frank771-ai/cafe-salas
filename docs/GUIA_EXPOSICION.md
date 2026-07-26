@@ -1,6 +1,12 @@
 # Guía de exposición y preguntas
 
-## Demostración sugerida (10 minutos)
+## Demostración sugerida y participación equilibrada
+
+Participantes: **Byron Chacón** y **Franklin Castillo**. Fechas: **25 y 26 de agosto de 2026**.
+
+- Byron presenta identidad del proyecto, arquitectura MVC, catálogo, cookies y carrito.
+- Franklin presenta autenticación, compra, SQLite, seguridad, administración y reportes.
+- Ambos ejecutan una prueba y responden preguntas sobre la parte del compañero.
 
 1. **Problema y arquitectura (1 min):** describir la tienda y mostrar carpetas MVC.
 2. **Catálogo (1 min):** categorías, búsqueda y filtros.
@@ -9,7 +15,7 @@
 5. **Autenticación/perfil (1 min):** registro, login e historial.
 6. **Compra (2 min):** tarjeta o PayPal, transacción, confirmación y factura.
 7. **Administración (1 min):** métricas, estados y reportes PDF.
-8. **phpMyAdmin (1 min):** relaciones y registros de pedido/pago.
+8. **SQLite (1 min):** migraciones, relaciones y registros de pedido/pago.
 9. **Seguridad/pruebas/GitHub (1 min):** ejecutar tests y mostrar Actions.
 
 ## Preparación obligatoria ante las sanciones
@@ -56,7 +62,7 @@ No. Se validan solo en la solicitud y se descartan. El pago conserva referencia 
 
 ### ¿MySQL o SQLite?
 
-La ejecución de clase usa MariaDB/MySQL de XAMPP y phpMyAdmin. Las migraciones son portables y PHPUnit usa SQLite en memoria para pruebas aisladas; también existe `.env.sqlite.example` por el requisito escrito.
+SQLite es la base principal porque así lo exige la consigna. Laravel accede mediante PDO/Eloquent y PHPUnit usa una base SQLite aislada. MariaDB/phpMyAdmin queda como alternativa mediante `.env.mysql.example`.
 
 ### ¿Cómo funciona la cookie reciente?
 

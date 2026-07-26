@@ -14,7 +14,7 @@ class ProfileAndReportsTest extends TestCase
     public function test_user_can_update_profile_and_see_order_history(): void
     {
         $this->seed();
-        $user = User::where('email', 'cliente@origentico.test')->firstOrFail();
+        $user = User::where('email', 'cliente@cafesalas.test')->firstOrFail();
 
         $this->actingAs($user)->patch(route('profile.update'), [
             'name' => 'María Solano',
@@ -32,8 +32,8 @@ class ProfileAndReportsTest extends TestCase
     public function test_only_admin_can_access_sales_reports(): void
     {
         $this->seed();
-        $customer = User::where('email', 'cliente@origentico.test')->firstOrFail();
-        $admin = User::where('email', 'admin@origentico.test')->firstOrFail();
+        $customer = User::where('email', 'cliente@cafesalas.test')->firstOrFail();
+        $admin = User::where('email', 'admin@cafesalas.test')->firstOrFail();
 
         $this->actingAs($customer)->get(route('admin.reports.index'))->assertForbidden();
         $this->actingAs($admin)->get(route('admin.reports.index'))->assertOk();
@@ -42,8 +42,8 @@ class ProfileAndReportsTest extends TestCase
     public function test_admin_can_download_monthly_and_customer_pdf_reports(): void
     {
         $this->seed();
-        $admin = User::where('email', 'admin@origentico.test')->firstOrFail();
-        $customer = User::where('email', 'cliente@origentico.test')->firstOrFail();
+        $admin = User::where('email', 'admin@cafesalas.test')->firstOrFail();
+        $customer = User::where('email', 'cliente@cafesalas.test')->firstOrFail();
 
         $this->actingAs($admin)->get(route('admin.reports.monthly', ['month' => now()->format('Y-m')]))
             ->assertOk()

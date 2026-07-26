@@ -23,7 +23,7 @@
             Require all granted
         </Directory>
 
-        ErrorLog "logs/origentico-ssl-error.log"
-        CustomLog "logs/origentico-ssl-access.log" combined
+        ErrorLog "logs/cafe-salas-ssl-error.log"
+        CustomLog "logs/cafe-salas-ssl-access.log" combined
     </VirtualHost>
 </IfModule>

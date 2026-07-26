@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "cafe-salas/cafe-salas",
     "type": "project",
-    "description": "Tienda virtual académica Origen Tico construida con Laravel.",
+    "description": "Café Salas — Tienda virtual de café y productos costarricenses construida con Laravel.",
     "keywords": ["laravel", "ecommerce", "costa-rica", "education"],
     "license": "MIT",
     "require": {

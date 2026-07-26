@@ -13,6 +13,18 @@ class UsabilityTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_public_identity_uses_cafe_salas_brand_and_exact_title(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee(
+                '<title>Café Salas — Tienda virtual de café y productos costarricenses</title>',
+                false
+            )
+            ->assertSee('Café Salas')
+            ->assertDontSee('Origen Tico');
+    }
+
     public function test_guest_returns_to_checkout_after_logging_in_from_the_cart(): void
     {
         $product = $this->product();
@@ -91,7 +103,7 @@ class UsabilityTest extends TestCase
         $this->get(route('login'))
             ->assertOk()
             ->assertDontSee('Acceso de demostración')
-            ->assertDontSee('admin@origentico.test')
+            ->assertDontSee('admin@cafesalas.test')
             ->assertDontSee('Admin123!');
     }
 

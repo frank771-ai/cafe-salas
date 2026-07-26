@@ -1,10 +1,10 @@
-# Auditoría de lanzamiento - Origen Tico
+# Auditoría de lanzamiento - Café Salas
 
-Fecha de revisión: 22 de julio de 2026.
+Fecha de revisión final: 25 de julio de 2026.
 
 ## Dictamen
 
-El proyecto está **apto para entrega y demostración académica**. La lógica se verificó con SQLite en memoria y con MariaDB real de XAMPP: **49 pruebas y 237 aserciones aprobadas en ambos motores**.
+El proyecto está **apto para entrega y demostración académica**. La lógica se verificó con SQLite: **50 pruebas y 242 aserciones aprobadas**.
 
 No debe anunciarse todavía como comercio productivo con cobros reales. Para salir al mercado faltan credenciales de una pasarela certificada, dominio/hosting, certificado público, correo transaccional, monitoreo y responsables de operación. Esos puntos dependen de cuentas externas y no pueden simularse honestamente.
 
@@ -63,4 +63,4 @@ composer validate --strict
 
 ## Relación con la rúbrica
 
-Los criterios técnicos 3 al 23, 25 al 28 y 32 cuentan con código y evidencia. El repositorio privado está publicado en `Byroncha1323/origen-tico` con workflow y Dependabot. Los criterios 1, 24 y 29 al 31 dependen de entrega, exposición y respuestas humanas. El criterio 16 menciona SQLite; por instrucción del equipo, MariaDB/phpMyAdmin es la base principal y SQLite se conserva como motor de pruebas compatible.
+Los criterios técnicos 3 al 23, 25 al 28 y 32 cuentan con código y evidencia. El repositorio privado real es `Byroncha1323/cafe-salas`. Los criterios 1, 24 y 29 al 31 dependen de entrega, exposición y respuestas humanas. SQLite es la base principal del criterio 16; MariaDB/phpMyAdmin es opcional.

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Café con origen')
+@section('title', 'Tienda virtual de café y productos costarricenses')
 
 @section('content')
     {{-- Las fotografías aportadas por el equipo conectan la compra con el origen humano del café. --}}
@@ -19,7 +19,7 @@
         </div>
     </section>
 
-    <section class="value-strip" aria-label="Compromisos de Origen Tico">
+    <section class="value-strip" aria-label="Compromisos de Café Salas">
         <div class="container">
             <div class="row g-0">
                 <div class="col-md-4 value-item">
@@ -77,7 +77,7 @@
                 <div class="col-lg-6 story-copy">
                     <span class="eyebrow">Del cafetal a su mesa</span>
                     <h2 id="story-title">Cuando conoce el origen, cada taza sabe mejor.</h2>
-                    <p class="lead">Detrás de una gran taza hay personas, experiencia y una cosecha cuidada. Origen Tico acerca ese trabajo a su mesa con productos de calidad y precios accesibles.</p>
+                    <p class="lead">Detrás de una gran taza hay personas, experiencia y una cosecha cuidada. Café Salas acerca ese trabajo a su mesa con productos de calidad y precios accesibles.</p>
                     <p>No vendemos lujo distante. Ofrecemos calidad real y cercana: la que se reconoce en el aroma, en el sabor y en las manos que la hacen posible.</p>
                     <div class="story-facts" aria-label="Datos de nuestra propuesta">
                         <div><strong>100%</strong><span>identidad costarricense</span></div>

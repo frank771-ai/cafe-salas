@@ -31,6 +31,7 @@ class CheckoutTest extends TestCase
             ])->assertRedirect();
 
         $order = $user->orders()->with('payment')->firstOrFail();
+        $this->assertStringStartsWith('CS-', $order->order_number);
         $this->assertStringStartsWith('CRPOST-', $order->tracking_number);
         $this->assertSame(11992, $order->total);
         $this->assertSame('1111', $order->payment->last_four);
@@ -78,7 +79,7 @@ class CheckoutTest extends TestCase
     public function test_customer_cannot_open_another_users_invoice(): void
     {
         $this->seed();
-        $owner = User::where('email', 'cliente@origentico.test')->firstOrFail();
+        $owner = User::where('email', 'cliente@cafesalas.test')->firstOrFail();
         $other = User::factory()->create();
 
         $this->actingAs($other)->get(route('orders.invoice', $owner->orders()->first()))->assertForbidden();

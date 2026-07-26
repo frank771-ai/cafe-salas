@@ -2,7 +2,7 @@
 
 ## Alcance
 
-La versión académica de Origen Tico recibe correcciones de seguridad en la rama principal del repositorio. No deben enviarse tarjetas, contraseñas, llaves, archivos `.env` ni datos personales reales en reportes públicos.
+La versión académica de Café Salas recibe correcciones de seguridad en la rama principal del repositorio. No deben enviarse tarjetas, contraseñas, llaves, archivos `.env` ni datos personales reales en reportes públicos.
 
 ## Reportar una vulnerabilidad
 

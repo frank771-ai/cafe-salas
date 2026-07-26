@@ -2,7 +2,7 @@
 # Sustituir PROJECT_PATH por la ruta absoluta real usando barras normales.
 
 <VirtualHost *:80>
-    ServerName origentico.test
+    ServerName cafe-salas.test
     DocumentRoot "PROJECT_PATH/public"
 
     <Directory "PROJECT_PATH/public">
@@ -11,6 +11,6 @@
         Require all granted
     </Directory>
 
-    ErrorLog "logs/origentico-error.log"
-    CustomLog "logs/origentico-access.log" combined
+    ErrorLog "logs/cafe-salas-error.log"
+    CustomLog "logs/cafe-salas-access.log" combined
 </VirtualHost>

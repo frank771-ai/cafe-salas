@@ -1,18 +1,18 @@
-# Código explicado - Origen Tico
+# Código explicado - Café Salas
 
 Esta guía describe la responsabilidad de cada archivo escrito o adaptado para el proyecto. Su objetivo es que cualquier integrante pueda explicar el sistema durante la exposición, ubicar una regla y modificarla sin adivinar.
 
 ## 1. Decisión de base de datos
 
-El enunciado original menciona SQLite. El equipo ejecutará la aplicación con **MariaDB/MySQL de XAMPP y phpMyAdmin**:
+La consigna exige SQLite y el proyecto lo utiliza como **base principal**:
 
-- `.env.example` configura `DB_CONNECTION=mysql`, host `127.0.0.1`, puerto `3306`, base `origen_tico` y usuario `root`.
-- `database/sql/origen_tico.sql` permite importar el esquema y los datos desde phpMyAdmin.
+- `.env.example` configura `DB_CONNECTION=sqlite` y `database/database.sqlite`.
+- `.env.mysql.example` y `database/sql/cafe_salas.sql` conservan MariaDB/phpMyAdmin solo como alternativa.
 - Las migraciones usan tipos compatibles con MariaDB y SQLite.
-- `.env.sqlite.example` ofrece un perfil alternativo para revisar la compatibilidad literal de la consigna.
+- `.env.sqlite.example` ofrece un perfil SQLite explícito equivalente al predeterminado.
 - `phpunit.xml` ejecuta las pruebas con SQLite en memoria para que nunca alteren la base de XAMPP.
 
-En otras palabras: **MySQL/MariaDB es la base principal de demostración; SQLite es el motor aislado de pruebas**.
+En otras palabras: **SQLite es la base principal y también el motor aislado de pruebas; MariaDB es opcional**.
 
 ## 2. Flujo MVC
 
@@ -339,8 +339,9 @@ php vendor/bin/pint --test
 
 ## 13. Archivos de entorno y despliegue
 
-- `.env.example`: XAMPP/MariaDB principal.
-- `.env.sqlite.example`: compatibilidad SQLite.
+- `.env.example`: SQLite principal.
+- `.env.sqlite.example`: perfil SQLite explícito.
+- `.env.mysql.example`: alternativa XAMPP/MariaDB.
 - `deployment/apache-vhost.conf.example`: DocumentRoot seguro hacia `public`.
 - `deployment/apache-ssl-vhost.conf.example`: redirección HTTPS y certificado.
 - `deployment/env.production.example`: variables seguras sin secretos reales.
