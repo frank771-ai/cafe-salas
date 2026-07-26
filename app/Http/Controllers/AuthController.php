@@ -26,14 +26,14 @@ class AuthController extends Controller
             'phone' => $request->filled('phone') ? trim((string) $request->input('phone')) : null,
         ]);
 
-        $data = $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:120'],
             'email' => ['required', 'email:rfc', 'max:255', 'unique:users,email'],
             'phone' => ['nullable', 'string', 'regex:/^[0-9+()\-\s]{8,30}$/'],
             'password' => ['required', 'string', 'max:255', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()],
         ]);
 
-        $user = User::create($data);
+        $user = User::create($validated);
         Auth::login($user);
         // Regenerar el identificador evita fijación de sesión después de autenticarse.
         $request->session()->regenerate();

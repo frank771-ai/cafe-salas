@@ -40,6 +40,22 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
+    /** Comprueba que una contraseña incorrecta no inicia sesión ni pierde el correo válido. */
+    public function test_login_rejects_incorrect_credentials(): void
+    {
+        $user = User::factory()->create(['password' => 'Cliente123!']);
+
+        $this->from(route('login'))->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'Incorrecta123!',
+        ])->assertRedirect(route('login'))
+            ->assertSessionHasErrors('email')
+            ->assertSessionHasInput('email', $user->email)
+            ->assertSessionMissing('password');
+
+        $this->assertGuest();
+    }
+
     public function test_registration_rejects_weak_passwords_and_duplicate_emails(): void
     {
         User::factory()->create(['email' => 'used@example.test']);

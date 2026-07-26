@@ -7,7 +7,9 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Services\CartService;
 use App\Services\SimulatedPaymentGateway;
+use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -43,66 +45,29 @@ class CheckoutController extends Controller
      */
     public function store(CheckoutRequest $request)
     {
-        $data = $request->validated();
+        $validated = $request->validated();
         $cart = $this->cart->raw();
 
         if ($cart === []) {
             return redirect()->route('products.index')->with('error', 'El carrito está vacío.');
         }
 
-        $order = DB::transaction(function () use ($request, $data, $cart) {
-            // Se vuelve a consultar y bloquear el inventario para evitar vender más unidades de las disponibles.
-            $products = Product::query()->whereIn('id', array_keys($cart))->lockForUpdate()->get()->keyBy('id');
-            $items = collect($cart)->map(function (int $quantity, int|string $productId) use ($products) {
-                $product = $products->get((int) $productId);
+        $order = DB::transaction(function () use ($request, $validated, $cart) {
+            $cartLines = $this->buildLockedCartLines($cart);
+            $totals = $this->cart->totals($cartLines);
+            $purchasedAt = now();
+            $order = $this->createOrder($request, $validated, $totals, $purchasedAt);
 
-                if (! $product || ! $product->is_active || $quantity > $product->stock) {
-                    throw ValidationException::withMessages([
-                        'cart' => 'El inventario cambió. Revise las cantidades del carrito e intente de nuevo.',
-                    ]);
-                }
-
-                return [
-                    'product' => $product,
-                    'quantity' => $quantity,
-                    'line_total' => $product->price * $quantity,
-                ];
-            })->values();
-
-            $totals = $this->cart->totals($items);
-            $now = now();
-            $order = Order::create([
-                'user_id' => $request->user()->id,
-                'order_number' => 'CS-'.$now->format('Ymd').'-'.Str::upper(Str::random(6)),
-                'tracking_number' => 'CRPOST-'.Str::upper(Str::random(10)),
-                'status' => 'paid',
-                'customer_name' => $data['customer_name'],
-                'customer_email' => $request->user()->email,
-                'customer_phone' => $data['customer_phone'],
-                'shipping_address' => $data['shipping_address'],
-                ...$totals,
-                'purchased_at' => $now,
-            ]);
-
-            foreach ($items as $item) {
-                $order->items()->create([
-                    'product_id' => $item['product']->id,
-                    'product_name' => $item['product']->name,
-                    'unit_price' => $item['product']->price,
-                    'quantity' => $item['quantity'],
-                    'line_total' => $item['line_total'],
-                ]);
-                $item['product']->decrement('stock', $item['quantity']);
-            }
+            $this->saveOrderLines($order, $cartLines);
 
             // La pasarela retorna solo la referencia y los últimos cuatro dígitos seguros para persistir.
             $order->payment()->create(
-                $this->paymentGateway->authorize($data, $totals['total'], $now)
+                $this->paymentGateway->authorize($validated, $totals['total'], $purchasedAt)
             );
 
             $request->user()->update([
-                'phone' => $data['customer_phone'],
-                'address' => $data['shipping_address'],
+                'phone' => $validated['customer_phone'],
+                'address' => $validated['shipping_address'],
             ]);
 
             return $order;
@@ -111,6 +76,83 @@ class CheckoutController extends Controller
         $this->cart->clear();
 
         return redirect()->route('orders.confirmation', $order)->with('success', '¡Pago aprobado y pedido confirmado!');
+    }
+
+    /**
+     * Relee y bloquea el inventario antes de cobrar para evitar sobreventas.
+     *
+     * @param  array<int, int>  $cart
+     * @return Collection<int, array{product: Product, quantity: int, line_total: int}>
+     */
+    private function buildLockedCartLines(array $cart): Collection
+    {
+        $products = Product::query()
+            ->whereIn('id', array_keys($cart))
+            ->lockForUpdate()
+            ->get()
+            ->keyBy('id');
+
+        return collect($cart)->map(function (int $quantity, int|string $productId) use ($products) {
+            $product = $products->get((int) $productId);
+
+            if (! $product || ! $product->is_active || $quantity > $product->stock) {
+                throw ValidationException::withMessages([
+                    'cart' => 'El inventario cambió. Revise las cantidades del carrito e intente de nuevo.',
+                ]);
+            }
+
+            return [
+                'product' => $product,
+                'quantity' => $quantity,
+                'line_total' => $product->price * $quantity,
+            ];
+        })->values();
+    }
+
+    /**
+     * Guarda la cabecera del pedido con los datos confirmados de la compra.
+     *
+     * @param  array<string, mixed>  $validated
+     * @param  array{subtotal: int, tax: int, shipping: int, total: int}  $totals
+     */
+    private function createOrder(
+        Request $request,
+        array $validated,
+        array $totals,
+        CarbonInterface $purchasedAt,
+    ): Order {
+        return Order::create([
+            'user_id' => $request->user()->id,
+            'order_number' => 'CS-'.$purchasedAt->format('Ymd').'-'.Str::upper(Str::random(6)),
+            'tracking_number' => 'CRPOST-'.Str::upper(Str::random(10)),
+            'status' => 'paid',
+            'customer_name' => $validated['customer_name'],
+            'customer_email' => $request->user()->email,
+            'customer_phone' => $validated['customer_phone'],
+            'shipping_address' => $validated['shipping_address'],
+            ...$totals,
+            'purchased_at' => $purchasedAt,
+        ]);
+    }
+
+    /**
+     * Guarda cada producto comprado y descuenta sus unidades del inventario.
+     *
+     * @param  Collection<int, array{product: Product, quantity: int, line_total: int}>  $cartLines
+     */
+    private function saveOrderLines(Order $order, Collection $cartLines): void
+    {
+        foreach ($cartLines as $cartLine) {
+            $order->items()->create([
+                'product_id' => $cartLine['product']->id,
+                'product_name' => $cartLine['product']->name,
+                'unit_price' => $cartLine['product']->price,
+                'quantity' => $cartLine['quantity'],
+                'line_total' => $cartLine['line_total'],
+            ]);
+
+            $cartLine['product']->decrement('stock', $cartLine['quantity']);
+        }
     }
 
     /** Muestra la confirmación únicamente al dueño del pedido o a un administrador. */

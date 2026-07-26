@@ -28,13 +28,13 @@ class ProfileController extends Controller
             'address' => $request->filled('address') ? trim((string) $request->input('address')) : null,
         ]);
 
-        $data = $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:120'],
             'email' => ['required', 'email:rfc', 'max:255', Rule::unique('users')->ignore($user->id)],
             'phone' => ['nullable', 'string', 'regex:/^[0-9+()\-\s]{8,30}$/'],
             'address' => ['nullable', 'string', 'max:500'],
         ]);
-        $user->update($data);
+        $user->update($validated);
 
         return back()->with('success', 'Perfil actualizado correctamente.');
     }

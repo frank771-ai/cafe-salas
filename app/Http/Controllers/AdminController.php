@@ -28,8 +28,8 @@ class AdminController extends Controller
     /** Valida el nuevo estado contra la lista permitida antes de actualizarlo. */
     public function updateStatus(Request $request, Order $order, OrderStatusService $statuses)
     {
-        $data = $request->validate(['status' => ['required', 'string', 'in:'.implode(',', Order::STATUSES)]]);
-        $statuses->transition($order, $data['status']);
+        $validated = $request->validate(['status' => ['required', 'string', 'in:'.implode(',', Order::STATUSES)]]);
+        $statuses->transition($order, $validated['status']);
 
         return back()->with('success', "Estado de {$order->order_number} actualizado.");
     }

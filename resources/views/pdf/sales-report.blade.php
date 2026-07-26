@@ -41,8 +41,8 @@
                         <td>{{ $order->purchased_at->format('d/m/Y H:i') }}</td>
                         <td>{{ $order->user_id }}<br>{{ $order->customer_name }}<br>{{ $order->customer_email }}</td>
                         <td>
-                            @foreach ($order->items as $item)
-                                {{ $item->quantity }} x {{ $item->product_name }}@if (! $loop->last)<br>@endif
+                            @foreach ($order->items as $orderLine)
+                                {{ $orderLine->quantity }} x {{ $orderLine->product_name }}@if (! $loop->last)<br>@endif
                             @endforeach
                         </td>
                         <td>{{ $order->payment->method === 'card' ? 'Tarjeta '.$order->payment->last_four : 'PayPal' }}<br>{{ $order->payment->provider_reference }}</td>

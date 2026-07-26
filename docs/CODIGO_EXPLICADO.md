@@ -100,15 +100,13 @@ Es una capa HTTP delgada. Valida cantidades y delega las reglas reales a `CartSe
 
 1. Recibe únicamente datos aprobados por `CheckoutRequest`.
 2. Inicia una transacción de base de datos.
-3. Bloquea los productos con `lockForUpdate()`.
-4. Revalida actividad e inventario.
-5. Calcula los totales desde precios actuales de la base.
-6. Crea la cabecera del pedido y un seguimiento único.
-7. Congela producto, precio y cantidad en `order_items`.
-8. Descuenta inventario.
-9. Solicita la autorización simulada a `SimulatedPaymentGateway`.
-10. Actualiza teléfono y dirección del perfil.
-11. Confirma la transacción y vacía el carrito.
+3. `buildLockedCartLines()` bloquea productos y revalida actividad e inventario.
+4. Calcula los totales desde precios actuales de la base.
+5. `createOrder()` crea la cabecera y el seguimiento único.
+6. `saveOrderLines()` congela producto, precio y cantidad y descuenta inventario.
+7. Solicita la autorización simulada a `SimulatedPaymentGateway`.
+8. Actualiza teléfono y dirección del perfil.
+9. Confirma la transacción y vacía el carrito.
 
 Si cualquier paso falla, Laravel revierte toda la transacción.
 

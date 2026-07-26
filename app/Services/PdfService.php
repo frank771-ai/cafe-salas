@@ -12,9 +12,9 @@ class PdfService
     /**
      * Renderiza una vista Blade como PDF sin habilitar recursos remotos.
      *
-     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $viewData
      */
-    public function download(string $view, array $data, string $filename, string $orientation = 'portrait'): Response
+    public function download(string $view, array $viewData, string $filename, string $orientation = 'portrait'): Response
     {
         $options = new Options;
         $options->set('defaultFont', 'DejaVu Sans');
@@ -22,7 +22,7 @@ class PdfService
         $options->set('isRemoteEnabled', false);
 
         $pdf = new Dompdf($options);
-        $pdf->loadHtml(view($view, $data)->render(), 'UTF-8');
+        $pdf->loadHtml(view($view, $viewData)->render(), 'UTF-8');
         $pdf->setPaper('A4', $orientation);
         $pdf->render();
 

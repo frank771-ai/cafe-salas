@@ -65,8 +65,8 @@
                                 </span>
                             </div>
                             <div class="order-items">
-                                @foreach ($order->items as $item)
-                                    <span>{{ $item->quantity }} × {{ $item->product_name }}</span>
+                                @foreach ($order->items as $orderLine)
+                                    <span>{{ $orderLine->quantity }} × {{ $orderLine->product_name }}</span>
                                 @endforeach
                             </div>
                             <div class="order-card-foot">

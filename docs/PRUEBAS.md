@@ -10,7 +10,7 @@
 | `php artisan optimize:clear` | Correcto |
 | `php artisan migrate:fresh --seed` | Correcto sobre `database/database.sqlite` |
 | `php artisan route:list --except-vendor` | 24 rutas de aplicación |
-| `php artisan test` | **50 pruebas, 242 aserciones, 0 fallos** |
+| `php artisan test` | **52 pruebas, 250 aserciones, 0 fallos** |
 | `php vendor/bin/pint --test` | Correcto |
 | `npm install --no-audit --no-fund` | Correcto; 87 paquetes |
 | `npm run build` | Correcto; Vite transformó 55 módulos |
@@ -30,9 +30,10 @@ La imposibilidad de consultar Packagist no equivale a “sin vulnerabilidades”
 - Administración: rol, estados, cancelación idempotente, reintegro de inventario y reportes.
 - Seguridad: CSRF, CSP, HSTS, caché privada, permisos y rechazo de pasarela simulada en producción.
 - Identidad: título exacto de Café Salas y ausencia visible del nombre anterior.
+- Errores: credenciales incorrectas conservan solo el correo seguro y las rutas inexistentes responden 404.
 - Recorrido integral: registro, selección, compra, factura e historial.
 
-## Pruebas manuales recomendadas antes de exponer
+## Pruebas manuales y de usabilidad
 
 1. Ejecutar `php artisan migrate:fresh --seed` y `php artisan serve`.
 2. Revisar inicio, catálogo, detalle, recientes y carrito en escritorio y móvil.
@@ -43,3 +44,5 @@ La imposibilidad de consultar Packagist no equivale a “sin vulnerabilidades”
 7. Confirmar que ningún formulario muestra o conserva el PAN/CVV.
 
 Los pagos son simulados; estas pruebas no realizan cargos reales.
+
+La revisión de usabilidad también comprobó navegación clara, mensajes de validación en español, controles con nombres accesibles, retorno al checkout después del login y adaptación del catálogo, formularios y tablas a pantallas pequeñas.

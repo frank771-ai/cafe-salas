@@ -87,10 +87,10 @@
                 <aside class="col-lg-5">
                     <div class="summary-card sticky-summary">
                         <h2 class="h4">Su pedido</h2>
-                        @foreach ($items as $item)
+                        @foreach ($items as $cartLine)
                             <div class="checkout-item">
-                                <span>{{ $item['quantity'] }} × {{ $item['product']->name }}</span>
-                                <strong>₡{{ number_format($item['line_total'], 0, ',', '.') }}</strong>
+                                <span>{{ $cartLine['quantity'] }} × {{ $cartLine['product']->name }}</span>
+                                <strong>₡{{ number_format($cartLine['line_total'], 0, ',', '.') }}</strong>
                             </div>
                         @endforeach
                         <hr>

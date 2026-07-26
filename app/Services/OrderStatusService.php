@@ -30,8 +30,8 @@ class OrderStatusService
             }
 
             if ($newStatus === 'cancelled') {
-                foreach ($lockedOrder->items()->whereNotNull('product_id')->get() as $item) {
-                    Product::query()->whereKey($item->product_id)->increment('stock', $item->quantity);
+                foreach ($lockedOrder->items()->whereNotNull('product_id')->get() as $orderLine) {
+                    Product::query()->whereKey($orderLine->product_id)->increment('stock', $orderLine->quantity);
                 }
 
                 $lockedOrder->payment()->update(['status' => 'refunded']);

@@ -1,7 +1,8 @@
 @props(['product', 'loading' => 'lazy'])
 
+{{-- Conserva completa la fotografía de productos cuyo empaque no debe recortarse. --}}
 @php
-    $showComplete = in_array($product->slug, [
+    $useContainFit = in_array($product->slug, [
         'chocolate-oscuro-82',
         'miel-flor-cafe',
         'caja-regiones-costa-rica',
@@ -12,6 +13,6 @@
     src="{{ asset($product->image) }}"
     alt="{{ $product->name }}"
     loading="{{ $loading }}"
-    @class(['product-photo', 'product-photo-contain' => $showComplete])
+    @class(['product-photo', 'product-photo-contain' => $useContainFit])
     {{ $attributes }}
 >

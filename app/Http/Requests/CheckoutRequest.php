@@ -48,26 +48,37 @@ class CheckoutRequest extends FormRequest
                 'nullable',
                 'required_if:payment_method,card',
                 'digits_between:13,19',
-                function (string $attribute, mixed $value, Closure $fail): void {
-                    if ($value && ! $this->passesLuhnCheck((string) $value)) {
-                        $fail('El número de tarjeta no supera la validación de seguridad.');
-                    }
-                },
+                $this->validateCardNumber(...),
             ],
             'card_expiry' => [
                 'nullable', 'required_if:payment_method,card', 'regex:/^(0[1-9]|1[0-2])\/([0-9]{2})$/',
-                function (string $attribute, mixed $value, Closure $fail): void {
-                    if ($value && preg_match('/^(\d{2})\/(\d{2})$/', (string) $value, $matches)) {
-                        $expiry = now()->setYear(2000 + (int) $matches[2])->setMonth((int) $matches[1])->endOfMonth();
-                        if ($expiry->isPast()) {
-                            $fail('La fecha de vencimiento de la tarjeta ya pasó.');
-                        }
-                    }
-                },
+                $this->validateCardExpiry(...),
             ],
             'card_cvv' => ['nullable', 'required_if:payment_method,card', 'digits_between:3,4'],
             'paypal_email' => ['nullable', 'required_if:payment_method,paypal', 'email:rfc', 'max:255'],
         ];
+    }
+
+    /** Rechaza números que no cumplen el control matemático de Luhn. */
+    private function validateCardNumber(string $attribute, mixed $value, Closure $fail): void
+    {
+        if ($value && ! $this->passesLuhnCheck((string) $value)) {
+            $fail('El número de tarjeta no supera la validación de seguridad.');
+        }
+    }
+
+    /** Rechaza tarjetas cuya fecha MM/AA ya terminó. */
+    private function validateCardExpiry(string $attribute, mixed $value, Closure $fail): void
+    {
+        if (! $value || ! preg_match('/^(\d{2})\/(\d{2})$/', (string) $value, $matches)) {
+            return;
+        }
+
+        $expiry = now()->setYear(2000 + (int) $matches[2])->setMonth((int) $matches[1])->endOfMonth();
+
+        if ($expiry->isPast()) {
+            $fail('La fecha de vencimiento de la tarjeta ya pasó.');
+        }
     }
 
     /** @return array<string, string> */

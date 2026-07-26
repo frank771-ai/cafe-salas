@@ -22,8 +22,8 @@ class CartController extends Controller
     /** Agrega una cantidad validada de un producto disponible. */
     public function store(Request $request, Product $product)
     {
-        $data = $request->validate(['quantity' => ['required', 'integer', 'min:1', 'max:99']]);
-        $this->cart->add($product, $data['quantity']);
+        $validated = $request->validate(['quantity' => ['required', 'integer', 'min:1', 'max:99']]);
+        $this->cart->add($product, $validated['quantity']);
 
         return redirect()->route('cart.index')->with('success', "{$product->name} se agregó al carrito.");
     }
@@ -31,8 +31,8 @@ class CartController extends Controller
     /** Actualiza la cantidad; el valor cero elimina el producto. */
     public function update(Request $request, Product $product)
     {
-        $data = $request->validate(['quantity' => ['required', 'integer', 'min:0', 'max:99']]);
-        $this->cart->update($product, $data['quantity']);
+        $validated = $request->validate(['quantity' => ['required', 'integer', 'min:0', 'max:99']]);
+        $this->cart->update($product, $validated['quantity']);
 
         return back()->with('success', 'Cantidad actualizada.');
     }

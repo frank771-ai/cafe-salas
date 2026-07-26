@@ -270,25 +270,36 @@ def build_diagrams() -> tuple[Path, Path]:
     use_case_path = ASSET_DIR / "proceso_compra.png"
     er_path = ASSET_DIR / "modelo_relacional.png"
 
-    image = Image.new("RGB", (1500, 900), "#fffdf8")
+    image = Image.new("RGB", (1800, 1100), "#fffdf8")
     draw = ImageDraw.Draw(image)
     title_font = find_font(36)
-    box_font = find_font(24)
+    box_font = find_font(21)
     draw.text((55, 35), "Casos de uso principales", font=title_font, fill="#1f6847")
     boxes = [
-        (60, 130, 350, 260, "Visitante\nExplorar y filtrar"),
-        (440, 130, 730, 260, "Registrarse e\niniciar sesión"),
-        (820, 130, 1110, 260, "Cliente\nGestionar carrito"),
-        (1150, 375, 1440, 505, "Comprar con tarjeta\no PayPal simulado"),
-        (820, 620, 1110, 750, "Ver confirmación,\nseguimiento y factura"),
-        (440, 620, 730, 750, "Perfil e historial\nde pedidos"),
-        (60, 620, 350, 750, "Administrador\nPedidos y reportes"),
+        (50, 130, 290, 260, "Cliente"),
+        (340, 130, 580, 260, "Registrarse e\niniciar sesión"),
+        (630, 130, 870, 260, "Consultar\ncatálogo"),
+        (920, 130, 1160, 260, "Buscar y filtrar\nproductos"),
+        (1210, 130, 1450, 260, "Ver producto"),
+        (1500, 130, 1740, 260, "Agregar al\ncarrito"),
+        (1500, 480, 1740, 610, "Actualizar\ncarrito"),
+        (1210, 800, 1450, 930, "Realizar\ncompra"),
+        (920, 800, 1160, 930, "Seleccionar\npago"),
+        (630, 800, 870, 930, "Confirmar\npedido"),
+        (340, 800, 580, 930, "Generar\nfactura"),
+        (50, 800, 290, 930, "Consultar\nhistorial"),
     ]
     for left, top, right, bottom, label in boxes:
         draw.rounded_rectangle((left, top, right, bottom), radius=22, fill="#e7f0e9", outline="#1f6847", width=4)
         draw_centered_text(draw, (left, top, right, bottom), label, box_font, "#17251d")
-    arrows = [((350, 195), (440, 195)), ((730, 195), (820, 195)), ((1110, 195), (1295, 375)),
-              ((1295, 505), (1110, 685)), ((820, 685), (730, 685)), ((440, 685), (350, 685))]
+    arrows = [
+        ((290, 195), (340, 195)), ((580, 195), (630, 195)),
+        ((870, 195), (920, 195)), ((1160, 195), (1210, 195)),
+        ((1450, 195), (1500, 195)), ((1620, 260), (1620, 480)),
+        ((1500, 545), (1450, 865)), ((1210, 865), (1160, 865)),
+        ((920, 865), (870, 865)), ((630, 865), (580, 865)),
+        ((340, 865), (290, 865)),
+    ]
     for start, end in arrows:
         draw.line((start, end), fill="#c7663f", width=8)
         x, y = end
@@ -422,7 +433,7 @@ def build_document() -> None:
         "de productos recientes, administración y reportes PDF. La implementación se inspira directamente "
         "en los temas de Laravel explicados en las sesiones 9 y 10 del curso."
     )
-    add_callout(document, "Resultado verificable", "La batería automatizada se ejecuta con SQLite aislado. El resultado exacto de la revisión final consta en docs/PRUEBAS.md, junto con formato, compilación y auditoría de dependencias.")
+    add_callout(document, "Resultado verificable", "La revisión final aprobó 52 pruebas con 250 aserciones, migraciones y seeders SQLite, 24 rutas, Laravel Pint y la compilación Vite. La consulta externa de composer audit debe repetirse desde una red con acceso a Packagist.")
 
     document.add_heading("2. Tecnologías", level=1)
     add_table(document, ["Capa", "Tecnología y propósito"], [
@@ -456,6 +467,7 @@ def build_document() -> None:
         ("Rutas", "Usan nombres, verbos HTTP y grupos guest, auth y admin."),
         ("Servicios", "Carrito, PDF, pagos simulados, productos recientes y estados de pedido."),
         ("Middleware", "AdminMiddleware autoriza el panel y SecurityHeaders agrega defensas HTTP."),
+        ("Código limpio", "Métodos cortos, variables descriptivas y comentarios breves explican la intención sin repetir cada línea."),
     ]:
         paragraph = document.add_paragraph()
         run = paragraph.add_run(label + ": ")
@@ -503,7 +515,7 @@ def build_document() -> None:
         ["Carrera de inventario", "Transacción de base y validación final antes del descuento."],
         ["Navegador", "CSP, anti-frame, nosniff, Referrer Policy y páginas privadas sin caché."],
         ["Transporte", "HTTPS forzado en producción, HSTS y cookie Secure en el perfil productivo."],
-        ["Dependencias", "Dompdf 3.1.6 y composer audit sin avisos conocidos."],
+        ["Dependencias", "Versiones fijadas en composer.lock; la auditoría externa requiere acceso autorizado a Packagist."],
     ], [2600, 6760])
     add_callout(document, "Pasarela académica", "No se realizan cargos reales. Una pasarela productiva exige credenciales del comercio, webhooks y cumplimiento del proveedor.")
 
@@ -519,7 +531,7 @@ def build_document() -> None:
         ["SecurityHardeningTest", "CSP, HSTS, permisos y caché privada."],
         ["ProfileAndReportsTest", "Perfil, historial, rol admin y ambos PDF."],
     ], [2700, 6660])
-    document.add_paragraph("Comandos: php artisan test y php vendor/bin/pint --test. PHPUnit usa SQLite en memoria y no modifica cafe_salas.")
+    document.add_paragraph("Resultado final: 52 pruebas, 250 aserciones y 0 fallos. Laravel Pint también aprobó. PHPUnit usa SQLite en memoria y no modifica la base local.")
 
     document.add_heading("10. Matriz de cumplimiento", level=1)
     rubric = [
@@ -554,7 +566,7 @@ def build_document() -> None:
         (29, "Pregunta docente 1", "Banco de respuestas preparado."),
         (30, "Pregunta docente 2", "Banco de respuestas preparado."),
         (31, "Pregunta docente 3", "Banco de respuestas preparado."),
-        (32, "GitHub", "Repositorio real documentado; no se inventa un enlace cafe-salas."),
+        (32, "GitHub", "Repositorio privado real: Byroncha1323/cafe-salas."),
     ]
     add_table(document, ["N.", "Criterio", "Evidencia"], [[str(n), item, evidence] for n, item, evidence in rubric], [650, 3300, 5410])
 
@@ -585,7 +597,7 @@ def build_document() -> None:
 
     document.add_heading("Límites externos", level=2)
     document.add_paragraph("La asistencia y las respuestas de la exposición son responsabilidad de Byron Chacón y Franklin Castillo. El repositorio privado real es github.com/Byroncha1323/cafe-salas. El hosting y un certificado público requieren cuenta, dominio y autorización del equipo.")
-    add_callout(document, "Uso responsable de herramientas", "Para apoyar la revisión se utilizó OpenAI Codex. Byron Chacón y Franklin Castillo deben revisar, comprender, adaptar y poder explicar el código, las pruebas y la documentación antes de entregar.")
+    add_callout(document, "Uso responsable de herramientas", "Para apoyar el desarrollo, revisión y documentación se utilizó OpenAI Codex. Byron Chacón y Franklin Castillo revisaron, adaptaron, probaron y estudiaron el proyecto, y son responsables de comprender y explicar su funcionamiento.")
 
     document.core_properties.title = "Café Salas — Tienda virtual de café y productos costarricenses"
     document.core_properties.subject = "Proyecto final de Tecnologías y Sistemas Web II, ITI-523"

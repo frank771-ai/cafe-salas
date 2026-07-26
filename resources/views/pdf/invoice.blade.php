@@ -39,12 +39,12 @@
     <table class="items">
         <thead><tr><th>Producto</th><th class="center">Cantidad</th><th class="right">Precio</th><th class="right">Total</th></tr></thead>
         <tbody>
-            @foreach ($order->items as $item)
+            @foreach ($order->items as $orderLine)
                 <tr>
-                    <td>{{ $item->product_name }}</td>
-                    <td class="center">{{ $item->quantity }}</td>
-                    <td class="right">₡{{ number_format($item->unit_price, 0, ',', '.') }}</td>
-                    <td class="right">₡{{ number_format($item->line_total, 0, ',', '.') }}</td>
+                    <td>{{ $orderLine->product_name }}</td>
+                    <td class="center">{{ $orderLine->quantity }}</td>
+                    <td class="right">₡{{ number_format($orderLine->unit_price, 0, ',', '.') }}</td>
+                    <td class="right">₡{{ number_format($orderLine->line_total, 0, ',', '.') }}</td>
                 </tr>
             @endforeach
         </tbody>

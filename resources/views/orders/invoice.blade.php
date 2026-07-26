@@ -37,12 +37,12 @@
                 <table class="table invoice-table">
                     <thead><tr><th>Producto</th><th class="text-center">Cantidad</th><th class="text-end">Precio</th><th class="text-end">Total</th></tr></thead>
                     <tbody>
-                        @foreach ($order->items as $item)
+                        @foreach ($order->items as $orderLine)
                             <tr>
-                                <td>{{ $item->product_name }}</td>
-                                <td class="text-center">{{ $item->quantity }}</td>
-                                <td class="text-end">₡{{ number_format($item->unit_price, 0, ',', '.') }}</td>
-                                <td class="text-end">₡{{ number_format($item->line_total, 0, ',', '.') }}</td>
+                                <td>{{ $orderLine->product_name }}</td>
+                                <td class="text-center">{{ $orderLine->quantity }}</td>
+                                <td class="text-end">₡{{ number_format($orderLine->unit_price, 0, ',', '.') }}</td>
+                                <td class="text-end">₡{{ number_format($orderLine->line_total, 0, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>

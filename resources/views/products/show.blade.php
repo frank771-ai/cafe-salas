@@ -50,8 +50,8 @@
             <div class="container">
                 <div class="section-heading"><h2>Puede interesarle</h2></div>
                 <div class="row g-4">
-                    @foreach ($related as $item)
-                        <div class="col-md-4"><x-product-card :product="$item" /></div>
+                    @foreach ($related as $relatedProduct)
+                        <div class="col-md-4"><x-product-card :product="$relatedProduct" /></div>
                     @endforeach
                 </div>
             </div>

@@ -24,8 +24,8 @@ class ReportController extends Controller
     /** Descarga las ventas no canceladas del mes solicitado. */
     public function monthly(Request $request, PdfService $pdf)
     {
-        $data = $request->validate(['month' => ['required', 'date_format:Y-m']]);
-        $start = CarbonImmutable::createFromFormat('!Y-m', $data['month'])->startOfMonth();
+        $validated = $request->validate(['month' => ['required', 'date_format:Y-m']]);
+        $start = CarbonImmutable::createFromFormat('!Y-m', $validated['month'])->startOfMonth();
         $end = $start->endOfMonth();
         $orders = Order::with('user', 'items', 'payment')
             ->whereBetween('purchased_at', [$start, $end])
@@ -37,16 +37,16 @@ class ReportController extends Controller
             'title' => 'Reporte mensual de ventas - '.$start->translatedFormat('F Y'),
             'subtitle' => 'Periodo: '.$start->format('d/m/Y').' al '.$end->format('d/m/Y'),
             'orders' => $orders,
-        ], 'ventas-'.$data['month'].'.pdf', 'landscape');
+        ], 'ventas-'.$validated['month'].'.pdf', 'landscape');
     }
 
     /** Descarga el historial de ventas no canceladas de un cliente. */
     public function customer(Request $request, PdfService $pdf)
     {
-        $data = $request->validate([
+        $validated = $request->validate([
             'user_id' => ['required', 'integer', Rule::exists('users', 'id')->where('is_admin', 0)],
         ]);
-        $customer = User::findOrFail($data['user_id']);
+        $customer = User::findOrFail($validated['user_id']);
         $orders = $customer->orders()->with('items', 'payment')
             ->where('status', '!=', 'cancelled')
             ->orderBy('purchased_at')

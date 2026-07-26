@@ -107,6 +107,12 @@ class UsabilityTest extends TestCase
             ->assertDontSee('Admin123!');
     }
 
+    /** Comprueba que una dirección inexistente responda con la página HTTP 404. */
+    public function test_unknown_route_returns_not_found(): void
+    {
+        $this->get('/pagina-que-no-existe')->assertNotFound();
+    }
+
     private function product(
         string $name = 'Café de prueba',
         string $slug = 'cafe-prueba',

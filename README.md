@@ -75,11 +75,9 @@ En producción se debe configurar `APP_ENV=production`, `APP_DEBUG=false`, HTTPS
 - `docs/Documentacion_Cafe_Salas.docx`: documento técnico final.
 - `docs/MANUAL_TECNICO.md`: arquitectura, instalación y diagramas.
 - `docs/CODIGO_EXPLICADO.md`: explicación del código por capa.
-- `docs/PRUEBAS.md`: pruebas automatizadas y manuales.
-- `docs/PRUEBAS_USABILIDAD.md`: revisión de capa 8 y usabilidad.
+- `docs/PRUEBAS.md`: pruebas automatizadas, manuales y de usabilidad.
 - `docs/GUIA_EXPOSICION.md`: distribución de exposición y preguntas.
 - `docs/RUBRICA.md`: matriz de los 32 criterios.
-- `docs/REVISION_Y_ATRIBUCION.md`: revisión académica y atribución.
 
 ## GitHub
 
@@ -87,4 +85,4 @@ Repositorio privado real: [github.com/Byroncha1323/cafe-salas](https://github.co
 
 ## Atribución responsable
 
-Para apoyar la revisión, adaptación y documentación se utilizó OpenAI Codex. Byron Chacón y Franklin Castillo son responsables de revisar, comprender, probar y poder explicar el resultado. La asistencia no sustituye su autoría académica ni debe ocultarse.
+Para apoyar el desarrollo, revisión y documentación se utilizó OpenAI Codex. Byron Chacón y Franklin Castillo revisaron, adaptaron, probaron y estudiaron el proyecto, y son responsables de comprender y explicar su funcionamiento.

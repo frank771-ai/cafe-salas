@@ -22,28 +22,28 @@
                 {{-- Líneas del carrito almacenadas en la sesión. --}}
                 <div class="col-lg-8">
                     <div class="cart-list">
-                        @foreach ($items as $item)
+                        @foreach ($items as $cartLine)
                             <article class="cart-item">
-                                <img src="{{ asset($item['product']->image) }}" alt="{{ $item['product']->name }}" width="120" height="90">
+                                <img src="{{ asset($cartLine['product']->image) }}" alt="{{ $cartLine['product']->name }}" width="120" height="90">
                                 <div class="cart-item-info">
-                                    <span class="eyebrow">{{ $item['product']->category->name }}</span>
+                                    <span class="eyebrow">{{ $cartLine['product']->category->name }}</span>
                                     <h2 class="h5">
-                                        <a href="{{ route('products.show', $item['product']) }}">{{ $item['product']->name }}</a>
+                                        <a href="{{ route('products.show', $cartLine['product']) }}">{{ $cartLine['product']->name }}</a>
                                     </h2>
-                                    <span>₡{{ number_format($item['product']->price, 0, ',', '.') }} c/u</span>
+                                    <span>₡{{ number_format($cartLine['product']->price, 0, ',', '.') }} c/u</span>
                                 </div>
 
-                                <form method="POST" action="{{ route('cart.update', $item['product']) }}" class="cart-quantity">
+                                <form method="POST" action="{{ route('cart.update', $cartLine['product']) }}" class="cart-quantity">
                                     @csrf
                                     @method('PATCH')
-                                    <label class="visually-hidden" for="qty-{{ $item['product']->id }}">Cantidad</label>
-                                    <input class="form-control" type="number" id="qty-{{ $item['product']->id }}" name="quantity" min="0" max="{{ $item['product']->stock }}" value="{{ $item['quantity'] }}">
+                                    <label class="visually-hidden" for="qty-{{ $cartLine['product']->id }}">Cantidad</label>
+                                    <input class="form-control" type="number" id="qty-{{ $cartLine['product']->id }}" name="quantity" min="0" max="{{ $cartLine['product']->stock }}" value="{{ $cartLine['quantity'] }}">
                                     <button class="btn btn-sm btn-outline-secondary" type="submit">Actualizar</button>
                                 </form>
 
-                                <strong class="cart-line-total">₡{{ number_format($item['line_total'], 0, ',', '.') }}</strong>
+                                <strong class="cart-line-total">₡{{ number_format($cartLine['line_total'], 0, ',', '.') }}</strong>
 
-                                <form method="POST" action="{{ route('cart.destroy', $item['product']) }}">
+                                <form method="POST" action="{{ route('cart.destroy', $cartLine['product']) }}">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-link text-danger" type="submit">Eliminar</button>
