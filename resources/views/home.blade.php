@@ -5,6 +5,8 @@
 @section('content')
     {{-- Las fotografías aportadas por el equipo conectan la compra con el origen humano del café. --}}
     <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-orbit hero-orbit-one" aria-hidden="true"></div>
+        <div class="hero-orbit hero-orbit-two" aria-hidden="true"></div>
         <div class="container hero-inner">
             <div class="hero-copy">
                 <span class="eyebrow text-light">Café costarricense · precio justo</span>
@@ -16,6 +18,24 @@
                 </div>
                 <p class="hero-note">Opciones desde ₡3.500 · Envío gratis desde ₡20.000 · Compra protegida</p>
             </div>
+            <aside class="hero-origin-card" aria-label="Origen de nuestra selección">
+                <div class="origin-card-top">
+                    <span class="origin-pulse" aria-hidden="true"></span>
+                    <span>Cosecha seleccionada</span>
+                    <small>2026</small>
+                </div>
+                <div class="origin-card-body">
+                    <span class="origin-kicker">Perfil de la casa</span>
+                    <strong>Cacao, caramelo<br>y fruta madura</strong>
+                    <p>Una selección cálida y balanceada, pensada para acompañar cada día.</p>
+                </div>
+                <div class="origin-card-footer">
+                    <span>Altura</span><strong>1.500 m</strong><span>Origen</span><strong>Costa Rica</strong>
+                </div>
+            </aside>
+            <a class="hero-scroll-cue" href="#categorias" aria-label="Descubrir las categorías">
+                <span aria-hidden="true"></span> Descubrir
+            </a>
         </div>
     </section>
 
@@ -53,10 +73,12 @@
                 @foreach ($categories as $category)
                     <div class="col-sm-6 col-lg-3">
                         <a class="category-card category-tone-{{ $loop->iteration }}" href="{{ route('products.index', ['category' => $category->slug]) }}">
+                            <span class="category-index" aria-hidden="true">0{{ $loop->iteration }}</span>
+                            <span class="category-orbit" aria-hidden="true"></span>
                             <div class="category-copy">
                                 <h3>{{ $category->name }}</h3>
                                 <p>{{ $category->description }}</p>
-                                <small>{{ $category->products_count }} productos</small>
+                                <small>{{ $category->products_count }} productos <span aria-hidden="true">&rarr;</span></small>
                             </div>
                         </a>
                     </div>
@@ -80,9 +102,9 @@
                     <p class="lead">Detrás de una gran taza hay personas, experiencia y una cosecha cuidada. Café Salas acerca ese trabajo a su mesa con productos de calidad y precios accesibles.</p>
                     <p>No vendemos lujo distante. Ofrecemos calidad real y cercana: la que se reconoce en el aroma, en el sabor y en las manos que la hacen posible.</p>
                     <div class="story-facts" aria-label="Datos de nuestra propuesta">
-                        <div><strong>100%</strong><span>identidad costarricense</span></div>
-                        <div><strong>4</strong><span>colecciones para descubrir</span></div>
-                        <div><strong>₡20 mil</strong><span>envío gratuito</span></div>
+                        <div><strong data-counter="100" data-suffix="%">100%</strong><span>identidad costarricense</span></div>
+                        <div><strong data-counter="4">4</strong><span>colecciones para descubrir</span></div>
+                        <div><strong data-counter="20" data-prefix="₡" data-suffix=" mil">₡20 mil</strong><span>envío gratuito</span></div>
                     </div>
                 </div>
             </div>
@@ -108,6 +130,7 @@
     </section>
 
     <section class="quality-process section-space" aria-labelledby="quality-title">
+        <div class="quality-ring" aria-hidden="true"></div>
         <div class="container">
             <div class="quality-heading">
                 <span class="eyebrow text-light">Nuestro estándar</span>

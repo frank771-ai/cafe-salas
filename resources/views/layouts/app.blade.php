@@ -15,10 +15,18 @@
 <body>
     @php($cartCount = app(\App\Services\CartService::class)->count())
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
-    <div class="announcement">Envío gratis desde ₡20.000 <span aria-hidden="true">·</span> Precios justos en colones <span aria-hidden="true">·</span> Hecho en Costa Rica</div>
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
+    <div class="page-grain" aria-hidden="true"></div>
+    <div class="announcement">
+        <div class="container announcement-inner">
+            <span>Envío gratis desde ₡20.000</span>
+            <span class="announcement-center">Precios justos en colones</span>
+            <span>Hecho en Costa Rica</span>
+        </div>
+    </div>
 
     {{-- Navegación compartida; adapta opciones según autenticación y rol. --}}
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top" aria-label="Navegación principal">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" aria-label="Navegación principal" data-site-nav>
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
                 <span class="brand-mark" aria-hidden="true">CS</span>
@@ -56,7 +64,7 @@
         </div>
     </nav>
 
-    <main id="contenido">
+    <main id="contenido" class="page-shell">
         {{-- Mensajes flash y errores de validación de la solicitud anterior. --}}
         @if (session('success'))
             <div class="container mt-4">
@@ -93,6 +101,7 @@
                 <div class="col-lg-5">
                     <div class="footer-brand"><span class="brand-mark" aria-hidden="true">CS</span><h2>Café Salas</h2></div>
                     <p class="footer-intro">Calidad con raíz costarricense: café, detalles artesanales y experiencias elegidas para disfrutar sin complicaciones.</p>
+                    <div class="footer-origin"><span aria-hidden="true"></span> Del cafetal costarricense a su mesa</div>
                 </div>
                 <div class="col-6 col-lg-3">
                     <h2 class="footer-title">Explorar</h2>
@@ -110,6 +119,10 @@
             <div class="footer-bottom">© {{ date('Y') }} Café Salas</div>
         </div>
     </footer>
+
+    <button class="back-to-top" type="button" aria-label="Volver al inicio de la página" data-back-to-top>
+        <span aria-hidden="true">&uarr;</span>
+    </button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
