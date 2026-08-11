@@ -468,7 +468,7 @@ def build_document() -> None:
         "Ejecutar php artisan serve y abrir http://127.0.0.1:8000.",
     ])
     add_callout(document, "Uso con Apache", "El proyecto funciona con Apache y SQLite. El DocumentRoot debe apuntar a la carpeta public; el ejemplo deployment/apache-vhost.conf.example evita exponer .env o vendor.")
-    add_callout(document, "Demostración en Vercel", "La instalación académica conserva SQLite. La URL pública usa Neon PostgreSQL porque Vercel no ofrece persistencia para archivos SQLite; deployment/env.vercel.example enumera la configuración sin incluir secretos.")
+    add_callout(document, "Demostración en Vercel", "La instalación académica conserva SQLite. La demostración pública está disponible en cafe-salas.vercel.app y usa Neon PostgreSQL porque Vercel no ofrece persistencia para archivos SQLite; deployment/env.vercel.example enumera la configuración sin incluir secretos.")
 
     document.add_heading("4. Arquitectura MVC", level=1)
     for label, text in [
@@ -577,7 +577,7 @@ def build_document() -> None:
         (29, "Pregunta docente 1", "Banco de respuestas preparado."),
         (30, "Pregunta docente 2", "Banco de respuestas preparado."),
         (31, "Pregunta docente 3", "Banco de respuestas preparado."),
-        (32, "GitHub", "Repositorio privado real: Byroncha1323/cafe-salas."),
+        (32, "GitHub", "Repositorio real: frank771-ai/cafe-salas."),
     ]
     add_table(document, ["N.", "Criterio", "Evidencia"], [[str(n), item, evidence] for n, item, evidence in rubric], [650, 3300, 5410])
 

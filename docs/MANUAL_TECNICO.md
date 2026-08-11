@@ -37,9 +37,11 @@ El `DocumentRoot` debe terminar en `/public`. Esto evita que `.env`, `vendor` y 
 
 La versión local y las pruebas conservan SQLite como base principal. Para la URL pública, Vercel ejecuta PHP mediante `vercel-php` y Neon mantiene los datos en PostgreSQL, ya que el sistema de archivos serverless no ofrece persistencia para SQLite.
 
+La demostración está disponible en [cafe-salas.vercel.app](https://cafe-salas.vercel.app) y el código se mantiene en [github.com/frank771-ai/cafe-salas](https://github.com/frank771-ai/cafe-salas).
+
 1. Vincule el repositorio con Vercel y conecte el proyecto de Neon.
 2. Configure las variables descritas en `deployment/env.vercel.example` para Production y Preview.
-3. Mantenga `DATABASE_URL` como secreto y establezca `DB_CONNECTION=pgsql`.
+3. Mantenga `DATABASE_URL` como secreto y establezca `DB_CONNECTION=pgsql`. Si el cliente de Vercel no admite SNI, codifique el identificador del endpoint en la contraseña siguiendo `deployment/env.vercel.example`.
 4. Genere una `APP_KEY` exclusiva y active cookies seguras.
 5. Despliegue; el script `vercel` de Composer ejecuta migraciones y seeders idempotentes.
 6. Sustituya `APP_URL` por el dominio final y realice un nuevo despliegue.

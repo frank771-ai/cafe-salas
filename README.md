@@ -48,8 +48,10 @@ El proyecto puede ejecutarse con Apache y SQLite. Consulte `deployment/apache-vh
 
 La instalación local mantiene SQLite como base principal. La demostración pública usa Neon PostgreSQL porque las funciones de Vercel no conservan archivos SQLite entre ejecuciones.
 
+Sitio publicado: [cafe-salas.vercel.app](https://cafe-salas.vercel.app).
+
 1. Conecte el repositorio a un proyecto de Vercel y vincule una base Neon.
-2. Copie en Vercel las variables de `deployment/env.vercel.example`; Neon proporciona `DATABASE_URL`.
+2. Copie en Vercel las variables de `deployment/env.vercel.example`; Neon proporciona `DATABASE_URL`. Si el cliente PostgreSQL no admite SNI, use la variante documentada en ese archivo sin publicar la contraseña.
 3. Genere `APP_KEY` con `php artisan key:generate --show` y guárdela como variable protegida.
 4. Defina `DB_CONNECTION=pgsql`, `APP_ENV=production`, `APP_DEBUG=false` y `ALLOW_SIMULATED_PAYMENTS_IN_PRODUCTION=true`.
 5. Despliegue. El script `composer run vercel` ejecuta migraciones y carga los datos de demostración de forma repetible.
@@ -86,4 +88,4 @@ En producción se debe configurar `APP_ENV=production`, `APP_DEBUG=false`, HTTPS
 
 ## GitHub
 
-Repositorio privado real: [github.com/Byroncha1323/cafe-salas](https://github.com/Byroncha1323/cafe-salas). No se confirma `.env`, `APP_KEY`, bases con datos personales, credenciales ni el ZIP destinado a la plataforma universitaria.
+Repositorio: [github.com/frank771-ai/cafe-salas](https://github.com/frank771-ai/cafe-salas). No se confirma `.env`, `APP_KEY`, bases con datos personales, credenciales ni el ZIP destinado a la plataforma universitaria.
