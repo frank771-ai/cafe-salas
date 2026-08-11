@@ -24,7 +24,7 @@ Proyecto de Byron Chacón y Franklin Castillo para la Ing. Milena Vargas Blanco.
 | 18 | Validación de entradas | Form Requests, reglas, mensajes, CSRF y escape Blade. | Cumple |
 | 19 | Cookies de recientes | Cookie cifrada `recent_products`, máximo seis IDs. | Cumple |
 | 20 | Mostrar recientes | Sección de productos visitados en inicio. | Cumple |
-| 21 | Código completo | Código, migraciones, seeders, pruebas, recursos y documentación. | Cumple |
+| 21 | Código completo | Código, migraciones, seeders, pruebas y documentación. | Cumple |
 | 22 | Documentación detallada | README, manuales, guía y DOCX con instalación/uso. | Cumple |
 | 23 | Documento de pruebas | `docs/PRUEBAS.md` y suite PHPUnit reproducible. | Cumple |
 | 24 | Participación en exposición | Guía dividida entre ambos estudiantes. | Acción humana |

@@ -228,6 +228,20 @@ def add_bullet(document: Document, text: str, numbered: bool = False) -> None:
     paragraph.add_run(text)
 
 
+def add_numbered_list(document: Document, items: list[str]) -> None:
+    style_num_id = document.styles["List Number"]._element.pPr.numPr.numId.val
+    numbering = document.part.numbering_part.element
+    base_num = numbering.xpath(f'./w:num[@w:numId="{style_num_id}"]')[0]
+    abstract_num_id = base_num.abstractNumId.val
+    sequence = numbering.add_num(abstract_num_id)
+    sequence.add_lvlOverride(ilvl=0).add_startOverride(1)
+
+    for item in items:
+        paragraph = document.add_paragraph(style="List Number")
+        paragraph._p.get_or_add_pPr().get_or_add_numPr().get_or_add_numId().val = sequence.numId
+        paragraph.add_run(item)
+
+
 def add_callout(document: Document, title: str, text: str) -> None:
     table = document.add_table(rows=1, cols=1)
     table.style = "Table Grid"
@@ -433,31 +447,28 @@ def build_document() -> None:
         "de productos recientes, administración y reportes PDF. La implementación se inspira directamente "
         "en los temas de Laravel explicados en las sesiones 9 y 10 del curso."
     )
-    add_callout(document, "Resultado verificable", "La revisión final aprobó 52 pruebas con 250 aserciones, migraciones y seeders SQLite, 24 rutas, Laravel Pint y la compilación Vite. La consulta externa de composer audit debe repetirse desde una red con acceso a Packagist.")
+    add_callout(document, "Resultado verificable", "La revisión final aprobó 52 pruebas con 250 aserciones, migraciones y seeders SQLite, 24 rutas, Laravel Pint y la auditoría de dependencias sin avisos conocidos.")
 
     document.add_heading("2. Tecnologías", level=1)
     add_table(document, ["Capa", "Tecnología y propósito"], [
         ["Backend", "PHP 8.2 y Laravel 12 bajo el patrón MVC."],
         ["Base principal", "SQLite mediante database/database.sqlite, como exige la consigna."],
-        ["Base alternativa", "MariaDB/MySQL de XAMPP, administrable desde phpMyAdmin."],
         ["Frontend", "Blade, HTML5, Bootstrap 5.3, CSS responsive y JavaScript."],
         ["PDF", "Dompdf 3.1.6 para factura y ventas por mes o cliente."],
         ["Calidad", "PHPUnit, Laravel Pint y GitHub Actions."],
     ], [2200, 7160])
 
     document.add_heading("3. Instalación principal con SQLite", level=1)
-    for step in [
+    add_numbered_list(document, [
         "Ejecutar composer install dentro de la carpeta del proyecto.",
         "Copiar .env.example a .env y ejecutar php artisan key:generate.",
         "Crear database/database.sqlite si todavía no existe.",
         "Verificar DB_CONNECTION=sqlite y DB_DATABASE=database/database.sqlite.",
         "Ejecutar php artisan migrate:fresh --seed.",
         "Ejecutar php artisan serve y abrir http://127.0.0.1:8000.",
-    ]:
-        add_bullet(document, step, numbered=True)
-    document.add_heading("MariaDB/MySQL como alternativa", level=2)
-    document.add_paragraph("Para una demostración opcional con XAMPP, copie .env.mysql.example a .env, cree cafe_salas en phpMyAdmin y ejecute las migraciones. También puede importar database/sql/cafe_salas.sql.")
-    add_callout(document, "Apache de XAMPP", "Si se usa un VirtualHost, el DocumentRoot debe apuntar a la carpeta public. El ejemplo deployment/apache-vhost.conf.example evita exponer .env o vendor.")
+    ])
+    add_callout(document, "Uso con Apache", "El proyecto funciona con Apache y SQLite. El DocumentRoot debe apuntar a la carpeta public; el ejemplo deployment/apache-vhost.conf.example evita exponer .env o vendor.")
+    add_callout(document, "Demostración en Vercel", "La instalación académica conserva SQLite. La URL pública usa Neon PostgreSQL porque Vercel no ofrece persistencia para archivos SQLite; deployment/env.vercel.example enumera la configuración sin incluir secretos.")
 
     document.add_heading("4. Arquitectura MVC", level=1)
     for label, text in [
@@ -515,7 +526,7 @@ def build_document() -> None:
         ["Carrera de inventario", "Transacción de base y validación final antes del descuento."],
         ["Navegador", "CSP, anti-frame, nosniff, Referrer Policy y páginas privadas sin caché."],
         ["Transporte", "HTTPS forzado en producción, HSTS y cookie Secure en el perfil productivo."],
-        ["Dependencias", "Versiones fijadas en composer.lock; la auditoría externa requiere acceso autorizado a Packagist."],
+        ["Dependencias", "Versiones fijadas en composer.lock y revisadas con composer audit."],
     ], [2600, 6760])
     add_callout(document, "Pasarela académica", "No se realizan cargos reales. Una pasarela productiva exige credenciales del comercio, webhooks y cumplimiento del proveedor.")
 
@@ -555,7 +566,7 @@ def build_document() -> None:
         (18, "Validación", "Servidor, CSRF y mensajes."),
         (19, "Cookie", "recent_products cifrada."),
         (20, "Mostrar recientes", "Sección visible en inicio."),
-        (21, "Código completo", "Fuente, SQL, pruebas y docs."),
+        (21, "Código completo", "Fuente, migraciones, pruebas y docs."),
         (22, "Documentación", "README, MD y este DOCX."),
         (23, "Pruebas automatizadas", "PHPUnit con SQLite aislado y reporte reproducible."),
         (24, "Exposición", "Guion preparado; asistencia humana."),
@@ -575,29 +586,23 @@ def build_document() -> None:
         document,
         "Prevención de sanciones",
         "No responder al menos el 50 % de las preguntas puede anular hasta el 75 % del valor del proyecto. "
-        "Cada integrante debe comprender y demostrar su módulo. La asistencia de Codex se declara y se acompaña "
-        "con adaptación, pruebas, historial Git y documentación; ocultarla no demuestra autoría.",
+        "Cada integrante debe comprender su módulo, explicar las decisiones y ejecutar el proyecto.",
     )
     document.add_heading("Recorrido sugerido", level=2)
-    for item in [
+    add_numbered_list(document, [
         "Presentar MVC, migraciones y tablas SQLite.",
         "Filtrar productos y mostrar cookie de recientes.",
         "Modificar carrito y explicar cálculos.",
         "Completar compra simulada y descargar factura.",
         "Mostrar historial, panel y reportes PDF.",
         "Ejecutar pruebas y mostrar GitHub Actions.",
-    ]:
-        add_bullet(document, item, numbered=True)
+    ])
 
     document.add_heading("Credenciales de demostración", level=2)
     add_table(document, ["Rol", "Correo", "Clave"], [
         ["Administrador", "admin@cafesalas.test", "Admin123!"],
         ["Cliente", "cliente@cafesalas.test", "Cliente123!"],
     ], [2100, 4500, 2760])
-
-    document.add_heading("Límites externos", level=2)
-    document.add_paragraph("La asistencia y las respuestas de la exposición son responsabilidad de Byron Chacón y Franklin Castillo. El repositorio privado real es github.com/Byroncha1323/cafe-salas. El hosting y un certificado público requieren cuenta, dominio y autorización del equipo.")
-    add_callout(document, "Uso responsable de herramientas", "Para apoyar el desarrollo, revisión y documentación se utilizó OpenAI Codex. Byron Chacón y Franklin Castillo revisaron, adaptaron, probaron y estudiaron el proyecto, y son responsables de comprender y explicar su funcionamiento.")
 
     document.core_properties.title = "Café Salas — Tienda virtual de café y productos costarricenses"
     document.core_properties.subject = "Proyecto final de Tecnologías y Sistemas Web II, ITI-523"

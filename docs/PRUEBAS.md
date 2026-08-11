@@ -1,6 +1,6 @@
 # Informe de pruebas — Café Salas
 
-Última ejecución: 25 de julio de 2026. Entorno principal: PHP 8.2, Laravel 12 y SQLite.
+Última ejecución: 10 de agosto de 2026. Entorno principal: PHP 8.2, Laravel 12 y SQLite.
 
 ## Resultado automatizado
 
@@ -12,11 +12,9 @@
 | `php artisan route:list --except-vendor` | 24 rutas de aplicación |
 | `php artisan test` | **52 pruebas, 250 aserciones, 0 fallos** |
 | `php vendor/bin/pint --test` | Correcto |
-| `npm install --no-audit --no-fund` | Correcto; 87 paquetes |
-| `npm run build` | Correcto; Vite transformó 55 módulos |
-| `composer audit --no-interaction` | No concluyente: el entorno bloqueó la consulta externa a Packagist |
+| `composer audit --locked --no-interaction` | Correcto; 0 vulnerabilidades conocidas |
 
-La imposibilidad de consultar Packagist no equivale a “sin vulnerabilidades”; debe repetirse desde una red autorizada antes de una publicación real.
+La auditoría consulta un registro externo y representa el estado conocido en la fecha indicada; GitHub Actions la repite en cada cambio.
 
 ## Cobertura
 
@@ -45,4 +43,4 @@ La imposibilidad de consultar Packagist no equivale a “sin vulnerabilidades”
 
 Los pagos son simulados; estas pruebas no realizan cargos reales.
 
-La revisión de usabilidad también comprobó navegación clara, mensajes de validación en español, controles con nombres accesibles, retorno al checkout después del login y adaptación del catálogo, formularios y tablas a pantallas pequeñas.
+La revisión de usabilidad también comprobó navegación clara, mensajes de validación en español, controles con nombres accesibles, retorno al checkout después del login y adaptación del catálogo, formularios y tablas a pantallas pequeñas. El 10 de agosto se recorrió manualmente en navegador el flujo catálogo → filtro → producto reciente → carrito → login → tarjeta simulada → confirmación → perfil, además del panel administrativo y los reportes.

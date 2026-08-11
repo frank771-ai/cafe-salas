@@ -8,10 +8,8 @@ use App\Models\User;
 use App\Services\OrderStatusService;
 use Illuminate\Http\Request;
 
-/** Gestiona el tablero administrativo, sus métricas y los estados de pedidos. */
 class AdminController extends Controller
 {
-    /** Reúne indicadores mensuales, pedidos recientes e inventario bajo. */
     public function index()
     {
         $monthStart = now()->startOfMonth();
@@ -25,7 +23,6 @@ class AdminController extends Controller
         ]);
     }
 
-    /** Valida el nuevo estado contra la lista permitida antes de actualizarlo. */
     public function updateStatus(Request $request, Order $order, OrderStatusService $statuses)
     {
         $validated = $request->validate(['status' => ['required', 'string', 'in:'.implode(',', Order::STATUSES)]]);

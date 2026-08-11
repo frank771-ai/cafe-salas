@@ -7,19 +7,17 @@ Esta guía describe la responsabilidad de cada archivo escrito o adaptado para e
 La consigna exige SQLite y el proyecto lo utiliza como **base principal**:
 
 - `.env.example` configura `DB_CONNECTION=sqlite` y `database/database.sqlite`.
-- `.env.mysql.example` y `database/sql/cafe_salas.sql` conservan MariaDB/phpMyAdmin solo como alternativa.
-- Las migraciones usan tipos compatibles con MariaDB y SQLite.
-- `.env.sqlite.example` ofrece un perfil SQLite explícito equivalente al predeterminado.
-- `phpunit.xml` ejecuta las pruebas con SQLite en memoria para que nunca alteren la base de XAMPP.
+- Las migraciones permiten reconstruir el esquema y los seeders cargan los datos de demostración.
+- `phpunit.xml` ejecuta las pruebas con SQLite en memoria para no alterar la base local.
 
-En otras palabras: **SQLite es la base principal y también el motor aislado de pruebas; MariaDB es opcional**.
+SQLite es la base principal y también el motor aislado de pruebas.
 
 ## 2. Flujo MVC
 
 1. El navegador solicita una URL definida en `routes/web.php`.
 2. Laravel ejecuta los middleware correspondientes: visitante, autenticado, administrador y encabezados de seguridad.
 3. El controlador valida la entrada y coordina modelos o servicios.
-4. Eloquent crea consultas parametrizadas para MariaDB/MySQL.
+4. Eloquent crea consultas parametrizadas para SQLite.
 5. El controlador retorna una vista Blade, una redirección o un PDF.
 6. Blade escapa `{{ ... }}` automáticamente para prevenir XSS.
 
@@ -337,9 +335,7 @@ php vendor/bin/pint --test
 
 ## 13. Archivos de entorno y despliegue
 
-- `.env.example`: SQLite principal.
-- `.env.sqlite.example`: perfil SQLite explícito.
-- `.env.mysql.example`: alternativa XAMPP/MariaDB.
+- `.env.example`: configuración local con SQLite.
 - `deployment/apache-vhost.conf.example`: DocumentRoot seguro hacia `public`.
 - `deployment/apache-ssl-vhost.conf.example`: redirección HTTPS y certificado.
 - `deployment/env.production.example`: variables seguras sin secretos reales.

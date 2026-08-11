@@ -15,7 +15,7 @@ Antes de aceptar clientes reales se debe:
 1. integrar una pasarela certificada y mantener `ALLOW_SIMULATED_PAYMENTS_IN_PRODUCTION=false`;
 2. usar HTTPS con un certificado válido y `SESSION_SECURE_COOKIE=true`;
 3. generar un `APP_KEY` exclusivo y mantener `.env` fuera de Git;
-4. crear un usuario MariaDB sin privilegios globales y con contraseña robusta;
+4. proteger el archivo SQLite con permisos del sistema y copias de respaldo;
 5. ejecutar `composer audit`, las pruebas y las copias de respaldo;
 6. configurar monitoreo, correo transaccional y un procedimiento de incidentes.
 

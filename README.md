@@ -12,11 +12,11 @@ Proyecto final de **Tecnologías y Sistemas Web II (ITI-523)**.
 
 Incluye registro, inicio y cierre de sesión, perfil editable, historial de pedidos, catálogo categorizado, búsqueda y filtros, productos vistos recientemente mediante cookie, carrito, impuestos y envío automáticos, compra simulada con tarjeta o PayPal, factura web/PDF, seguimiento, administración de pedidos e inventario y reportes PDF.
 
-El frontend utiliza Blade, Bootstrap, CSS y JavaScript. El backend utiliza PHP 8.2, Laravel 12 y **SQLite como base principal**. MariaDB/MySQL de XAMPP se conserva únicamente como alternativa.
+El frontend utiliza Blade, Bootstrap, CSS y JavaScript. El backend utiliza PHP 8.2, Laravel 12 y SQLite.
 
 ## Instalación principal con SQLite
 
-Requisitos: PHP 8.2 o superior con `pdo_sqlite`, Composer 2 y Node.js/npm.
+Requisitos: PHP 8.2 o superior con `pdo_sqlite` y Composer 2.
 
 ```powershell
 composer install
@@ -26,8 +26,6 @@ if (-not (Test-Path database/database.sqlite)) {
     New-Item -ItemType File -Path database/database.sqlite
 }
 php artisan migrate:fresh --seed
-npm install
-npm run build
 php artisan serve
 ```
 
@@ -42,14 +40,22 @@ Abra `http://127.0.0.1:8000`. El archivo SQLite local y `.env` están excluidos 
 
 Son credenciales académicas. No deben reutilizarse en producción.
 
-## Alternativa XAMPP/MariaDB
+## Uso con Apache
 
-1. Inicie Apache y MySQL en XAMPP.
-2. Cree `cafe_salas` en phpMyAdmin.
-3. Copie `.env.mysql.example` como `.env`.
-4. Ejecute `php artisan key:generate` y `php artisan migrate:fresh --seed`.
+El proyecto puede ejecutarse con Apache y SQLite. Consulte `deployment/apache-vhost.conf.example` y apunte siempre el `DocumentRoot` a la carpeta `public`.
 
-También se entrega `database/sql/cafe_salas.sql` como respaldo importable. SQLite sigue siendo la configuración oficial y predeterminada.
+### Publicación académica en Vercel
+
+La instalación local mantiene SQLite como base principal. La demostración pública usa Neon PostgreSQL porque las funciones de Vercel no conservan archivos SQLite entre ejecuciones.
+
+1. Conecte el repositorio a un proyecto de Vercel y vincule una base Neon.
+2. Copie en Vercel las variables de `deployment/env.vercel.example`; Neon proporciona `DATABASE_URL`.
+3. Genere `APP_KEY` con `php artisan key:generate --show` y guárdela como variable protegida.
+4. Defina `DB_CONNECTION=pgsql`, `APP_ENV=production`, `APP_DEBUG=false` y `ALLOW_SIMULATED_PAYMENTS_IN_PRODUCTION=true`.
+5. Despliegue. El script `composer run vercel` ejecuta migraciones y carga los datos de demostración de forma repetible.
+6. Actualice `APP_URL` con el dominio final de Vercel y vuelva a desplegar.
+
+El punto de entrada está en `api/index.php` y `vercel.json` dirige las solicitudes dinámicas a Laravel sin ocultar los recursos de `public`.
 
 ## Verificación
 
@@ -59,7 +65,6 @@ php artisan route:list
 php artisan test
 php vendor/bin/pint --test
 composer audit
-npm run build
 ```
 
 Consulte el resultado exacto de la última ejecución en `docs/PRUEBAS.md` y el mapeo de los 32 criterios en `docs/RUBRICA.md`.
@@ -82,7 +87,3 @@ En producción se debe configurar `APP_ENV=production`, `APP_DEBUG=false`, HTTPS
 ## GitHub
 
 Repositorio privado real: [github.com/Byroncha1323/cafe-salas](https://github.com/Byroncha1323/cafe-salas). No se confirma `.env`, `APP_KEY`, bases con datos personales, credenciales ni el ZIP destinado a la plataforma universitaria.
-
-## Atribución responsable
-
-Para apoyar el desarrollo, revisión y documentación se utilizó OpenAI Codex. Byron Chacón y Franklin Castillo revisaron, adaptaron, probaron y estudiaron el proyecto, y son responsables de comprender y explicar su funcionamiento.

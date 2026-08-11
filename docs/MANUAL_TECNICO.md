@@ -10,26 +10,20 @@ El diseño del código sigue los conceptos estudiados en las sesiones 9 y 10: ar
 
 - Backend: PHP 8.2 y Laravel 12.
 - Base principal y de pruebas: SQLite.
-- Base alternativa: MariaDB 10.4/MySQL de XAMPP, administrada con phpMyAdmin.
 - Frontend: HTML5 semántico, Blade, Bootstrap 5.3, CSS responsive y JavaScript.
-- Servidor: Apache de XAMPP o servidor de desarrollo Artisan.
+- Servidor: Apache o servidor de desarrollo Artisan.
 - PDF: Dompdf sin acceso a recursos remotos.
 - Pruebas: PHPUnit integrado con Laravel.
 
 ## 3. Instalación principal con SQLite
 
-1. Instale PHP 8.2 o superior, Composer y Node.js.
+1. Instale PHP 8.2 o superior y Composer.
 2. En la terminal del proyecto ejecute `composer install`.
 3. Copie `.env.example` a `.env` y ejecute `php artisan key:generate`.
 4. Cree `database/database.sqlite` si todavía no existe.
 5. Verifique `DB_CONNECTION=sqlite` y `DB_DATABASE=database/database.sqlite`.
 6. Ejecute `php artisan migrate:fresh --seed`.
-7. Ejecute `npm install` y `npm run build`.
-8. Ejecute `php artisan serve` y abra `http://127.0.0.1:8000`.
-
-### Alternativa XAMPP/MariaDB
-
-Copie `.env.mysql.example` a `.env`, cree `cafe_salas` en phpMyAdmin y ejecute las migraciones. También puede importar `database/sql/cafe_salas.sql`. Esta alternativa no sustituye la configuración oficial SQLite.
+7. Ejecute `php artisan serve` y abra `http://127.0.0.1:8000`.
 
 `.gitignore` excluye el archivo SQLite, `.env` y `.env.backup`, por lo que ninguna configuración local se publica.
 
@@ -39,13 +33,26 @@ Use `deployment/apache-vhost.conf.example`. Cambie la ruta del proyecto y agregu
 
 El `DocumentRoot` debe terminar en `/public`. Esto evita que `.env`, `vendor` y otros archivos privados sean accesibles desde el navegador.
 
+### Publicación académica en Vercel y Neon
+
+La versión local y las pruebas conservan SQLite como base principal. Para la URL pública, Vercel ejecuta PHP mediante `vercel-php` y Neon mantiene los datos en PostgreSQL, ya que el sistema de archivos serverless no ofrece persistencia para SQLite.
+
+1. Vincule el repositorio con Vercel y conecte el proyecto de Neon.
+2. Configure las variables descritas en `deployment/env.vercel.example` para Production y Preview.
+3. Mantenga `DATABASE_URL` como secreto y establezca `DB_CONNECTION=pgsql`.
+4. Genere una `APP_KEY` exclusiva y active cookies seguras.
+5. Despliegue; el script `vercel` de Composer ejecuta migraciones y seeders idempotentes.
+6. Sustituya `APP_URL` por el dominio final y realice un nuevo despliegue.
+
+`ALLOW_SIMULATED_PAYMENTS_IN_PRODUCTION=true` se utiliza únicamente para esta demostración académica. No habilita ni conecta cobros reales.
+
 ## 5. Arquitectura MVC
 
 - **Modelos (`app/Models`)**: representan usuarios, categorías, productos, pedidos, detalles y pagos. Las relaciones `hasMany`, `belongsTo` y `hasOne` expresan el modelo relacional.
 - **Vistas (`resources/views`)**: plantillas Blade. Escapan la salida con `{{ }}` para prevenir XSS y reutilizan el componente `product-card`.
 - **Controladores (`app/Http/Controllers`)**: reciben solicitudes, validan, consultan modelos y devuelven respuestas o vistas.
 - **Rutas (`routes/web.php`)**: tienen nombres, verbos HTTP correctos y grupos `guest`, `auth` y `admin`.
-- **Migraciones (`database/migrations`)**: versionan el esquema y funcionan en MySQL y SQLite.
+- **Migraciones (`database/migrations`)**: versionan y reconstruyen el esquema SQLite.
 - **Servicios (`app/Services`)**: concentran carrito, PDF, pago simulado, cookie reciente y estados de pedido.
 - **Middleware**: controla acceso administrativo y agrega encabezados de seguridad.
 
@@ -169,6 +176,6 @@ php artisan optimize
 
 `migrate:fresh --seed` elimina y reconstruye todas las tablas; úselo solo sobre una base de desarrollo que pueda perderse.
 
-## 12. Atribución académica
+## 12. Relación con los contenidos del curso
 
 La estructura fue adaptada a partir de los conceptos de las sesiones 9 (frameworks backend, Laravel, migraciones, modelos y relaciones) y 10 (autenticación, rutas, controladores, componentes Blade, validación, CRUD y paginación). El equipo debe leer el código, ejecutar las pruebas y explicar sus decisiones durante la exposición.

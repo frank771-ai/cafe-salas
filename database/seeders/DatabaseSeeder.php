@@ -17,26 +17,24 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // La cuenta administradora se crea de forma explícita porque is_admin no es asignable masivamente.
-        User::forceCreate([
+        $admin = User::firstOrNew(['email' => 'admin@cafesalas.test']);
+        $admin->forceFill([
             'name' => 'Administración Café Salas',
-            'email' => 'admin@cafesalas.test',
             'phone' => '8888-0001',
             'address' => 'San José, Costa Rica',
             'is_admin' => true,
             'password' => Hash::make('Admin123!'),
-        ]);
+        ])->save();
 
-        $customer = User::create([
+        $customer = User::updateOrCreate(['email' => 'cliente@cafesalas.test'], [
             'name' => 'María Fernanda Solano',
-            'email' => 'cliente@cafesalas.test',
             'phone' => '8888-1122',
             'address' => 'Barrio Escalante, San José, casa 12',
             'password' => 'Cliente123!',
         ]);
 
-        $secondCustomer = User::create([
+        $secondCustomer = User::updateOrCreate(['email' => 'carlos@cafesalas.test'], [
             'name' => 'Carlos Vargas Mora',
-            'email' => 'carlos@cafesalas.test',
             'phone' => '8700-4400',
             'address' => 'San Rafael, Heredia, 200 m norte de la iglesia',
             'password' => 'Cliente123!',
@@ -48,7 +46,9 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Dulces artesanales', 'slug' => 'dulces-artesanales', 'description' => 'Sabores locales para acompañar cada taza.'],
             ['name' => 'Métodos y tazas', 'slug' => 'metodos-y-tazas', 'description' => 'Accesorios para preparar y servir mejor el café.'],
             ['name' => 'Listo para disfrutar', 'slug' => 'listo-para-disfrutar', 'description' => 'Bebidas y selecciones pensadas para regalar.'],
-        ])->mapWithKeys(fn (array $category) => [$category['slug'] => Category::create($category)]);
+        ])->mapWithKeys(fn (array $category) => [
+            $category['slug'] => Category::updateOrCreate(['slug' => $category['slug']], $category),
+        ]);
 
         $products = collect([
             ['category' => 'cafe-de-origen', 'name' => 'Tarrazú Reserva 340 g', 'slug' => 'tarrazu-reserva-340g', 'description' => 'Café de altura con notas de cacao, naranja dulce y caramelo. Tueste medio y proceso lavado.', 'price' => 7900, 'stock' => 28, 'image' => 'images/products/cafe-tarrazu-real.png', 'featured' => true],
@@ -63,7 +63,10 @@ class DatabaseSeeder extends Seeder
             $category = $categories[$product['category']];
             unset($product['category']);
 
-            return Product::create(['category_id' => $category->id, ...$product, 'is_active' => true]);
+            return Product::updateOrCreate(
+                ['slug' => $product['slug']],
+                ['category_id' => $category->id, ...$product, 'is_active' => true],
+            );
         });
 
         // Estas compras permiten demostrar historial y reportes desde la primera ejecución.
@@ -80,12 +83,12 @@ class DatabaseSeeder extends Seeder
         $tax = (int) round($subtotal * 0.13);
         $shipping = $subtotal >= CartService::FREE_SHIPPING_FROM ? 0 : CartService::SHIPPING_COST;
         $total = $subtotal + $tax + $shipping;
-        $suffix = strtoupper(substr(hash('sha256', $user->email.$date->timestamp), 0, 6));
+        $suffix = strtoupper(substr(hash('sha256', $user->email.$product->slug.$method), 0, 6));
+        $trackingNumber = 'CRPOST-'.strtoupper(substr(hash('sha256', $suffix), 0, 10));
 
-        $order = Order::create([
+        $order = Order::updateOrCreate(['tracking_number' => $trackingNumber], [
             'user_id' => $user->id,
             'order_number' => 'CS-'.$date->format('Ymd').'-'.$suffix,
-            'tracking_number' => 'CRPOST-'.strtoupper(substr(hash('sha256', $suffix), 0, 10)),
             'status' => $date->isBefore(now()->subWeeks(2)) ? 'delivered' : 'preparing',
             'customer_name' => $user->name,
             'customer_email' => $user->email,
@@ -96,19 +99,16 @@ class DatabaseSeeder extends Seeder
             'shipping' => $shipping,
             'total' => $total,
             'purchased_at' => $date,
-            'created_at' => $date,
-            'updated_at' => $date,
         ]);
 
-        $order->items()->create([
-            'product_id' => $product->id,
+        $order->items()->updateOrCreate(['product_id' => $product->id], [
             'product_name' => $product->name,
             'unit_price' => $product->price,
             'quantity' => $quantity,
             'line_total' => $subtotal,
         ]);
 
-        $order->payment()->create([
+        $order->payment()->updateOrCreate([], [
             'method' => $method,
             'status' => 'approved',
             'provider_reference' => 'SIM-SEED-'.$suffix,

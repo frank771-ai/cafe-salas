@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/** Guarda el resultado del pago sin almacenar credenciales completas de tarjeta. */
 class Payment extends Model
 {
     use HasFactory;
@@ -21,7 +20,6 @@ class Payment extends Model
         return ['processed_at' => 'datetime'];
     }
 
-    /** Pedido pagado por este registro. */
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);

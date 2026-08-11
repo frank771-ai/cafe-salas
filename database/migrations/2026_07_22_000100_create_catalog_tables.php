@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Las migraciones usan tipos compatibles tanto con MariaDB de XAMPP como con SQLite.
+        // El esquema usa tipos que SQLite puede reconstruir en cualquier equipo.
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');

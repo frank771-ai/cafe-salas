@@ -20,7 +20,7 @@ Participantes: **Byron Chacón** y **Franklin Castillo**. Fechas: **25 y 26 de a
 
 ## Preparación obligatoria ante las sanciones
 
-El enunciado permite anular hasta el 75 % del proyecto si un estudiante no responde al menos la mitad de las preguntas. Antes de exponer, cada integrante debe ejecutar por sí mismo el recorrido de compra, explicar un controlador, una validación, una relación de base de datos y una prueba. También debe reconocer la asistencia de Codex y describir qué adaptó y verificó; la atribución no reemplaza la comprensión.
+El enunciado permite anular hasta el 75 % del proyecto si un estudiante no responde al menos la mitad de las preguntas. Antes de exponer, cada integrante debe ejecutar por sí mismo el recorrido de compra, explicar un controlador, una validación, una relación de base de datos y una prueba.
 
 ## Preguntas probables
 
@@ -28,9 +28,9 @@ El enunciado permite anular hasta el 75 % del proyecto si un estudiante no respo
 
 Modelo representa y consulta datos; Vista presenta HTML con Blade; Controlador procesa la solicitud y coordina reglas. Ejemplo: `Product` consulta, `ProductController@index` filtra y `products/index.blade.php` muestra.
 
-### ¿Por qué usar migraciones y no crear tablas solo en phpMyAdmin?
+### ¿Por qué usar migraciones en lugar de crear la base manualmente?
 
-phpMyAdmin administra y permite observar/importar la base. Las migraciones versionan el esquema en código, permiten reproducirlo en cada equipo, revierten cambios y facilitan GitHub/CI.
+Las migraciones versionan el esquema, permiten reproducirlo en cada equipo, revierten cambios y facilitan GitHub y la integración continua.
 
 ### ¿Qué hacen `$fillable` y los casts?
 
@@ -60,9 +60,9 @@ Pedido, detalles, pago e inventario deben confirmarse juntos. Si una parte falla
 
 No. Se validan solo en la solicitud y se descartan. El pago conserva referencia simulada y últimos cuatro dígitos; nunca CVV ni número completo.
 
-### ¿MySQL o SQLite?
+### ¿Por qué SQLite?
 
-SQLite es la base principal porque así lo exige la consigna. Laravel accede mediante PDO/Eloquent y PHPUnit usa una base SQLite aislada. MariaDB/phpMyAdmin queda como alternativa mediante `.env.mysql.example`.
+SQLite es la base principal porque así lo exige la consigna. Laravel accede mediante PDO y Eloquent, mientras PHPUnit usa una base SQLite aislada en memoria.
 
 ### ¿Cómo funciona la cookie reciente?
 
@@ -74,11 +74,11 @@ Autenticación comprueba quién es el usuario; autorización decide qué puede h
 
 ### ¿Cómo se publica con HTTPS?
 
-Se sube a un hosting con PHP/MySQL, se apunta el dominio, se emite Let's Encrypt, se configura `APP_URL=https://...`, `APP_ENV=production`, `APP_DEBUG=false` y `SESSION_SECURE_COOKIE=true`.
+Se sube a un hosting compatible con PHP y SQLite, se apunta el dominio, se emite un certificado Let's Encrypt y se configura `APP_URL=https://...`, `APP_ENV=production`, `APP_DEBUG=false` y `SESSION_SECURE_COOKIE=true`.
 
 ### ¿Qué adaptación demuestra que el catálogo fue revisado?
 
-El chocolate se corrigió a 82 % de cacao y la caja se renombró para representar las ocho regiones cafetaleras de Costa Rica. Una migración actualiza instalaciones existentes, mientras el seeder y el respaldo SQL garantizan que una instalación nueva tenga los mismos datos.
+El chocolate se corrigió a 82 % de cacao y la caja se renombró para representar las ocho regiones cafetaleras de Costa Rica. Una migración actualiza instalaciones existentes y el seeder garantiza los mismos datos en una instalación nueva.
 
 ### ¿Cómo se controlan vulnerabilidades de dependencias?
 

@@ -6,10 +6,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/** Añade defensas HTTP comunes a cada respuesta generada por la aplicación. */
 class SecurityHeaders
 {
-    /** Procesa la solicitud y endurece la respuesta antes de devolverla al navegador. */
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);

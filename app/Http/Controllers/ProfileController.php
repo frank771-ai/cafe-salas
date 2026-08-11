@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
-/** Permite al cliente mantener sus datos y consultar su historial de pedidos. */
 class ProfileController extends Controller
 {
-    /** Carga el historial paginado junto con líneas y pagos para evitar consultas repetidas. */
     public function show(Request $request)
     {
         $orders = $request->user()->orders()->with('items', 'payment')->latest('purchased_at')->paginate(8);
@@ -17,7 +15,6 @@ class ProfileController extends Controller
         return view('profile.show', compact('orders'));
     }
 
-    /** Valida y actualiza únicamente los campos editables del perfil. */
     public function update(Request $request)
     {
         $user = $request->user();
