@@ -5,7 +5,7 @@ Proyecto de Byron Chacón y Franklin Castillo para la Ing. Milena Vargas Blanco.
 | N. | Criterio | Evidencia o corrección aplicada | Estado |
 |---:|---|---|---|
 | 1 | Entrega a tiempo | ZIP final preparado; la carga en plataforma depende del equipo. | Acción humana |
-| 2 | Carpeta comprimida identificada | `ProyectoFinal-ByronChacon-FranklinCastillo.zip`. | Cumple al entregar |
+| 2 | Carpeta comprimida identificada | `entrega/ProyectoFinal-ByronChacon-FranklinCastillo.zip`. | Cumple al entregar |
 | 3 | Autenticación y usuarios | `AuthController`, modelo `User`, middleware y sesiones. | Cumple |
 | 4 | Registro | Vista, validación, hash y prueba automatizada. | Cumple |
 | 5 | Login y logout | Regeneración/invalidez de sesión y limitación de intentos. | Cumple |
@@ -31,7 +31,7 @@ Proyecto de Byron Chacón y Franklin Castillo para la Ing. Milena Vargas Blanco.
 | 25 | Todas las funcionalidades | Trazadas en esta matriz y verificadas mediante pruebas. | Cumple técnicamente |
 | 26 | Responsive y UX | Navegación, formularios, tablas y catálogo adaptables. | Cumple |
 | 27 | Seguridad/datos sensibles | Hash, autorización, CSRF, sesión, headers y no almacenar CVV/PAN. | Cumple |
-| 28 | Calidad y buenas prácticas | MVC, servicios, relaciones, transacciones, Pint y pruebas. | Cumple |
+| 28 | Calidad y buenas prácticas | MVC, servicios, relaciones, transacciones, Pint, pruebas y comentarios naturales en las reglas centrales. | Cumple |
 | 29 | Pregunta docente 1 | Banco de preguntas preparado; respuesta depende del estudiante. | Acción humana |
 | 30 | Pregunta docente 2 | Banco de preguntas preparado; respuesta depende del estudiante. | Acción humana |
 | 31 | Pregunta docente 3 | Banco de preguntas preparado; respuesta depende del estudiante. | Acción humana |

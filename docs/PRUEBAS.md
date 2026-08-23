@@ -1,6 +1,6 @@
 # Informe de pruebas — Café Salas
 
-Última ejecución: 10 de agosto de 2026. Entorno principal: PHP 8.2, Laravel 12 y SQLite.
+Última ejecución: 23 de agosto de 2026. Entorno principal: PHP 8.2, Laravel 12 y SQLite.
 
 ## Resultado automatizado
 
@@ -43,4 +43,4 @@ La auditoría consulta un registro externo y representa el estado conocido en la
 
 Los pagos son simulados; estas pruebas no realizan cargos reales.
 
-La revisión de usabilidad también comprobó navegación clara, mensajes de validación en español, controles con nombres accesibles, retorno al checkout después del login y adaptación del catálogo, formularios y tablas a pantallas pequeñas. El 10 de agosto se recorrió manualmente en navegador el flujo catálogo → filtro → producto reciente → carrito → login → tarjeta simulada → confirmación → perfil, además del panel administrativo y los reportes.
+La revisión de usabilidad también comprobó navegación clara, mensajes de validación en español, controles con nombres accesibles, retorno al checkout después del login y adaptación del catálogo, formularios y tablas a pantallas pequeñas. El 10 de agosto se recorrió manualmente en navegador el flujo catálogo → filtro → producto reciente → carrito → login → tarjeta simulada → confirmación → perfil, además del panel administrativo y los reportes. El 23 de agosto se repitió la suite completa y se confirmó que la copia local coincide con la rama final `codex/proyecto-final` del repositorio `frank771-ai/cafe-salas`.

@@ -5,7 +5,7 @@ from pathlib import Path
 from docx import Document
 from docx.enum.section import WD_SECTION
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK, WD_LINE_SPACING
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
@@ -419,7 +419,7 @@ def add_cover(document: Document) -> None:
     paragraph.paragraph_format.space_before = Pt(55)
     run = paragraph.add_run("Universidad Técnica Nacional - Costa Rica")
     set_run_font(run, size=10.5, color=MUTED, italic=True)
-    paragraph.add_run().add_break(WD_BREAK.PAGE)
+    document.add_page_break()
 
 
 def build_document() -> None:
@@ -447,7 +447,7 @@ def build_document() -> None:
         "de productos recientes, administración y reportes PDF. La implementación se inspira directamente "
         "en los temas de Laravel explicados en las sesiones 9 y 10 del curso."
     )
-    add_callout(document, "Resultado verificable", "La revisión final aprobó 52 pruebas con 250 aserciones, migraciones y seeders SQLite, 24 rutas, Laravel Pint y la auditoría de dependencias sin avisos conocidos.")
+    add_callout(document, "Resultado verificable", "La revisión del 23 de agosto de 2026 aprobó 52 pruebas con 250 aserciones, migraciones y seeders SQLite, 24 rutas, Laravel Pint y la auditoría de dependencias sin avisos conocidos.")
 
     document.add_heading("2. Tecnologías", level=1)
     add_table(document, ["Capa", "Tecnología y propósito"], [
@@ -484,6 +484,7 @@ def build_document() -> None:
         run = paragraph.add_run(label + ": ")
         set_run_font(run, bold=True, color=FOREST)
         paragraph.add_run(text)
+    add_callout(document, "Funciones documentadas", "Los comentarios naturales se concentran en las reglas centrales de la rúbrica: carrito y totales, cookie de recientes, checkout transaccional, protección del inventario, pago simulado, estados de pedido, facturas y reportes PDF.")
 
     document.add_heading("5. Modelo de datos", level=1)
     add_figure(document, er_diagram, "Figura 1. Relaciones principales de la base de datos.", "Diagrama de relaciones entre usuarios, pedidos, pagos, categorías, productos y detalles.")

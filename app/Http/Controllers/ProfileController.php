@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
+/** Gestiona los datos personales del cliente y su historial de compras. */
 class ProfileController extends Controller
 {
+    /** Muestra únicamente los pedidos pertenecientes al usuario autenticado. */
     public function show(Request $request)
     {
         $orders = $request->user()->orders()->with('items', 'payment')->latest('purchased_at')->paginate(8);
@@ -15,6 +17,7 @@ class ProfileController extends Controller
         return view('profile.show', compact('orders'));
     }
 
+    /** Normaliza y valida el perfil antes de guardar cualquier cambio. */
     public function update(Request $request)
     {
         $user = $request->user();

@@ -9,8 +9,10 @@ use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
+/** Genera los reportes PDF de ventas exigidos para el área administrativa. */
 class ReportController extends Controller
 {
+    /** Prepara los filtros disponibles para reportes mensuales y por cliente. */
     public function index()
     {
         return view('admin.reports', [
@@ -19,6 +21,10 @@ class ReportController extends Controller
         ]);
     }
 
+    /**
+     * Reúne las ventas válidas de un mes completo y las entrega al servicio PDF.
+     * Los pedidos cancelados se excluyen porque ya no representan ingreso real.
+     */
     public function monthly(Request $request, PdfService $pdf)
     {
         $validated = $request->validate(['month' => ['required', 'date_format:Y-m']]);
@@ -37,6 +43,7 @@ class ReportController extends Controller
         ], 'ventas-'.$validated['month'].'.pdf', 'landscape');
     }
 
+    /** Genera el historial de ventas de un cliente sin incluir pedidos cancelados. */
     public function customer(Request $request, PdfService $pdf)
     {
         $validated = $request->validate([

@@ -8,8 +8,10 @@ use App\Models\User;
 use App\Services\OrderStatusService;
 use Illuminate\Http\Request;
 
+/** Centraliza los indicadores de ventas, inventario y gestión de pedidos. */
 class AdminController extends Controller
 {
+    /** Construye el resumen administrativo del mes y alerta sobre inventario bajo. */
     public function index()
     {
         $monthStart = now()->startOfMonth();
@@ -23,6 +25,7 @@ class AdminController extends Controller
         ]);
     }
 
+    /** Valida el nuevo estado y delega los cambios de pago e inventario al servicio. */
     public function updateStatus(Request $request, Order $order, OrderStatusService $statuses)
     {
         $validated = $request->validate(['status' => ['required', 'string', 'in:'.implode(',', Order::STATUSES)]]);
